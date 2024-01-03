@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,7 +38,7 @@ public class SecurityConfig {
 //		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**", "/login").permitAll()
 				.antMatchers(HttpMethod.PUT, "/updateTrans","/updateMember", "kagoosignup").permitAll()
 				.antMatchers(HttpMethod.GET, "/**", "/transPost","/transDetail/{id}", "/intransInfo/**", "/listPages/**", "/board", "/userInfo", "/notice" , "/onetoone" ,"/questions").permitAll().anyRequest().authenticated().and()
 				.exceptionHandling() // 예외 발생했을 때

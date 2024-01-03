@@ -30,7 +30,7 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column(length = 100)
+	@Column(length = 100) 
 	private String username; // 아이디 (이메일)
 	
 	@Column(length = 100)
