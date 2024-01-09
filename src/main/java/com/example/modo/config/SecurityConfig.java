@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,13 +35,13 @@ public class SecurityConfig {
 		http.csrf().disable(); // 클라이언트 사이드 랜더링으로 할때는 csrf 사용 X 그래서 비활성화 해주는게 좋음
 		http.cors(); // 크로스 오리진 할거다 미리 적음 (아래 CorsConfigurationSource은 이게 있기 때문에 작동할 수 있는거)
 
-		// 세션 비활성화
-//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//		 세션 비활성화
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**", "/login").permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**", "/login", "/oauth/kakao/", "/oauth/google/", "/oauth/naver/").permitAll()
 				.antMatchers(HttpMethod.PUT, "/updateTrans","/updateMember", "kagoosignup").permitAll()
-				.antMatchers(HttpMethod.GET, "/**", "/transPost","/transDetail/{id}", "/intransInfo/**", "/listPages/**", "/board", "/userInfo", "/notice" , "/onetoone" ,"/questions").permitAll().anyRequest().authenticated().and()
+				.antMatchers(HttpMethod.GET, "/**", "/oauth/google/", "/oauth/naver/").permitAll().anyRequest().authenticated().and()
 				.exceptionHandling() // 예외 발생했을 때
 				.authenticationEntryPoint(authEntryPoint).and()
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
