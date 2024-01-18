@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,13 +22,17 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "member")
+@SequenceGenerator(
+		name = "MEMBER_SEQ_GENERATOR",
+		sequenceName = "MEMBER_SEQ",
+		initialValue = 1, allocationSize = 1)
 @NoArgsConstructor
 @AllArgsConstructor 
 @Builder
 public class Member {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
 	private Long id;
 	
 	@Column(length = 100) 
