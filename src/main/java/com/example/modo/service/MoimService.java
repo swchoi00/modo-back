@@ -17,7 +17,6 @@ public class MoimService {
 		Moim moim = moimRepository.findByMoimname(moimname).orElseGet(() -> {
 			return new Moim();
 		});
-		
 		return moim;
 	}
 	
