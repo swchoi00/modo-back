@@ -15,42 +15,39 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "Notice")
+@Entity
+@Table(name = "reply")
 @SequenceGenerator(
-		name = "NOTICE_SEQ_GENERATOR",
-		sequenceName = "NOTICE_SEQ",
-		initialValue = 1, allocationSize = 1)
-public class Notice {
+		name = "REPLY_SEQ_GENERATOR",
+		sequenceName = "REPLY_SEQ",
+		initialValue = 1, allocationSize = 1
+		)
+public class Reply {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTICE_SEQ_GENERATOR")
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REPLY_SEQ_GENERATOR")
+	private Long replyNo;
 	
-	@Column(nullable = false, length = 100)
-	private String title;
-	
-	@Column(nullable = false, length = 100)
+	@Column(length = 300)
 	private String content;
 	
 	@CreationTimestamp
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Timestamp createDate;
+	private Timestamp replyDate;
 	
-	@ManyToOne(fetch = FetchType.EAGER) // 다대일) 1개의 공지사항이 한명의 회원과 연결
-	@JoinColumn(name = "username") 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "memberusername")
 	private Member member;
 	
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "no")
+	private InquiryForm inquiryForm;
 	
 }
