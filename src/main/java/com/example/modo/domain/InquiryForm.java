@@ -53,9 +53,12 @@ public class InquiryForm {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp createDate;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "username")
-	private Member member;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "username")
+//	private Member member;
+	
+	@Column(length = 100)
+	private String writerName;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "inquiryForm", fetch = FetchType.EAGER)
