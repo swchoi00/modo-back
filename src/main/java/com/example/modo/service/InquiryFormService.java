@@ -39,6 +39,11 @@ public class InquiryFormService {
 		
 	}
 	
+	public List<InquiryForm> userInquiryFormList(String username) {
+		
+		return inquiryFormRepository.findByWriterNameOrderByIdDesc(username);
+	}
+	
 	
 	
 	
