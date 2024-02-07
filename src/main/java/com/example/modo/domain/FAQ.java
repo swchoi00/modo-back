@@ -42,6 +42,9 @@ public class FAQ {
 	@Column(nullable = false)
 	private String content;
 	
+	@Column
+	private String category;
+	
 	@CreationTimestamp
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp createDate;

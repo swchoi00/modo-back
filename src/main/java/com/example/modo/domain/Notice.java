@@ -48,9 +48,12 @@ public class Notice {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp createDate;
 	
-	@ManyToOne(fetch = FetchType.EAGER) // 다대일) 1개의 공지사항이 한명의 회원과 연결
-	@JoinColumn(name = "username") 
-	private Member member;
+//	@ManyToOne(fetch = FetchType.EAGER) // 다대일) 1개의 공지사항이 한명의 회원과 연결
+//	@JoinColumn(name = "username") 
+//	private Member member;
+	
+	@Column(length = 100)
+	private String adminName;
 	
 	
 }
