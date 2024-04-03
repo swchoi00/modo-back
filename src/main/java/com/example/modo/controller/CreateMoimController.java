@@ -24,7 +24,7 @@ public class CreateMoimController {
 		Moim moimnameCheck = moimService.getMoim(moim.getMoimname());
 		
 		if (moimnameCheck.getMoimname() != null && moimnameCheck.getMoimname().equals(moim.getMoimname())) {
-			return new ResponseEntity<>("중복된 모임 이름입니다!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("중복된 모임 이름입니다!", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("사용 가능한 모임 이름입니다!", HttpStatus.OK);
 		}
