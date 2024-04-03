@@ -39,7 +39,10 @@ public class Moim {
 	private String category; // 카테고리 - 추후에 열거형으로 할 수도 있음
 	
 	@Column(length = 100)
-	private String location; // 지역 - 추후에 열거형으로 할 수도 있음
+	private String city; // 지역(시)
+	
+	@Column(length = 100)
+	private String town; // 지역(구)
 	
 	@Column(length = 100)
 	private String introduction; // 간단설명

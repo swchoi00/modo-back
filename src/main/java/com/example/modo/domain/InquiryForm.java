@@ -9,7 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -51,19 +53,19 @@ public class InquiryForm {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp createDate;
 	
+	@Column(length = 100)
+	private String writerName;
+	
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "username")
 //	private Member member;
-	
-	@Column(length = 100)
-	private String writerName;
 	
 	@Column(columnDefinition = "number(1) default 0 not null")
 	private boolean answerChk; // 답변 여부
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "inquiryForm", fetch = FetchType.EAGER)
-	@OrderBy("no desc")
+	@OrderBy("id desc")
 	private List<Reply> replyList;
 	
 }

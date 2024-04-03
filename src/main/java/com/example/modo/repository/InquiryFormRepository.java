@@ -8,6 +8,6 @@ import com.example.modo.domain.InquiryForm;
 
 public interface InquiryFormRepository extends JpaRepository<InquiryForm, Long>{
 
-	public List<InquiryForm> findByWriterNameOrderByIdDesc(String username);
+	List<InquiryForm> findByWriterNameOrderByIdDesc(String username);
 	
 }

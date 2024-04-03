@@ -18,40 +18,32 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "reply")
+@Table(name = "commReply")
 @SequenceGenerator(
-		name = "REPLY1_SEQ_GENERATOR",
-		sequenceName = "REPLY1_SEQ",
-		initialValue = 1, allocationSize = 1
-		)
-@NoArgsConstructor
-@AllArgsConstructor
-public class Reply {
+		name = "COMMREPLY_SEQ_GENERATOR",
+		sequenceName = "COMMREPLY_SEQ",
+		initialValue = 1, allocationSize = 1)
+public class CommReply {
+
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REPLY1_SEQ_GENERATOR")
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMREPLY_SEQ_GENERATOR")
+	private Long rno;
 	
-	@Column(length = 300)
+	@Column(nullable = false)
 	private String content;
 	
-	@CreationTimestamp
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Timestamp replyDate;
+	@ManyToOne
+	@JoinColumn(name = "COMM_ID")
+	private Comm comm;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "username")
+	@ManyToOne
+	@JoinColumn(name = "MEMBER_USERNAME")
 	private Member member;
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "inquiry_Form_id")
-	private InquiryForm inquiryForm;
 	
 }

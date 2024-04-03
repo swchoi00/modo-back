@@ -17,11 +17,14 @@ public class InquiryFormService {
 	// 1:1문의 글 추가
 	public void insertInquiryForm(InquiryForm inquiryForm) {
 		
+		System.out.println("inquiryFormService : " + inquiryForm);
+		
 		inquiryFormRepository.save(inquiryForm);
 	}
 	
 	// 1:1문의 글 수정
 	public void updateInquiryForm(InquiryForm updatedInquiryForm) {
+		
 		
 		InquiryForm inquiryForm = inquiryFormRepository.findById(updatedInquiryForm.getId()).get();
 		
@@ -41,9 +44,14 @@ public class InquiryFormService {
 	
 	public List<InquiryForm> userInquiryFormList(String username) {
 		
+		
 		return inquiryFormRepository.findByWriterNameOrderByIdDesc(username);
 	}
 	
+	public InquiryForm getInquiryForm(Long id) {
+		
+		return inquiryFormRepository.findById(id).get();
+	}
 	
 	
 	

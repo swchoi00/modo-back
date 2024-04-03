@@ -24,8 +24,6 @@ public class InquiryFormController {
 	@PostMapping("/inquiryForm_insert")
 	public ResponseEntity<?> insertInquiryForm(@RequestBody InquiryForm inquiryForm) {
 		
-		System.out.println(inquiryForm);
-		
 		inquiryFormService.insertInquiryForm(inquiryForm);
 		
 		return new ResponseEntity<>("1:1문의 완료!", HttpStatus.OK);
@@ -35,13 +33,18 @@ public class InquiryFormController {
 	@GetMapping("/myInquiryForm/{username}")
 	public List<InquiryForm> myInquiryForm(@PathVariable String username) {
 		
-		System.out.println(username);
-		
 		List<InquiryForm> myInquiryFormList = inquiryFormService.userInquiryFormList(username);
 		
-		System.out.println(myInquiryFormList);
-		
 		return myInquiryFormList;
+		
+	}
+	
+	@GetMapping("/inquiryFormDetail/{id}")
+	public ResponseEntity<?> getInquiryForm(@PathVariable Long id) {
+		
+		InquiryForm inquiryForm = inquiryFormService.getInquiryForm(id);
+		
+		return new ResponseEntity<>(inquiryForm, HttpStatus.OK);
 		
 	}
 	

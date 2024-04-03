@@ -1,14 +1,18 @@
 package com.example.modo.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -55,6 +59,14 @@ public class Member {
 	@Column(updatable = false)
 	@CreationTimestamp
 	private Timestamp createDate; // 계정 생성일
+	
+//	@OneToMany(mappedBy = "member")
+//	@OrderBy("moimNo desc")
+//	private List<LikedMoim> likedMoims;
+	
+	@ElementCollection
+	@Column(name = "likedMoim", length = 1000)
+	private List<String> likedMoim;
 
 	
 	

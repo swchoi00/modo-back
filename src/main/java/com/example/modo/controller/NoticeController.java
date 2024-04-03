@@ -39,7 +39,7 @@ public class NoticeController {
 		return new ResponseEntity<>("게시글 작성완료", HttpStatus.OK);
 	}
 	
-	@GetMapping("/noticeDetails/{id}")
+	@GetMapping("/noticeDetail/{id}")
 	public ResponseEntity<?> getNotice(@PathVariable Long id) {
 		
 		Notice notice = noticeService.getNotice(id);

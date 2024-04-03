@@ -19,15 +19,13 @@ public class SignUpController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody Member member) {
 		
-		System.out.println(member.toString());
-		
 		Member findMemberUsername = signUpService.getMember(member.getUsername());
 		
 		if(findMemberUsername.getUsername() == null) {
 			signUpService.signUp(member);
 			return new ResponseEntity<>("회원가입 완료!", HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>("이미 가입된 회원입니다!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("이미 가입된 회원입니다!", HttpStatus.OK);
 		}
 		
 	}
@@ -35,12 +33,10 @@ public class SignUpController {
 	@PostMapping("/usernameCheck")
 	public ResponseEntity<?> usernameCheck(@RequestBody Member member) {
 		
-		System.out.println(member);
-		
 		Member usernameCheck = signUpService.getMember(member.getUsername());
 		
 		if (usernameCheck.getUsername() != null && usernameCheck.getUsername().equals(member.getUsername())) {
-			return new ResponseEntity<>("중복된 아이디입니다!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("중복된 아이디입니다!", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("사용 가능한 아이디입니다!", HttpStatus.OK);
 		}
@@ -52,7 +48,7 @@ public class SignUpController {
 		Member nicknameCheck = signUpService.getMember(member.getNickname());
 		
 		if (nicknameCheck.getNickname() != null && nicknameCheck.getNickname().equals(member.getNickname())) {
-			return new ResponseEntity<>("중복된 닉네임입니다!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("중복된 닉네임입니다!", HttpStatus.OK); // 기존 HttpStatus.BAD_REQUEST
 		} else {
 			return new ResponseEntity<>("사용 가능한 닉네임입니다!", HttpStatus.OK);
 		}
