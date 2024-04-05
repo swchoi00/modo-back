@@ -1,0 +1,49 @@
+package com.example.modo.domain;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "commReply")
+@SequenceGenerator(
+		name = "COMMREPLY_SEQ_GENERATOR",
+		sequenceName = "COMMREPLY_SEQ",
+		initialValue = 1, allocationSize = 1)
+public class CommReply {
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMREPLY_SEQ_GENERATOR")
+	private Long rno;
+	
+	@Column(nullable = false)
+	private String content;
+	
+	@ManyToOne
+	@JoinColumn(name = "COMM_ID")
+	private Comm comm;
+	
+	@ManyToOne
+	@JoinColumn(name = "MEMBER_USERNAME")
+	private Member member;
+	
+	
+}

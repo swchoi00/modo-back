@@ -2,7 +2,7 @@ package com.example.modo.service;
 
 import java.security.Key;
 import java.util.Date;
-
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtService {
