@@ -52,10 +52,10 @@ public class Comm {
 	@Column(nullable = false)
 	private String content; // 글 내용
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER)
-	@OrderBy("rno desc")
-	private List<CommReply> replies; // 댓글 참조
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER)
+//	@OrderBy("rno desc")
+//	private List<CommReply> replies; // 댓글 참조
 	
 	
 

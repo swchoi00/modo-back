@@ -1,6 +1,8 @@
 package com.example.modo.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import lombok.Data;
 
@@ -9,6 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -22,9 +29,24 @@ public class MoimPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MoimPhoto_GENERATOR")
     private Long moimPhotoNo;
+    
+    // 모임번호
+    private Long moimid;
 
+    // 사진 저장 경로
     private String moimPhotoUrl;
 
-    private Date moimPhotoDate;
+    // 업로드 날짜
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Timestamp moimPhotoDate;
+    
+    // 사진 타입(폴더)
+    @Enumerated(EnumType.STRING)
+    private PhotoType photoType;
+    
+    
+    
+    
 
 }
