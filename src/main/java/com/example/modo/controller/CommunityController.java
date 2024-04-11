@@ -29,6 +29,9 @@ public class CommunityController {
 		return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
 	}
 	
+
+	
+	
 	@GetMapping("/comm_getList")
 	public ResponseEntity<?> getCommList() {
 		

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.modo.domain.Moim;
 
 @Repository
-public interface MoimRepository extends JpaRepository<Moim, String> {
+public interface MoimRepository extends JpaRepository<Moim, Long> {
 
 	Optional<Moim> findByMoimname(String moimname);
 	

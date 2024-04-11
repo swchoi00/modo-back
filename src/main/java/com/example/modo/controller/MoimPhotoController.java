@@ -46,6 +46,7 @@ public class MoimPhotoController {
         Moim moim;
         try {
             moim = objectMapper.readValue(moimInfo, Moim.class); // JSON을 Moim 객체로 변환
+            System.out.println("■■■■■■1■■■■■■");
             System.out.println(moim);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -53,7 +54,9 @@ public class MoimPhotoController {
         }
 
         try {
+        	System.out.println("■■■■■■2■■■■■■");
             moimService.uploadImage(file, moimName);
+            moimService.insertMoim(moim);
             // 여기서 moim 객체에 있는 정보를 사용하여 추가적인 처리 수행
             return ResponseEntity.ok("이미지 업로드가 성공적으로 완료되었습니다.");
         } catch (IOException e) {
