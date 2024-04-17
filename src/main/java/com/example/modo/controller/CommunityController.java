@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.modo.domain.Comm;
 import com.example.modo.service.CommunityService;
+import com.example.modo.service.MemberService;
 
 @RestController
 public class CommunityController {
 
 	@Autowired
 	CommunityService communityService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	// 글 작성
 	@PostMapping("/comm_insert")
@@ -36,6 +40,15 @@ public class CommunityController {
 		
 		return new ResponseEntity<>(commList, HttpStatus.OK);
 				
+		
+	}
+	
+	@GetMapping("/comm_getNickname")
+	public ResponseEntity<?> getNickName(@RequestBody String username) {
+		
+		String nickname = memberService.getNickname(username);
+		
+		return new ResponseEntity<>(nickname, HttpStatus.OK);
 		
 	}
 	

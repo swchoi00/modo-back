@@ -48,8 +48,12 @@ public class Comm {
 	
 	private Long views; // 조회수
 	
+	@Column(updatable = false)
+	@CreationTimestamp
+	private Timestamp uploadDate; // 글 작성일
+	
 	@Lob
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1500)
 	private String content; // 글 내용
 	
 //	@JsonManagedReference

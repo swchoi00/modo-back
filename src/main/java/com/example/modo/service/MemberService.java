@@ -239,5 +239,11 @@ public class MemberService {
 		return member;
 
 	}
+	
+	public String getNickname(String username) {
+		
+		return memberRepository.findNickNameByUsername(username);
+	
+	}
 
 }

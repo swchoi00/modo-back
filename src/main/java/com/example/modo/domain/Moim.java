@@ -1,6 +1,9 @@
 package com.example.modo.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,11 +50,12 @@ public class Moim {
 	@Column(length = 100)
 	private String introduction; // 간단설명
 	
-	@Column(length = 100)
+	@Column(length = 1500)
 	private String description; // 설명 : 나중에 추가하는 방식 nullable
 	
-	@Column(length = 100)
-	private String hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
+	@ElementCollection
+	@Column(name ="hashtag", length = 100)
+	private List<Long> hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
 	
 	
 	
