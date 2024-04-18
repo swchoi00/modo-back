@@ -6,13 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.modo.domain.FAQ;
 import com.example.modo.domain.Moim;
 import com.example.modo.domain.MoimPhoto;
+import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimRepository;
 
@@ -25,6 +28,20 @@ public class MoimService {
 	@Autowired
 	MoimPhotoRepository moimPhotoRepository;
 	
+	// get 모임 목록 
+	public List<Moim> getMoimList() {
+		
+		  return moimRepository.findAll();
+	}
+	
+	// 모임일정, 게시글, 모임인원, 갤러리 사진 등
+	public Moim getMoimInfo(long id) {
+		
+		return moimRepository.findById(id).get();
+	}
+	
+	
+	// 모임이름 중복 확인 (추후 상단 코드와 같이 쓸 수 있지 않을까)
 	public Moim getMoim(String moimname) {
 		
 		Moim moim = moimRepository.findByMoimname(moimname).orElseGet(() -> {
@@ -34,9 +51,12 @@ public class MoimService {
 		return moim;
 	}
 	
-	public void insertMoim(Moim moim) {
+	public Long insertMoim(Moim moim) {
 		
-		moimRepository.save(moim);
+		Moim savedMoim = moimRepository.save(moim);
+		
+		return savedMoim.getId();
+		
 	}
 	
 	
@@ -52,9 +72,13 @@ public class MoimService {
      * @return 저장된 파일의 경로
      * @throws IOException 파일 저장 중 발생한 예외
      */
-    public String uploadImage(MultipartFile file, String moimName) throws IOException {
-    	 String fileName = moimName + "1" + getFileExtension(file.getOriginalFilename());
-         String filePath = uploadDir + File.separator + fileName;
+    public String uploadImage(MultipartFile file, String photoType, long moimId) throws IOException {
+    	
+    	 PhotoType convertedPhotoType = PhotoType.valueOf(photoType.toUpperCase());
+    	
+    	 String fileName = photoType + "1" + "_" + System.currentTimeMillis() + getFileExtension(file.getOriginalFilename());
+    	 String moimDir = uploadDir + File.separator + moimId;
+         String filePath = moimDir + File.separator + fileName;
          Path path = Paths.get(filePath);
          Files.createDirectories(path.getParent());
          Files.write(path, file.getBytes());
@@ -62,7 +86,10 @@ public class MoimService {
          // 저장된 파일의 경로와 함께 현재 시간을 저장
          MoimPhoto moimPhoto = new MoimPhoto();
          moimPhoto.setMoimPhotoUrl(filePath);
-         moimPhoto.setMoimPhotoDate(new Date()); // 현재 시간 설정
+         moimPhoto.setMoimid(moimId);
+         moimPhoto.setPhotoType(convertedPhotoType);
+        
+         // moimPhoto.setMoimPhotoDate(new Date()); // 현재 시간 설정
 
          // MoimPhotoRepository를 사용하여 MoimPhoto를 저장
          moimPhotoRepository.save(moimPhoto);

@@ -60,7 +60,7 @@ public class Member {
 	
 	@ElementCollection
 	@Column(name = "likedMoim", length = 1000)
-	private List<String> likedMoim;
+	private List<Long> likedMoim;
 
 	
 	

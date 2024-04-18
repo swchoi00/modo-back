@@ -6,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.modo.domain.Comm;
 import com.example.modo.service.CommunityService;
+import com.example.modo.service.MemberService;
 
 @RestController
 public class CommunityController {
 
 	@Autowired
 	CommunityService communityService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	// 글 작성
 	@PostMapping("/comm_insert")
@@ -29,6 +34,9 @@ public class CommunityController {
 		return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
 	}
 	
+
+	
+	
 	@GetMapping("/comm_getList")
 	public ResponseEntity<?> getCommList() {
 		
@@ -38,6 +46,22 @@ public class CommunityController {
 				
 		
 	}
+	
+	@GetMapping("/comm_getNickname")
+	public ResponseEntity<?> getNickName(@RequestBody String username) {
+		
+		String nickname = memberService.getNickname(username);
+		
+		return new ResponseEntity<>(nickname, HttpStatus.OK);
+		
+	}
+	@GetMapping("/comm/{id}")
+	   public ResponseEntity<?> getComm(@PathVariable long id) {
+	      
+	      Comm comm = communityService.getComm(id);
+	      
+	      return new ResponseEntity<>(comm, HttpStatus.OK);
+	   }
 	
 	
 	

@@ -1,5 +1,6 @@
 package com.example.modo.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,5 +240,22 @@ public class MemberService {
 		return member;
 
 	}
+	
+	public String getNickname(String username) {
+		
+		return memberRepository.findNickNameByUsername(username);
+	
+	}
+	
+	 public Member updateLikedMoims(Member member) {
+		 // 해당 유저의 likedMoim 값을 업데이트
+		 
+            // 데이터베이스에 업데이트된 멤버 정보를 저장합니다.
+            memberRepository.save(member);
 
+            // 업데이트된 모임 리스트를 반환합니다.
+            return member;
+	 }
+	 
+	 
 }
