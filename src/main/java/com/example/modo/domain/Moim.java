@@ -55,7 +55,7 @@ public class Moim {
 	
 	@ElementCollection
 	@Column(name ="hashtag", length = 100)
-	private List<Long> hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
+	private List<String> hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
 	
 	
 	
