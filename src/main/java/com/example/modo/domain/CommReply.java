@@ -24,26 +24,31 @@ import lombok.Data;
 @Entity
 @Table(name = "commReply")
 @SequenceGenerator(
-		name = "COMMREPLY_SEQ_GENERATOR",
-		sequenceName = "COMMREPLY_SEQ",
-		initialValue = 1, allocationSize = 1)
+      name = "COMMREPLY_SEQ_GENERATOR",
+      sequenceName = "COMMREPLY_SEQ",
+      initialValue = 1, allocationSize = 1)
 public class CommReply {
 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMREPLY_SEQ_GENERATOR")
-	private Long rno;
-	
-	@Column(nullable = false)
-	private String content;
-	
-	@ManyToOne
-	@JoinColumn(name = "COMM_ID")
-	private Comm comm;
-	
-	@ManyToOne
-	@JoinColumn(name = "MEMBER_USERNAME")
-	private Member member;
-	
-	
+   @Id
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMREPLY_SEQ_GENERATOR")
+   private Long rno;
+   
+   @Column(nullable = false)
+   private String content;
+   
+   @CreationTimestamp
+   @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+   private Timestamp createDate;
+   
+//   @JsonBackReference
+//   @ManyToOne(fetch = FetchType.EAGER)
+//   @JoinColumn(name = "COMM_ID")
+//   private Comm comm;
+//   
+//   @ManyToOne(fetch = FetchType.EAGER)
+//   @JoinColumn(name = "MEMBER_USERNAME")
+//   private Member member;
+//   
+   
 }

@@ -29,4 +29,9 @@ public class CommunityService {
 		
 	}
 	
+	
+	public Comm getComm(Long id) {
+	      return communityRepository.findById(id).get();
+	   }
+	
 }
