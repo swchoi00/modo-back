@@ -6,11 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.modo.domain.FAQ;
 import com.example.modo.domain.Moim;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.PhotoType;
@@ -26,6 +28,20 @@ public class MoimService {
 	@Autowired
 	MoimPhotoRepository moimPhotoRepository;
 	
+	// get 모임 목록 
+	public List<Moim> getMoimList() {
+		
+		  return moimRepository.findAll();
+	}
+	
+	// 모임일정, 게시글, 모임인원, 갤러리 사진 등
+	public Moim getMoimInfo(long id) {
+		
+		return moimRepository.findById(id).get();
+	}
+	
+	
+	// 모임이름 중복 확인 (추후 상단 코드와 같이 쓸 수 있지 않을까)
 	public Moim getMoim(String moimname) {
 		
 		Moim moim = moimRepository.findByMoimname(moimname).orElseGet(() -> {
