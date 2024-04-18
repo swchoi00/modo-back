@@ -33,7 +33,7 @@ public class MoimService {
 		  return moimRepository.findAll();
 	}
 	
-	// 이건 나중에 모임 이름 중복 확인 코드랑 같이 쓸 수 있을듯?
+	// 모임일정, 게시글, 모임인원, 갤러리 사진 등
 	public Moim getMoimInfo(long id) {
 		
 		return moimRepository.findById(id).get();
