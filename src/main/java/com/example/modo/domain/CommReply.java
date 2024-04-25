@@ -41,14 +41,19 @@ public class CommReply {
    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
    private Timestamp createDate;
    
-//   @JsonBackReference
-//   @ManyToOne(fetch = FetchType.EAGER)
-//   @JoinColumn(name = "COMM_ID")
-//   private Comm comm;
-//   
-//   @ManyToOne(fetch = FetchType.EAGER)
-//   @JoinColumn(name = "MEMBER_USERNAME")
-//   private Member member;
-//   
+   @JsonBackReference
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "COMM_ID")
+   private Comm comm;
+   
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "MEMBER_USERNAME")
+   private Member member;
+   
+//   	@ManyToOne(fetch = FetchType.EAGER)
+//   	@JoinColumn(name = "MEMBER_USERNAME", referencedColumnName = "username")
+//   	private Member member;
+ 
+   
    
 }

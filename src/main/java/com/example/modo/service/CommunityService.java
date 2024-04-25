@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.modo.domain.Comm;
 import com.example.modo.repository.CommunityRepository;
+import com.example.modo.repository.MemberRepository;
 
 @Service
 public class CommunityService {
@@ -14,11 +15,19 @@ public class CommunityService {
 	@Autowired
 	private CommunityRepository communityRepository;
 	
+	@Autowired
+	private MemberRepository memberRepository;
+	
 	// 커뮤니티 게시글 작성
 	public void insertPost(Comm comm) {
 		
 		// 조회수
 		comm.setViews((long)0);
+		
+		String nickname = memberRepository.findNickNameByUsername(comm.getAuthor());
+		
+		comm.setAuthor(nickname);
+		
 		
 		communityRepository.save(comm);
 	}
