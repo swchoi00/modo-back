@@ -7,15 +7,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.modo.domain.FAQ;
+import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.PhotoType;
+import com.example.modo.repository.MemberRepository;
+import com.example.modo.repository.MoimMemberRepository;
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimRepository;
 
@@ -27,6 +32,12 @@ public class MoimService {
 	
 	@Autowired
 	MoimPhotoRepository moimPhotoRepository;
+	
+	@Autowired
+	MoimMemberRepository moimMemberRepository;
+	
+	@Autowired
+	MemberRepository memberRepository;
 	
 	// get 모임 목록 
 	public List<Moim> getMoimList() {
@@ -51,14 +62,45 @@ public class MoimService {
 		return moim;
 	}
 	
+	// 모임 정보 저장 및 모임 정보 업데이트
 	public Long insertMoim(Moim moim) {
-		
 		Moim savedMoim = moimRepository.save(moim);
-		
 		return savedMoim.getId();
 		
 	}
 	
+	// 🔥🔥모임멤버 리스트 가져오기
+	public List<MoimMember> getMemberList(Long id) {
+		return moimMemberRepository.findByMoimId(id);
+	}
+	
+//	// 모임멤버 저장 (모임 생성시)
+//	public void updateMoimMember (Moim moim, Long moimId,String role) {
+//		String leadername = moim.getLeadername();
+//	    // leadername으로 Member 엔티티에서 id값을 가져와야 합니다 (memberRepository 사용)
+//	    Optional<Member> leaderMemberOpt = memberRepository.findByUsername(leadername);
+//
+//	    if (!leaderMemberOpt.isPresent()) {
+//	        // Member가 존재하지 않는 경우, 에러 처리 또는 적절한 로직을 구현합니다.
+//	        throw new RuntimeException("리더의 사용자 정보를 찾을 수 없습니다.");
+//	    }
+//
+//	    Member leaderMember = leaderMemberOpt.get();
+//
+//	    Moim moimInfo = moimRepository.findById(moimId).orElse(null);
+//	    if (moimInfo == null) {
+//	        // Moim이 존재하지 않는 경우, 에러 처리 또는 적절한 로직을 구현합니다.
+//	        throw new RuntimeException("모임 정보를 찾을 수 없습니다.");
+//	    }
+//
+//	    MoimMember moimMember = new MoimMember();
+//	    
+//	    moimMember.setMemberNo(leaderMember.getId()); // 유저 ID 값 설정
+//	    moimMember.setMemberRole(role);
+//	    moimMember.setMoim(moimInfo);
+//
+//	    moimMemberRepository.save(moimMember);
+//	}
 	
 	
 	
