@@ -74,33 +74,18 @@ public class MoimService {
 		return moimMemberRepository.findByMoimId(id);
 	}
 	
-//	// 모임멤버 저장 (모임 생성시)
-//	public void updateMoimMember (Moim moim, Long moimId,String role) {
-//		String leadername = moim.getLeadername();
-//	    // leadername으로 Member 엔티티에서 id값을 가져와야 합니다 (memberRepository 사용)
-//	    Optional<Member> leaderMemberOpt = memberRepository.findByUsername(leadername);
-//
-//	    if (!leaderMemberOpt.isPresent()) {
-//	        // Member가 존재하지 않는 경우, 에러 처리 또는 적절한 로직을 구현합니다.
-//	        throw new RuntimeException("리더의 사용자 정보를 찾을 수 없습니다.");
-//	    }
-//
-//	    Member leaderMember = leaderMemberOpt.get();
-//
-//	    Moim moimInfo = moimRepository.findById(moimId).orElse(null);
-//	    if (moimInfo == null) {
-//	        // Moim이 존재하지 않는 경우, 에러 처리 또는 적절한 로직을 구현합니다.
-//	        throw new RuntimeException("모임 정보를 찾을 수 없습니다.");
-//	    }
-//
-//	    MoimMember moimMember = new MoimMember();
-//	    
-//	    moimMember.setMemberNo(leaderMember.getId()); // 유저 ID 값 설정
-//	    moimMember.setMemberRole(role);
-//	    moimMember.setMoim(moimInfo);
-//
-//	    moimMemberRepository.save(moimMember);
-//	}
+	// 모임멤버 저장 (모임 생성시)
+	public void updateMoimMember (Long userId, Long moimId,String role) {
+		
+	    Moim moim = moimRepository.findById(moimId).get();
+
+	    MoimMember moimMember = new MoimMember();
+	    
+	    moimMember.setMemberNo(userId); // 유저 ID 값 설정
+	    moimMember.setMemberRole(role); // 권한
+	    moimMember.setMoim(moim);// 모임 객체
+	    moimMemberRepository.save(moimMember);
+	}
 	
 	
 	
