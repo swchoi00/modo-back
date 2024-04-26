@@ -34,7 +34,7 @@ public class Moim {
 	private Long id; // 모임번호
 	
 	@Column(length = 100)
-	private String leadername; // 모임장
+	private Long leaderId; // 모임장
 	
 	@Column(length = 100)
 	private String moimname; // 모임이름
