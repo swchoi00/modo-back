@@ -55,10 +55,12 @@ public class CommunityController {
 		return new ResponseEntity<>(nickname, HttpStatus.OK);
 		
 	}
+	
 	@GetMapping("/comm/{id}")
 	   public ResponseEntity<?> getComm(@PathVariable long id) {
 	      
-	      Comm comm = communityService.getComm(id);
+	      Comm comm = communityService.getPost(id);
+	      System.out.println(comm);
 	      
 	      return new ResponseEntity<>(comm, HttpStatus.OK);
 	   }

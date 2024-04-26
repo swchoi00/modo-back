@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimMember;
 import com.example.modo.service.MemberService;
 import com.example.modo.service.MoimService;
 
@@ -23,9 +24,33 @@ public class CreateMoimController {
 	@Autowired
 	MoimService moimService;
 	
-	// ■■1■■ 좋아요 모임 관리를 위해 추가
 	@Autowired
 	MemberService memberService;
+	
+	
+	
+	//🔥🔥 모임멤버 리스트 리턴 (오류 파티...)
+//	@GetMapping("/getMoimMemberList/{id}")
+//	public ResponseEntity<?> getMoimMemberList(@PathVariable Long id) {
+//		System.out.println(id);
+//		List<MoimMember> moimMember = moimService.getMemberList(id);
+//		return new ResponseEntity<>(moimMember, HttpStatus.OK);
+//	}
+	
+	
+	
+	
+	
+	// ■■모임정보 업데이트■■ 
+	@PostMapping("/updateMoimInfo")
+	public ResponseEntity<?> updateMoimInfo(@RequestBody Moim moim){
+		
+		System.out.println(moim);
+		moimService.insertMoim(moim);
+		
+		return new ResponseEntity<> ("수정완료!", HttpStatus.OK);
+	}
+	
 	
 	
 	@PostMapping("/upDateLikedMoim")
