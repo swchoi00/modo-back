@@ -3,6 +3,7 @@ package com.example.modo.domain;
 
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class MoimMember {
     @JoinColumn(name = "moim_id") // Moim 엔티티의 PK를 참조하는 외래 키
     private Moim moim; // Moim 엔티티 참조
 
-    private String memberRole; // 모임멤버 권한
+    private String memberRole; // 모임멤버 권한 [leader, manager, member]
 
     private Long memberNo; // 회원번호 (추후 참조할지 말지 조율)
 
