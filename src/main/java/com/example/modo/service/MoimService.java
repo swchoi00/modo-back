@@ -58,8 +58,11 @@ public class MoimService {
 	public Long insertMoim(Moim moim) {
 		
 		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
+		Long leaderid = memberRepository.findIdByUsername(moim.getLeadername());
+		
 		
 		moim.setLeadername(nickname);
+		moim.setLeaderid(leaderid);
 		
 		Moim savedMoim = moimRepository.save(moim);
 		

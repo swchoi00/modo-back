@@ -24,6 +24,11 @@ public interface MemberRepository extends JpaRepository<Member, String> {
         // 회원이 존재하면 닉네임을 반환, 그렇지 않으면 null 반환
         return memberOptional.map(Member::getNickname).orElse(null);
     }
+    
+    // 사용자 이름(username)을 사용하여 회원의 ID를 반환하는 한 줄 메소드
+    default Long findIdByUsername(String username) {
+        return findByUsername(username).map(Member::getId).orElse(null);
+    }
 
-//	Optional<String> findNickNameByUsername(String username)
+    //	Optional<String> findNickNameByUsername(String username)
 }
