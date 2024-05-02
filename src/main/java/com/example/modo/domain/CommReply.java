@@ -1,8 +1,10 @@
 package com.example.modo.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,16 +45,16 @@ public class CommReply {
    
    @JsonBackReference
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "COMM_ID")
+   @JoinColumn(name = "postno")
    private Comm comm;
    
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "MEMBER_USERNAME")
+   @JoinColumn(name = "member_id")
    private Member member;
    
-//   	@ManyToOne(fetch = FetchType.EAGER)
-//   	@JoinColumn(name = "MEMBER_USERNAME", referencedColumnName = "username")
-//   	private Member member;
+   @ElementCollection
+   @Column(name = "likeReply", length = 1000)
+   private List<Long> likedReply;
  
    
    

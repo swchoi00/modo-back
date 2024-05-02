@@ -2,6 +2,8 @@ package com.example.modo.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,12 @@ public class CommReplyService {
 	@Autowired
 	private MemberRepository memberRepository;
 	
-	public List<CommReply> getCommReplyById(Long rno) {
+	public List<CommReply> getCommReplyById(Long postno) {
 		
-		return commReplyRepository.findByCommPostno(rno);
+		return commReplyRepository.findCommRepliesByPostNo(postno);
 		
 	}
+	
 	
 	public void insertCommReply(Long postno, CommReply commReply) {
 	    // 댓글에 대한 게시글을 가져옵니다.
@@ -53,6 +56,39 @@ public class CommReplyService {
 	    commReplyRepository.save(commReply);
 	}
 	        
+	@Transactional
+	public void deleteCommReply(Long rno) {
+		
+	    System.out.println("댓글 삭제 메서드 호출됨: " + rno);
 	    
+	    commReplyRepository.deleteById(rno);
+	}
 	
+	public void updateCommReply(Long rno, CommReply commReply) {
+		
+		CommReply originalCommReply = commReplyRepository.findById(rno).get();
+		
+		originalCommReply.setContent(commReply.getContent());
+		
+		commReplyRepository.save(originalCommReply);
+		
+	}
+	    
+	public void addLikeToCommReply(Long id, Long userId) {
+        CommReply commReply = commReplyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+
+        commReply.getLikedReply().add(userId);
+        commReplyRepository.save(commReply);
+    }
+
+    public void removeLikeFromCommReply(Long id, Long userId) {
+        CommReply commReply = commReplyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+
+        commReply.getLikedReply().remove(userId);
+        commReplyRepository.save(commReply);
+    }
+	
+
 }

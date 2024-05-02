@@ -43,4 +43,26 @@ public class CommunityService {
 	      return communityRepository.findById(id).get();
 	   }
 	
+	
+	// 게시글 삭제
+	public void deleteComm(Long id) {
+		
+		communityRepository.deleteById(id);
+		
+	}
+	
+	// 게시글 수정
+	public void updateComm(Long id, Comm comm) {
+		
+		Comm originalComm = communityRepository.findById(id).get();
+		
+		originalComm.setPostname(comm.getPostname()); // 글 제목
+		originalComm.setContent(comm.getContent());
+		
+		communityRepository.save(originalComm);
+		
+		
+		
+	}
+	
 }

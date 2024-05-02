@@ -60,7 +60,7 @@ public class Comm {
 	private String content; // 글 내용
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OrderBy("rno desc")
 	private List<CommReply> replies;
 	

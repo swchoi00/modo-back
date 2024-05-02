@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class CommunityController {
 	
 
 	
-	
+	// 글 출력
 	@GetMapping("/comm_getList")
 	public ResponseEntity<?> getCommList() {
 		
@@ -47,6 +48,7 @@ public class CommunityController {
 		
 	}
 	
+	// 닉네임 불러오기
 	@GetMapping("/comm_getNickname")
 	public ResponseEntity<?> getNickName(@RequestBody String username) {
 		
@@ -55,13 +57,34 @@ public class CommunityController {
 		return new ResponseEntity<>(nickname, HttpStatus.OK);
 		
 	}
+	
+	// 게시글 상세보기
 	@GetMapping("/comm/{id}")
-	   public ResponseEntity<?> getComm(@PathVariable long id) {
+	public ResponseEntity<?> getComm(@PathVariable Long id) {
 	      
 	      Comm comm = communityService.getComm(id);
 	      
 	      return new ResponseEntity<>(comm, HttpStatus.OK);
 	   }
+	
+	// 게시글 삭제
+	@DeleteMapping("/comm_delete/{id}")
+	public ResponseEntity<?> deleteComm(@PathVariable Long id) {
+		
+		communityService.deleteComm(id);
+		
+		return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
+		
+	}
+	
+	// 게시글 수정
+	@PostMapping("/comm_update/{id}")
+	public ResponseEntity<?> updateComm(@PathVariable Long id, @RequestBody Comm comm ) {
+		
+		communityService.updateComm(id, comm);
+		
+		return new ResponseEntity<>("게시글 수정 완료", HttpStatus.OK);
+	}
 	
 	
 	

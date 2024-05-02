@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +24,17 @@ public class CommReplyController {
 	@Autowired
 	private CommReplyService commReplyService;
 	
+	// 댓글들 불러오기
 	@GetMapping("/commReply/{id}/list")
 	public ResponseEntity<List<CommReply>> getCommReply(@PathVariable Long id) {
-		
-		System.out.println(id);
-		
+				
 		List<CommReply> commReply = commReplyService.getCommReplyById(id);
 		
 		return new ResponseEntity<>(commReply, HttpStatus.OK);
 		
 	}
 	
+	// 댓글 작성
 	@PostMapping("/commReply/{id}")
 	public ResponseEntity<?> insertCommReply(@PathVariable Long id, @RequestBody CommReply commReply) {
 		
@@ -45,5 +46,49 @@ public class CommReplyController {
 		return new ResponseEntity<>("댓글 작성 완료", HttpStatus.OK);
 		
 	}
+	
+	 // 댓글 삭제
+	 @DeleteMapping("/commReply/{rno}")
+	    public ResponseEntity<?> deleteReply(@PathVariable Long rno) {
+	        try {
+	            commReplyService.deleteCommReply(rno);
+	            return ResponseEntity.ok("댓글 삭제 완료");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 삭제 실패");
+	        }
+	    }
+	 
+	 // 댓글 수정
+	 @PostMapping("/commReply_update/{rno}")
+	 public ResponseEntity<?> updateReply(@PathVariable Long rno, @RequestBody CommReply commReply) {
+		 
+		 commReplyService.updateCommReply(rno, commReply);
+		 
+		 return new ResponseEntity<>("댓글 수정 완료", HttpStatus.OK);
+		 
+	 }
+	 
+	
+	 @PostMapping("/like/{rno}")
+	    public ResponseEntity<?> addLikeToCommReply(@PathVariable Long id, @RequestBody Long userId) {
+	        try {
+	            commReplyService.addLikeToCommReply(id, userId);
+	            return new ResponseEntity<>(HttpStatus.OK);
+	        } catch (Exception e) {
+	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+
+	    @PostMapping("/unlike/{rno}")
+	    public ResponseEntity<?> removeLikeFromCommReply(@PathVariable Long id, @RequestBody Long userId) {
+	        try {
+	            commReplyService.removeLikeFromCommReply(id, userId);
+	            return new ResponseEntity<>(HttpStatus.OK);
+	        } catch (Exception e) {
+	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+	 
 	
 }
