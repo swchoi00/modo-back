@@ -20,10 +20,7 @@ import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
-<<<<<<< HEAD
-=======
 import com.example.modo.repository.MoimMemberRepository;
->>>>>>> develop
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimRepository;
 
@@ -37,14 +34,10 @@ public class MoimService {
 	MoimPhotoRepository moimPhotoRepository;
 	
 	@Autowired
-<<<<<<< HEAD
-	private MemberRepository memberRepository;
-=======
 	MoimMemberRepository moimMemberRepository;
 	
 	@Autowired
 	MemberRepository memberRepository;
->>>>>>> develop
 	
 	// get 모임 목록 
 	public List<Moim> getMoimList() {
@@ -72,12 +65,11 @@ public class MoimService {
 	// 모임 정보 저장 및 모임 정보 업데이트
 	public Long insertMoim(Moim moim) {
 		
-		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
-		Long leaderid = memberRepository.findIdByUsername(moim.getLeadername());
-		
-		
-		moim.setLeadername(nickname);
-		moim.setLeaderid(leaderid);
+//		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
+//		Long leaderid = memberRepository.findIdByUsername(moim.getLeadername());
+				
+//		moim.setLeadername(nickname);
+//		moim.setLeaderid(leaderid);
 		
 		Moim savedMoim = moimRepository.save(moim);
 		return savedMoim.getId();
