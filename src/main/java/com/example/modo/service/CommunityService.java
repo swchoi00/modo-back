@@ -39,8 +39,16 @@ public class CommunityService {
 	}
 	
 	
-	public Comm getComm(Long id) {
-	      return communityRepository.findById(id).get();
+	public Comm getPost(Long id) {
+		
+		Comm getComm = communityRepository.findById(id).get();
+		
+		// 조회수 중가
+		getComm.setViews(getComm.getViews() + 1);
+		
+		communityRepository.save(getComm);
+		
+	      return getComm;
 	   }
 	
 	

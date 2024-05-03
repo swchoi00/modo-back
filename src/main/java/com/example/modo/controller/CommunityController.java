@@ -62,7 +62,8 @@ public class CommunityController {
 	@GetMapping("/comm/{id}")
 	public ResponseEntity<?> getComm(@PathVariable Long id) {
 	      
-	      Comm comm = communityService.getComm(id);
+	      Comm comm = communityService.getPost(id);
+	      System.out.println(comm);
 	      
 	      return new ResponseEntity<>(comm, HttpStatus.OK);
 	   }

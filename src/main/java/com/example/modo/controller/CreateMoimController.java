@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimMember;
 import com.example.modo.service.MemberService;
 import com.example.modo.service.MoimService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,9 +27,33 @@ public class CreateMoimController {
 	@Autowired
 	MoimService moimService;
 	
-	// ■■1■■ 좋아요 모임 관리를 위해 추가
 	@Autowired
 	MemberService memberService;
+	
+	
+	
+	//🔥🔥 모임멤버 리스트 리턴 (오류 파티...)
+//	@GetMapping("/getMoimMemberList/{id}")
+//	public ResponseEntity<?> getMoimMemberList(@PathVariable Long id) {
+//		System.out.println(id);
+//		List<MoimMember> moimMember = moimService.getMemberList(id);
+//		return new ResponseEntity<>(moimMember, HttpStatus.OK);
+//	}
+	
+	
+	
+	
+	
+	// ■■모임정보 업데이트■■ 
+	@PostMapping("/updateMoimInfo")
+	public ResponseEntity<?> updateMoimInfo(@RequestBody Moim moim){
+		
+		System.out.println(moim);
+		moimService.insertMoim(moim);
+		
+		return new ResponseEntity<> ("수정완료!", HttpStatus.OK);
+	}
+	
 	
 	
 	@PostMapping("/upDateLikedMoim")
@@ -84,6 +109,7 @@ public class CreateMoimController {
 //		
 //	}
 	
+	
 	@PostMapping("/createMoim")
     public ResponseEntity<String> addMoimThumbnail(@RequestParam("moimInfo") String moimInfo,	// 모임정보
                                                    @RequestParam("file") MultipartFile file,	// 모임 대표 파일
@@ -94,9 +120,11 @@ public class CreateMoimController {
 	    Moim moim;
 	    try {
 	        moim = objectMapper.readValue(moimInfo, Moim.class); // JSON을 Moim 객체로 변환
+	        Long leaderId = moim.getLeaderId();
 	        Long moimId = moimService.insertMoim(moim); // 모임을 DB에 저장하고 생성된 모임의 ID를 반환
 	        moimService.uploadImage(file, photoType, moimId); // 생성된 모임의 ID를 사용하여 이미지 업로드
-	        return ResponseEntity.ok("모임 생성이 완료되었습니다.");
+	        // moimService.updateMoimMember(leaderId, moimId, "leader");
+	        return ResponseEntity.ok("모임 생성이 완료되었습니다!");
 	    } catch (IOException e) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("모임 정보를 읽어오는 중 오류가 발생했습니다.");

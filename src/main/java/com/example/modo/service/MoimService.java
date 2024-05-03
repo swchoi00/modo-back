@@ -7,16 +7,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.modo.domain.FAQ;
+import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
+<<<<<<< HEAD
+=======
+import com.example.modo.repository.MoimMemberRepository;
+>>>>>>> develop
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimRepository;
 
@@ -30,7 +37,14 @@ public class MoimService {
 	MoimPhotoRepository moimPhotoRepository;
 	
 	@Autowired
+<<<<<<< HEAD
 	private MemberRepository memberRepository;
+=======
+	MoimMemberRepository moimMemberRepository;
+	
+	@Autowired
+	MemberRepository memberRepository;
+>>>>>>> develop
 	
 	// get 모임 목록 
 	public List<Moim> getMoimList() {
@@ -55,6 +69,7 @@ public class MoimService {
 		return moim;
 	}
 	
+	// 모임 정보 저장 및 모임 정보 업데이트
 	public Long insertMoim(Moim moim) {
 		
 		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
@@ -65,11 +80,27 @@ public class MoimService {
 		moim.setLeaderid(leaderid);
 		
 		Moim savedMoim = moimRepository.save(moim);
-		
 		return savedMoim.getId();
 		
 	}
 	
+	// 🔥🔥모임멤버 리스트 가져오기
+	public List<MoimMember> getMemberList(Long id) {
+		return moimMemberRepository.findByMoimId(id);
+	}
+	
+	// 모임멤버 저장 (모임 생성시)
+	public void updateMoimMember (Long userId, Long moimId,String role) {
+		
+	    Moim moim = moimRepository.findById(moimId).get();
+
+	    MoimMember moimMember = new MoimMember();
+	    
+	    moimMember.setMemberNo(userId); // 유저 ID 값 설정
+	    moimMember.setMemberRole(role); // 권한
+	    moimMember.setMoim(moim);// 모임 객체
+	    moimMemberRepository.save(moimMember);
+	}
 	
 	
 	
