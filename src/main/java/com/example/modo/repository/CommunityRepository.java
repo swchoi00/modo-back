@@ -13,4 +13,5 @@ public interface CommunityRepository extends JpaRepository<Comm, Long> {
 
 	List<Comm> findAllByOrderByPostnoDesc();
 	
+	
 }

@@ -1,8 +1,10 @@
 package com.example.modo.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,14 +43,19 @@ public class CommReply {
    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
    private Timestamp createDate;
    
-//   @JsonBackReference
-//   @ManyToOne(fetch = FetchType.EAGER)
-//   @JoinColumn(name = "COMM_ID")
-//   private Comm comm;
-//   
-//   @ManyToOne(fetch = FetchType.EAGER)
-//   @JoinColumn(name = "MEMBER_USERNAME")
-//   private Member member;
-//   
+   @JsonBackReference
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "postno")
+   private Comm comm;
+   
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "member_id")
+   private Member member;
+   
+   @ElementCollection
+   @Column(name = "likeReply", length = 1000)
+   private List<Long> likedReply;
+ 
+   
    
 }

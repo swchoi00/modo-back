@@ -29,6 +29,8 @@ public class ReplyController {
 	@GetMapping("/reply/{id}/list")
 	public ResponseEntity<List<Reply>> getReply(@PathVariable Long id) {
 		
+		System.out.println(id);
+		
 		List<Reply> reply = replyService.getReplyById(id);
 		
 		return new ResponseEntity<>(reply , HttpStatus.OK);

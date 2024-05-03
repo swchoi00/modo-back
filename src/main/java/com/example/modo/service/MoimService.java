@@ -64,6 +64,13 @@ public class MoimService {
 	
 	// 모임 정보 저장 및 모임 정보 업데이트
 	public Long insertMoim(Moim moim) {
+		
+//		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
+//		Long leaderid = memberRepository.findIdByUsername(moim.getLeadername());
+				
+//		moim.setLeadername(nickname);
+//		moim.setLeaderid(leaderid);
+		
 		Moim savedMoim = moimRepository.save(moim);
 		return savedMoim.getId();
 		

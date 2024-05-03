@@ -3,6 +3,7 @@ package com.example.modo.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ import lombok.NoArgsConstructor;
 		name = "COMM_SEQ_GENERATOR",
 		sequenceName = "COMM_SEQ",
 		initialValue = 1, allocationSize = 1)
+@JsonIgnoreProperties({"replies"})
 public class Comm {
 	
 	@Id
@@ -57,10 +60,10 @@ public class Comm {
 	@Column(nullable = false, length = 1500)
 	private String content; // 글 내용
 	
-//	@JsonManagedReference
-//	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER)
-//	@OrderBy("rno desc")
-//	private List<CommReply> replies; // 댓글 참조
+	@JsonManagedReference
+	@OneToMany(mappedBy = "comm", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OrderBy("rno desc")
+	private List<CommReply> replies;
 	
 	
 
