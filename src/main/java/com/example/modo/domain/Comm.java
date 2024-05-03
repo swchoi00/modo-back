@@ -53,6 +53,7 @@ public class Comm {
 	
 	@Column(updatable = false)
 	@CreationTimestamp
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp uploadDate; // 글 작성일
 	
 	@Lob
