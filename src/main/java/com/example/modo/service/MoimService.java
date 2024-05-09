@@ -82,7 +82,7 @@ public class MoimService {
 	}
 	
 	// 모임멤버 저장 (모임 생성시)
-	public void updateMoimMember (Long userId, Long moimId,String role) {
+	public void updateMoimMember (Long userId, Long moimId, String role) {
 		
 	    Moim moim = moimRepository.findById(moimId).get();
 

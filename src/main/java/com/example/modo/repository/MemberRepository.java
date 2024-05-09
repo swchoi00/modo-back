@@ -9,11 +9,13 @@ import org.springframework.stereotype.Repository;
 import com.example.modo.domain.Member;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, String> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 // JpaRepository<Member, Id>가 들어오는게 권장된다 (Member같은 경우엔 Long)
 	
 	Optional<Member> findByUsername(String username);
 
+	Optional<Member> findByNickname(String nickname);
+	
 	Optional<Member> findById(Long id);
 	
 	//  회원의 닉네임을 반환하는 메소드

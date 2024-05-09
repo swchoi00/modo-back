@@ -56,6 +56,13 @@ public class CommReply {
    @Column(name = "likeReply", length = 1000)
    private List<Long> likedReply;
  
-   
+   @Override
+   public String toString() {
+       return "CommReply{" +
+               "rno=" + rno +
+               ", content='" + content + '\'' +
+               ", createDate=" + createDate +
+               '}';
+   }
    
 }
