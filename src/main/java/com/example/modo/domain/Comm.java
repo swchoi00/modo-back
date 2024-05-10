@@ -75,6 +75,7 @@ public class Comm {
                 ", views=" + views +
                 ", uploadDate=" + uploadDate +
                 ", content='" + content + '\'' +
+                ", replies='" + replies +
                 '}';
     }
 	

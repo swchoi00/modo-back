@@ -16,8 +16,12 @@ public interface CommReplyRepository extends JpaRepository<CommReply, Long> {
 	List<CommReply> findByCommPostno(Long postno);
 	
 	// ANSI 조인 구문을 사용하여 댓글 리스트를 가져오는 쿼리
-    @Query("SELECT cr FROM CommReply cr JOIN cr.comm c WHERE c.postno = :postno")
-    List<CommReply> findCommRepliesByPostNo(@Param("postno") Long postno);
+//    @Query("SELECT cr FROM CommReply cr JOIN cr.comm c WHERE c.postno = :postno")
+//    List<CommReply> findCommRepliesByPostNoDesc(@Param("postno") Long postno);
+	
+	@Query("SELECT cr FROM CommReply cr JOIN cr.comm c WHERE c.postno = :postno ORDER BY cr.rno DESC")
+	List<CommReply> findCommRepliesByPostNoDesc(@Param("postno") Long postno);
+
 	
 }
 

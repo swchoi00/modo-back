@@ -134,4 +134,11 @@ public class CreateMoimController {
 	    }
     }
 	
+	@GetMapping("/moimGet/{id}")
+	public ResponseEntity<?> moimGet(@PathVariable Long id) {
+		List<MoimMember> moimMember = moimService.moimGet(id);
+		
+		return new ResponseEntity<>(moimMember, HttpStatus.OK);
+	}
+	
 }
