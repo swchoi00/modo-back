@@ -82,7 +82,7 @@ public class MoimService {
 	}
 	
 	// 모임멤버 저장 (모임 생성시)
-	public void updateMoimMember (Long userId, Long moimId,String role) {
+	public void updateMoimMember (Long userId, Long moimId, String role) {
 		
 	    Moim moim = moimRepository.findById(moimId).get();
 
@@ -155,6 +155,13 @@ public class MoimService {
         } else {
             throw new IOException("Moim photo not found");
         }
+    }
+    
+    public List<MoimMember> moimGet(Long id) {
+    	
+    	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
+    	
+    	return moimMember;
     }
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -56,6 +57,13 @@ public class CommReply {
    @Column(name = "likeReply", length = 1000)
    private List<Long> likedReply;
  
-   
+   @Override
+   public String toString() {
+       return "CommReply{" +
+               "rno=" + rno +
+               ", content='" + content + '\'' +
+               ", createDate=" + createDate +
+               '}';
+   }
    
 }

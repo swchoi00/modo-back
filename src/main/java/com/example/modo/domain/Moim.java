@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -61,9 +63,11 @@ public class Moim {
 	@Column(name ="hashtag", length = 100)
 	private List<String> hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "moim")
     private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "moim")
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
 	
