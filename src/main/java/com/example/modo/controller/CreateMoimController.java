@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.service.MemberService;
 import com.example.modo.service.MoimService;
@@ -133,5 +134,25 @@ public class CreateMoimController {
 	                .body("이미지 업로드 중 오류가 발생했습니다.");
 	    }
     }
+	
+	@PostMapping("/moimCommInsert")
+	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println(moimComm);
+		
+		moimService.moimCommInsert(moimComm);
+		
+		return new ResponseEntity<> ("글쓰기 완료!", HttpStatus.OK);
+		
+	}
+	
+	
+	@GetMapping("/getMoimCommList/{id}")
+	public ResponseEntity<?> getMoimCommList(@PathVariable Long id){
+	    List<MoimComm> moimCommList = moimService.getMoimCommList(id);
+
+	    return new ResponseEntity<>(moimCommList, HttpStatus.OK);
+	}
+
 	
 }

@@ -16,10 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.modo.domain.FAQ;
 import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
+import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
+import com.example.modo.repository.MoimCommRepository;
 import com.example.modo.repository.MoimMemberRepository;
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimRepository;
@@ -38,6 +40,9 @@ public class MoimService {
 	
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	MoimCommRepository moimCommRepository;
 	
 	// get 모임 목록 
 	public List<Moim> getMoimList() {
@@ -156,5 +161,21 @@ public class MoimService {
             throw new IOException("Moim photo not found");
         }
     }
+    
+    public void moimCommInsert(MoimComm moimComm) {
+//    	System.out.println("****************************************");
+//    	System.out.println(moimComm);
+    	Long memberId = moimComm.getAuthorid();
+    	Member member =  memberRepository.findById(memberId).get();
+    	moimComm.setMember(member);
+    	System.out.println(moimComm);
+    	moimCommRepository.save(moimComm);
+    }
 
+    public List<MoimComm> getMoimCommList(Long moimId){
+    	
+    	Moim moim = moimRepository.findById(moimId).get();
+    	
+    	return moimCommRepository.findByMoim(moim);
+    }
 }
