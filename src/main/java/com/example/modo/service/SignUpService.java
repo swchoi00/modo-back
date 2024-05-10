@@ -40,4 +40,13 @@ public class SignUpService {
 		return member;
 		
 	}
+	
+	public Member getMemberByNickName(String nickname) {
+		
+		Member member = memberRepository.findByNickname(nickname).orElseGet(() -> {
+			return new Member();
+		});
+		
+		return member;
+	}
 }

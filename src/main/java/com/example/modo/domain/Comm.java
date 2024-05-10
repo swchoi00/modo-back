@@ -65,6 +65,19 @@ public class Comm {
 	@OrderBy("rno desc")
 	private List<CommReply> replies;
 	
+	@Override
+    public String toString() {
+        return "Comm{" +
+                "postno=" + postno +
+                ", categories='" + categories + '\'' +
+                ", postname='" + postname + '\'' +
+                ", author='" + author + '\'' +
+                ", views=" + views +
+                ", uploadDate=" + uploadDate +
+                ", content='" + content + '\'' +
+                ", replies='" + replies +
+                '}';
+    }
 	
 
 }

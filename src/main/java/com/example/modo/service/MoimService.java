@@ -87,7 +87,7 @@ public class MoimService {
 	}
 	
 	// 모임멤버 저장 (모임 생성시)
-	public void updateMoimMember (Long userId, Long moimId,String role) {
+	public void updateMoimMember (Long userId, Long moimId, String role) {
 		
 	    Moim moim = moimRepository.findById(moimId).get();
 
@@ -170,6 +170,11 @@ public class MoimService {
     	moimComm.setMember(member);
     	System.out.println(moimComm);
     	moimCommRepository.save(moimComm);
+    public List<MoimMember> moimGet(Long id) {
+    	
+    	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
+    	
+    	return moimMember;
     }
 
     public List<MoimComm> getMoimCommList(Long moimId){
