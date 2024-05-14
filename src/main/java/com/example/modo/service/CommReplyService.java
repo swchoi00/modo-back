@@ -28,7 +28,7 @@ public class CommReplyService {
 	
 	public List<CommReply> getCommReplyById(Long postno) {
 		
-		return commReplyRepository.findCommRepliesByPostNo(postno);
+		return commReplyRepository.findCommRepliesByPostNoDesc(postno);
 		
 	}
 	

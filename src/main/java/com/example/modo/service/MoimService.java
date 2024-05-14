@@ -156,5 +156,12 @@ public class MoimService {
             throw new IOException("Moim photo not found");
         }
     }
+    
+    public List<MoimMember> moimGet(Long id) {
+    	
+    	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
+    	
+    	return moimMember;
+    }
 
 }
