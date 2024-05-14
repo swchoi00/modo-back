@@ -5,9 +5,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -35,11 +38,15 @@ public class Moim {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOIM_SEQ_GENERATOR")
 	private Long id; // 모임번호
 	
-	@Column(length = 100)
-	private Long leaderid; // 모임장 아이디
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id")
+	private Member leader;
+
+//	@Column(length = 100)
+//	private Long leaderid; // 모임장 아이디
 	
-	@Column(length = 100)
-	private String leadername; // 모임장 이름
+//	@Column(length = 100)
+//	private String leadername; // 모임장 이름
 	
 	@Column(length = 100)
 	private String moimname; // 모임이름

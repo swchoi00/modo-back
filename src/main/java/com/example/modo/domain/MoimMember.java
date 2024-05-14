@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +46,11 @@ public class MoimMember {
 
     private String memberRole; // 모임멤버 권한 [leader, manager, member]
 
-    private Long memberNo; // 회원번호 (추후 참조할지 말지 조율)
+//    private Long memberNo; // 회원번호 (추후 참조할지 말지 조율)
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(updatable = false)
     @CreationTimestamp

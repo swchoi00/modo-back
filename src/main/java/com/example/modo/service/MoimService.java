@@ -68,18 +68,17 @@ public class MoimService {
 	}
 	
 	// 모임 정보 저장 및 모임 정보 업데이트
-	public Long insertMoim(Moim moim) {
-		
-//		String nickname = memberRepository.findNickNameByUsername(moim.getLeadername());
-//		Long leaderid = memberRepository.findIdByUsername(moim.getLeadername());
-				
-//		moim.setLeadername(nickname);
-//		moim.setLeaderid(leaderid);
+	public Long insertMoim(Moim moim, String menu) {
+		if(menu == "create") { //생성시에만 적용됨 (리더 객체 넣어야해서)
+			Long leaderId = moim.getLeader().getId();
+			Optional<Member> member = memberRepository.findById(leaderId);
+			moim.setLeader(member.get());			
+		}
 		
 		Moim savedMoim = moimRepository.save(moim);
 		return savedMoim.getId();
-		
 	}
+	
 	
 	// 🔥🔥모임멤버 리스트 가져오기
 	public List<MoimMember> getMemberList(Long id) {
@@ -90,10 +89,11 @@ public class MoimService {
 	public void updateMoimMember (Long userId, Long moimId, String role) {
 		
 	    Moim moim = moimRepository.findById(moimId).get();
-
+	    Optional<Member> member = memberRepository.findById(moimId);
+	    
 	    MoimMember moimMember = new MoimMember();
 	    
-	    moimMember.setMemberNo(userId); // 유저 ID 값 설정
+	    moimMember.setMember(member.get()); // 유저 객체
 	    moimMember.setMemberRole(role); // 권한
 	    moimMember.setMoim(moim);// 모임 객체
 	    moimMemberRepository.save(moimMember);
@@ -170,6 +170,9 @@ public class MoimService {
     	moimComm.setMember(member);
     	System.out.println(moimComm);
     	moimCommRepository.save(moimComm);
+    	
+    }
+    
     public List<MoimMember> moimGet(Long id) {
     	
     	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
