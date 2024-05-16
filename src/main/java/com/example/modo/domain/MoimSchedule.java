@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,21 +42,21 @@ public class MoimSchedule {
 	
 	private String scheduleName; // 모임일정이름
 	
-	private Date startDate; // 시작날짜
+	private String scheduleStartDate; // 시작날짜
+		
+	private String scheduleEndDate; // 종료날짜
 	
-	private Date endDate; // 종료날짜
+	private String scheduleStartTime; // 시작시간
 	
-	private String startTime; // 시작시간
+	private String scheduleEndTime; // 종료시간
 	
-	private String endTime; // 종료시간
-	
-	private String address; // 주소
+	private String scheduleAddress; // 주소
 	
 	private String detailAddress; // 상세주소
 	
-	private int cost; // 비용
+	private int scheduleCost; // 비용
 	
-	private int memberCount; // 모임인원
+	private int scheduleMaxMember; // 모임인원
 	
 	private String moimSchedulePhotoUrl; // 모임일정사진
 	

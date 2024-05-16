@@ -170,6 +170,8 @@ public class MoimService {
     	moimComm.setMember(member);
     	System.out.println(moimComm);
     	moimCommRepository.save(moimComm);
+    }
+    	
     public List<MoimMember> moimGet(Long id) {
     	
     	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
