@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 		name = "COMM_SEQ_GENERATOR",
 		sequenceName = "COMM_SEQ",
 		initialValue = 1, allocationSize = 1)
-@JsonIgnoreProperties({"replies"})
+//@JsonIgnoreProperties({"replies"})
 public class Comm {
 	
 	@Id

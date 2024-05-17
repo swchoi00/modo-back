@@ -27,29 +27,29 @@ public class MoimPhotoController {
 	MoimService moimService; // 임시
 	
 	
-	@PostMapping("/addMoimThumbnail")
-    public ResponseEntity<String> addMoimThumbnail(@RequestParam("moimInfo") String moimInfo,	// 모임정보
-                                                   @RequestParam("file") MultipartFile file,	// 모임 대표 파일
-                                                   @RequestParam("photoType") String photoType){ 	// 모임이름 (열거형 ex) 대표, 일정, 갤러리 )
-        
-		System.out.println("dddddddd");
-		ObjectMapper objectMapper = new ObjectMapper();
-	    Moim moim;
-	    try {
-	        moim = objectMapper.readValue(moimInfo, Moim.class); // JSON을 Moim 객체로 변환
-	        Long leaderId = moim.getLeaderid();
-	        Long moimId = moimService.insertMoim(moim); // 모임을 DB에 저장하고 생성된 모임의 ID를 반환
-	        moimService.uploadImage(file, photoType, moimId); // 생성된 모임의 ID를 사용하여 이미지 업로드
-	        // moimService.updateMoimMember(leaderId, moimId, "leader");
-	        return ResponseEntity.ok("모임 생성이 완료되었습니다!");
-	    } catch (IOException e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                .body("모임 정보를 읽어오는 중 오류가 발생했습니다.");
-	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body("이미지 업로드 중 오류가 발생했습니다.");
-	    }
-    }
+//	@PostMapping("/addMoimThumbnail")
+//    public ResponseEntity<String> addMoimThumbnail(@RequestParam("moimInfo") String moimInfo,	// 모임정보
+//                                                   @RequestParam("file") MultipartFile file,	// 모임 대표 파일
+//                                                   @RequestParam("photoType") String photoType){ 	// 모임이름 (열거형 ex) 대표, 일정, 갤러리 )
+//        
+//		System.out.println("dddddddd");
+//		ObjectMapper objectMapper = new ObjectMapper();
+//	    Moim moim;
+//	    try {
+//	        moim = objectMapper.readValue(moimInfo, Moim.class); // JSON을 Moim 객체로 변환
+////	        Long leaderId = moim.getLeaderid();
+//	        Long moimId = moimService.insertMoim(moim); // 모임을 DB에 저장하고 생성된 모임의 ID를 반환
+//	        moimService.uploadImage(file, photoType, moimId); // 생성된 모임의 ID를 사용하여 이미지 업로드
+//	        // moimService.updateMoimMember(leaderId, moimId, "leader");
+//	        return ResponseEntity.ok("모임 생성이 완료되었습니다!");
+//	    } catch (IOException e) {
+//	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//	                .body("모임 정보를 읽어오는 중 오류가 발생했습니다.");
+//	    } catch (Exception e) {
+//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//	                .body("이미지 업로드 중 오류가 발생했습니다.");
+//	    }
+//    }
 	
 
 

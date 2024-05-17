@@ -72,9 +72,9 @@ public class CommReplyController {
 	 
 	
 	 @PostMapping("/like/{rno}")
-	    public ResponseEntity<?> addLikeToCommReply(@PathVariable Long id, @RequestBody Long userId) {
+	    public ResponseEntity<?> addLikeToCommReply(@PathVariable Long rno, @RequestBody Long userId) {
 	        try {
-	            commReplyService.addLikeToCommReply(id, userId);
+	            commReplyService.addLikeToCommReply(rno, userId);
 	            return new ResponseEntity<>(HttpStatus.OK);
 	        } catch (Exception e) {
 	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -82,9 +82,9 @@ public class CommReplyController {
 	    }
 
 	    @PostMapping("/unlike/{rno}")
-	    public ResponseEntity<?> removeLikeFromCommReply(@PathVariable Long id, @RequestBody Long userId) {
+	    public ResponseEntity<?> removeLikeFromCommReply(@PathVariable Long rno, @RequestBody Long userId) {
 	        try {
-	            commReplyService.removeLikeFromCommReply(id, userId);
+	            commReplyService.removeLikeFromCommReply(rno, userId);
 	            return new ResponseEntity<>(HttpStatus.OK);
 	        } catch (Exception e) {
 	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
