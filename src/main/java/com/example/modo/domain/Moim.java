@@ -78,4 +78,7 @@ public class Moim {
 	@OneToMany(mappedBy = "moim")
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
 	
+	
+	@Column(length = 100)
+	private int moimMemberNum; // 모임이름
 }

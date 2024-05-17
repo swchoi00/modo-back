@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,11 +45,21 @@ public class MoimService {
 	@Autowired
 	MoimCommRepository moimCommRepository;
 	
-	// get 모임 목록 
+
+	// get 모임 목록 (모임멤버 몇명인지 리턴해야해서...이렇게 복잡하게 함)
 	public List<Moim> getMoimList() {
-		
-		  return moimRepository.findAll();
+	    List<Moim> moimList = moimRepository.findAll();
+	    List<Moim> newMoimList = new ArrayList<Moim>(); 
+	    
+	    for (Moim moim : moimList) {
+	        Long moimId = moim.getId();
+	        moim.setMoimMemberNum(moimMemberRepository.findByMoimId(moimId).size());
+	        newMoimList.add(moim);
+	    }
+	    return newMoimList;
+	    //return moimRepository.findAll(); 기존코드
 	}
+
 	
 	// 모임일정, 게시글, 모임인원, 갤러리 사진 등
 	public Moim getMoimInfo(long id) {
@@ -80,16 +91,18 @@ public class MoimService {
 	}
 	
 	
+
 	// 🔥🔥모임멤버 리스트 가져오기
-	public List<MoimMember> getMemberList(Long id) {
+    public List<MoimMember> getMoimMemberList(Long id) {
 		return moimMemberRepository.findByMoimId(id);
-	}
+    }
 	
-	// 모임멤버 저장 (모임 생성시)
+	
+	// 모임멤버 저장 (모임 생성 및 모임 가입 시 작동)
 	public void updateMoimMember (Long userId, Long moimId, String role) {
 		
 	    Moim moim = moimRepository.findById(moimId).get();
-	    Optional<Member> member = memberRepository.findById(moimId);
+	    Optional<Member> member = memberRepository.findById(userId);
 	    
 	    MoimMember moimMember = new MoimMember();
 	    
@@ -99,6 +112,11 @@ public class MoimService {
 	    moimMemberRepository.save(moimMember);
 	}
 	
+	// 모임 가입 (멤버 추가_유저 id, 모임 id 받아옴)
+	public List<MoimMember> joinMoim(Long userId, Long id) {
+		updateMoimMember(userId, id, "member"); // 위에 있는 모임 멤버 저장 사용하고
+		return moimMemberRepository.findByMoimId(id); // 오임 id 에 해당하는 모임멤버 리스트 리턴
+	}
 	
 	
 	// 서버 파일이 있는 곳에 moimPhoto 파일명에 저장됨
@@ -173,17 +191,32 @@ public class MoimService {
     	
     }
     
-    public List<MoimMember> moimGet(Long id) {
-    	
-    	List<MoimMember> moimMember = moimMemberRepository.findByMoimId(id);
-    	
-    	return moimMember;
-    }
+
 
     public List<MoimComm> getMoimCommList(Long moimId){
     	
     	Moim moim = moimRepository.findById(moimId).get();
     	
     	return moimCommRepository.findByMoim(moim);
+    }
+    
+    // 모임 탈퇴
+    public void quitMoim(Long deleteMoimMemberId) {
+    	moimMemberRepository.deleteById(deleteMoimMemberId);
+    }
+    
+    
+    //모임 멤버 role 설정 (매니저 지정/해제)
+    public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
+    	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
+    	String memberRole = updateMoimMember.getMemberRole();
+    	if("member".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("manager");
+    	}else if("manager".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("member");
+    	}
+    	moimMemberRepository.save(updateMoimMember);
+    	
+    	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
     }
 }

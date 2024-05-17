@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,15 +35,14 @@ public class CreateMoimController {
 	
 	
 	
-	//🔥🔥 모임멤버 리스트 리턴 (오류 파티...)
-//	@GetMapping("/getMoimMemberList/{id}")
-//	public ResponseEntity<?> getMoimMemberList(@PathVariable Long id) {
-//		System.out.println(id);
-//		List<MoimMember> moimMember = moimService.getMemberList(id);
-//		return new ResponseEntity<>(moimMember, HttpStatus.OK);
-//	}
-	
-	
+	// 모임 가입
+	@PostMapping("/joinMoim/{id}")
+	public ResponseEntity<?> joinMoim (@RequestBody Long userId, @PathVariable Long id){
+		
+		List<MoimMember> moimMember = moimService.joinMoim(userId, id);
+		
+		return new ResponseEntity<> (moimMember , HttpStatus.OK);
+	}
 	
 	
 	
@@ -156,11 +157,23 @@ public class CreateMoimController {
 	}
 
 	
-	@GetMapping("/moimGet/{id}")
-	public ResponseEntity<?> moimGet(@PathVariable Long id) {
-		List<MoimMember> moimMember = moimService.moimGet(id);
+	@GetMapping("/getMoimMemberList/{id}")
+	public ResponseEntity<?> getMoimMemberList(@PathVariable Long id) {
+		List<MoimMember> moimMember = moimService.getMoimMemberList(id);
 		
 		return new ResponseEntity<>(moimMember, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/quitMoim/{deleteMoimMemberId}")
+	public ResponseEntity<?> quitMoim (@PathVariable Long deleteMoimMemberId){
+	    moimService.quitMoim(deleteMoimMemberId);
+	    return new ResponseEntity<> ("모임탈퇴 완료!", HttpStatus.OK);
+	}
+	
+	@PutMapping("/updateMoimMemberRole")
+	public ResponseEntity<?> updateMoimMemberRole (@RequestBody Long moimMemberId){
+		List<MoimMember> updateMoimMember =  moimService.updateMoimMemberRole(moimMemberId);
+		return new ResponseEntity<> (updateMoimMember, HttpStatus.OK);
 	}
 	
 }

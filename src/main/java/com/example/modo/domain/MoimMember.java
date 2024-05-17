@@ -48,7 +48,7 @@ public class MoimMember {
 
 //    private Long memberNo; // 회원번호 (추후 참조할지 말지 조율)
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "member_id")
     private Member member;
 
