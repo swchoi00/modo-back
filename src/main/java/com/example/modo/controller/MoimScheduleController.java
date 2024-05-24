@@ -39,4 +39,11 @@ public class MoimScheduleController {
 		return new ResponseEntity<>(moimSchedule, HttpStatus.OK);
 	}
 	
+	@GetMapping("/getMoimScheduleDetail/{no}")
+	public ResponseEntity<?> getMoimScheduleDetail(@PathVariable Long no) {
+		
+		MoimSchedule moimScheduleInfo = moimScheduleService.getMoimScheduleDetail(no);
+		
+		return new ResponseEntity<>(moimScheduleInfo, HttpStatus.OK);
+	}
 }
