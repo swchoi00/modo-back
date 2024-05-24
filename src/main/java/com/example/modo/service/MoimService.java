@@ -6,13 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.modo.domain.FAQ;
 import com.example.modo.domain.Member;
@@ -90,6 +93,13 @@ public class MoimService {
 		return savedMoim.getId();
 	}
 	
+	// 모임 삭제
+	public void deleteMoim(Long id) {
+		
+		moimRepository.deleteById(id);
+		
+	}
+	
 	
 
 	// 🔥🔥모임멤버 리스트 가져오기
@@ -114,6 +124,14 @@ public class MoimService {
 	
 	// 모임 가입 (멤버 추가_유저 id, 모임 id 받아옴)
 	public List<MoimMember> joinMoim(Long userId, Long id) {
+		
+		Moim moim = moimRepository.findById(id)
+			    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Moim not found with id " + id));
+		
+		if(moim.getBlockedMember().contains(userId)) {
+			return Collections.emptyList(); // 강퇴당한 멤버면 빈 리스트 반환
+		}
+		
 		updateMoimMember(userId, id, "member"); // 위에 있는 모임 멤버 저장 사용하고
 		return moimMemberRepository.findByMoimId(id); // 오임 id 에 해당하는 모임멤버 리스트 리턴
 	}

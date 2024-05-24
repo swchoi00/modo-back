@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -54,9 +56,13 @@ public class MoimSchedule {
 	
 	private String detailAddress; // 상세주소
 	
-	private int scheduleCost; // 비용
+	private String scheduleCost; // 비용
 	
 	private int scheduleMaxMember; // 모임인원
+	
+	@ElementCollection
+	@Column(name = "joinedMember")
+	private List<Member> joinedMember;
 	
 	private String moimSchedulePhotoUrl; // 모임일정사진
 	

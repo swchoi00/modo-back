@@ -2,6 +2,7 @@ package com.example.modo.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -12,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,14 +73,22 @@ public class Moim {
 	@Column(name ="hashtag", length = 100)
 	private List<String> hashtag; // 해시태그 : 나중에 추가하는 방식 nullable
 	
+	@ElementCollection
+	@Column(name = "blockedMember", length = 100)
+	private List<Long> blockedMember;
+	
 	@JsonIgnore
-	@OneToMany(mappedBy = "moim")
+	@OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "moim")
+	@OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OrderBy("rno desc")
+	private List<MoimReply> replies;
 	
 	@Column(length = 100)
 	private int moimMemberNum; // 모임이름

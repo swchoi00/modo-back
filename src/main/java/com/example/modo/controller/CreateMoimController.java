@@ -41,7 +41,12 @@ public class CreateMoimController {
 		
 		List<MoimMember> moimMember = moimService.joinMoim(userId, id);
 		
-		return new ResponseEntity<> (moimMember , HttpStatus.OK);
+		if(moimMember.isEmpty()) {
+			return new ResponseEntity<>("강퇴당한 멤버는 재가입 할 수 없습니다.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<> (moimMember , HttpStatus.OK);			
+		}
+		
 	}
 	
 	
@@ -136,6 +141,15 @@ public class CreateMoimController {
 	                .body("이미지 업로드 중 오류가 발생했습니다.");
 	    }
     }
+	
+	@DeleteMapping("/deleteMoim/{id}")
+	public ResponseEntity<?> deleteMoim(@PathVariable Long id) {
+		
+		moimService.deleteMoim(id);
+		
+		return new ResponseEntity<>("모임 삭제가 완료되었습니다", HttpStatus.OK);
+		
+	}
 	
 	@PostMapping("/moimCommInsert")
 	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
