@@ -34,7 +34,13 @@ public class MoimScheduleService {
 	// 모임 아이디로 불러오기
 	public List<MoimSchedule> getMoimSchedules(Long id) {
 		
-		return moimScheduleRepository.findMoimScheduleByMoim_IdOrderByScheduleNoDesc(id);
+//		return moimScheduleRepository.findMoimScheduleByMoim_IdOrderByScheduleNoDesc(id);
+		 return moimScheduleRepository.findMoimSchedulesByMoimId(id);
+	}
+	
+	// 모임 스케쥴 상세 정보 (스케쥴 1개 정보)
+	public MoimSchedule getMoimScheduleDetail(Long no) {
+		return moimScheduleRepository.findById(no).get();
 	}
 	
 }

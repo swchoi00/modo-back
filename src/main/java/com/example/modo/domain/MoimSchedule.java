@@ -54,7 +54,7 @@ public class MoimSchedule {
 	
 	private String detailAddress; // 상세주소
 	
-	private int scheduleCost; // 비용
+	private String scheduleCost; // 비용
 	
 	private int scheduleMaxMember; // 모임인원
 	
