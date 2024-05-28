@@ -4,14 +4,18 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -54,15 +58,19 @@ public class MoimSchedule {
 	
 	private String scheduleAddress; // 주소
 	
-	private String detailAddress; // 상세주소
-	
 	private String scheduleCost; // 비용
 	
 	private int scheduleMaxMember; // 모임인원
 	
+	private String scheduleDescription; // 모임설명
+	
 	@ElementCollection
 	@Column(name = "joinedMember")
 	private List<Member> joinedMember;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "moim_member_id")
+	private MoimMember members; // MoimMember 참조
 	
 	private String moimSchedulePhotoUrl; // 모임일정사진
 	
