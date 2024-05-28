@@ -48,9 +48,10 @@ public class MoimSchedule {
 	
 	private String scheduleName; // 모임일정이름
 	
-	private String scheduleStartDate; // 시작날짜
+//	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date  scheduleStartDate; // 시작날짜
 		
-	private String scheduleEndDate; // 종료날짜
+	private Date scheduleEndDate; // 종료날짜
 	
 	private String scheduleStartTime; // 시작시간
 	

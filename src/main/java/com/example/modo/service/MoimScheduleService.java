@@ -25,19 +25,29 @@ public class MoimScheduleService {
 	private MoimMemberRepository moimMemberRepository;
 	
 	public void insertMoimSchedule(Long id, MoimSchedule moimSchedule) {
-		
-		System.out.println(moimSchedule);
-		
-		Long memberId = 1L;
-		
+		// 만약에 유저 ID가 아닌 모임 Id로 처리한다면?
+
 		Moim moim = moimRepository.findById(id).get();
-		
-		MoimMember moimMember = moimMemberRepository.findById(memberId).get();
-		
+
+		MoimMember moimMember = moimMemberRepository.findByLeader(moim.getId());
+
 		moimSchedule.setMoim(moim);
 		moimSchedule.setMembers(moimMember);
-		
+
 		moimScheduleRepository.save(moimSchedule);
+		
+//System.out.println(moimSchedule);
+//		
+//		Long memberId = 1L;
+//		
+//		Moim moim = moimRepository.findById(id).get();
+//		
+//		MoimMember moimMember = moimMemberRepository.findById(memberId).get();
+//		
+//		moimSchedule.setMoim(moim);
+//		moimSchedule.setMembers(moimMember);
+//		
+//		moimScheduleRepository.save(moimSchedule);
 		
 	}
 	
