@@ -15,40 +15,36 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "moimReply")
+@Table(name = "moimScheduleReply")
 @SequenceGenerator(
-		name = "MOIMREPLY_SEQ_GENERATOR",
-		sequenceName = "MOIMREPLY_SEQ",
+		name = "SCHEDULEREPLY_SEQ_GENERATOR",
+		sequenceName = "SCHEDULEREPLY_SEQ",
 		initialValue = 1, allocationSize = 1)
-public class MoimReply {
-	
+public class MoimScheduleReply {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOIMREPLY_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCHEDULEREPLY_SEQ_GENERATOR")
 	private Long rno;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "moim_member_id")
+	private MoimMember moimMember;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "moim_schedule_id")
+	private MoimSchedule moimSchedule;
 	
 	@Column(nullable = false)
 	private String content;
 	
 	@CreationTimestamp
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private Timestamp createDate;
+	private Timestamp CreateDate;
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "moim_id")
-	private Moim moim;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "moim_member_id")
-	private MoimMember moimMember;
-	
-	
-
 }
