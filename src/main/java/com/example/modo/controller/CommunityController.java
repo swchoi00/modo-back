@@ -17,6 +17,11 @@ import com.example.modo.domain.Comm;
 import com.example.modo.service.CommunityService;
 import com.example.modo.service.MemberService;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
 @RestController
 public class CommunityController {
 
@@ -25,12 +30,25 @@ public class CommunityController {
 	
 	@Autowired
 	MemberService memberService;
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadImage(@RequestPart("img") MultipartFile file) {
+        try {
+            String imageUrl = communityService.saveImage(file);
+            return ResponseEntity.ok(imageUrl);
+        } catch (IOException e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(500).body("Image upload failed");
+        }
+    }
 	
 	// 글 작성
 	@PostMapping("/comm_insert")
 	public ResponseEntity<?> insertPost(@RequestBody Comm comm) {
 		
 		communityService.insertPost(comm);
+//		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+		System.out.println("comm : " + comm.getContent());
 		
 		// 작성완료시 문구 조율
 		return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);

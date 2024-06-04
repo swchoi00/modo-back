@@ -163,13 +163,23 @@ public class CreateMoimController {
 	}
 	
 	
+	//모임 게시글 리스트 가져오기
 	@GetMapping("/getMoimCommList/{id}")
 	public ResponseEntity<?> getMoimCommList(@PathVariable Long id){
 	    List<MoimComm> moimCommList = moimService.getMoimCommList(id);
 
 	    return new ResponseEntity<>(moimCommList, HttpStatus.OK);
 	}
+	
+	//모임 게시글 가져오기
+	@GetMapping("/getMoimCommDetail/{id}")
+	public ResponseEntity<?> getMoimCommDetail(@PathVariable Long id){
+	    MoimComm moimComm = moimService.getMoimComm(id);
 
+	    return new ResponseEntity<>(moimComm, HttpStatus.OK);
+	}
+	
+	
 	
 	@GetMapping("/getMoimMemberList/{id}")
 	public ResponseEntity<?> getMoimMemberList(@PathVariable Long id) {
