@@ -50,9 +50,6 @@ public class MoimMember {
     @JoinColumn(name = "moim_id") // Moim 엔티티의 PK를 참조하는 외래 키
     private Moim moim; // Moim 엔티티 참조
     
-    @JsonIgnore
-    @OneToMany(mappedBy = "members", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MoimSchedule> moimSchedule; // MoimSchedule 참조
     
     private String memberRole; // 모임멤버 권한 [leader, manager, member]
 
@@ -66,4 +63,7 @@ public class MoimMember {
     @CreationTimestamp
     private Timestamp memberJoinDate; // 모임 가입날짜
 	
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "members", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<MoimSchedule> moimSchedule; // MoimSchedule 참조
 }

@@ -65,13 +65,20 @@ public class MoimSchedule {
 	
 	private String scheduleDescription; // 모임설명
 	
-	@ElementCollection
-	@Column(name = "joinedMember")
-	private List<Member> joinedMember;
+//	@ElementCollection
+//	@Column(name = "joinedMember")
+//	private List<MoimMember> joinedMember;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "moim_member_id")
-	private MoimMember members; // MoimMember 참조
+	//이전 코드가 모임일정이 최초 1개 이후로 생성할 때 마다 오류 떠서 수정함
+	@ElementCollection
+	@JoinColumn(name = "joinedMember")
+	private List<MoimMember> joinedMember;
+	
+	
+	
+//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+//	@JoinColumn(name = "moim_member_id")
+//	private MoimMember members; // MoimMember 참조
 	
 	private String moimSchedulePhotoUrl; // 모임일정사진
 	

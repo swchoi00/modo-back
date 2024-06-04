@@ -27,8 +27,11 @@ public class MoimScheduleController {
 		
 		moimScheduleService.insertMoimSchedule(id, moimSchedule);
 		
-		return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);
-		
+		if(moimSchedule.getScheduleNo().equals(null)) {
+			return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);			
+		}else {
+			return new ResponseEntity<>("모임일정 수정 완료", HttpStatus.OK);
+		}
 	}
 	
 	@GetMapping("/getMoimSchedule/{id}/list")
@@ -45,5 +48,20 @@ public class MoimScheduleController {
 		MoimSchedule moimScheduleInfo = moimScheduleService.getMoimScheduleDetail(no);
 		
 		return new ResponseEntity<>(moimScheduleInfo, HttpStatus.OK);
+	}
+	
+	@PostMapping("/moimScheduleJoin/{id}")
+	public ResponseEntity<?> moimScheduleJoin(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
+		
+		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule);
+		
+		if(result == 1) {
+			return new ResponseEntity<>("모임일정 참여 완료", HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>("모임일정 취소 완료", HttpStatus.OK);
+		}
+		
+		
+		
 	}
 }

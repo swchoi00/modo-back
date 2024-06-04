@@ -210,13 +210,27 @@ public class MoimService {
     }
     
 
-
+    // 모임 게시글 리스트
     public List<MoimComm> getMoimCommList(Long moimId){
     	
     	Moim moim = moimRepository.findById(moimId).get();
     	
     	return moimCommRepository.findByMoim(moim);
     }
+    
+    // 모임 게시글 
+	public MoimComm getMoimComm (Long moimCommId){
+		MoimComm moimComm = moimCommRepository.findById(moimCommId).orElse(null);
+//        if (moimComm != null) {
+//            // Hibernate의 Lazy Loading 문제 해결을 위해 replies 필드 초기화
+//            moimComm.
+//        }
+        return moimComm;
+//    	return moimCommRepository.findById(moimCommId).get();
+    }
+    
+    
+    
     
     // 모임 탈퇴
     public void quitMoim(Long deleteMoimMemberId) {
