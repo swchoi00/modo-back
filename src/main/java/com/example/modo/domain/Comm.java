@@ -1,6 +1,7 @@
 package com.example.modo.domain;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -55,6 +56,8 @@ public class Comm {
 	@CreationTimestamp
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp uploadDate; // 글 작성일
+	
+	private LocalDateTime createdAt;
 	
 	@Lob
 	@Column(nullable = false, length = 1500)

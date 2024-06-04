@@ -9,6 +9,13 @@ import com.example.modo.domain.Comm;
 import com.example.modo.repository.CommunityRepository;
 import com.example.modo.repository.MemberRepository;
 
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 @Service
 public class CommunityService {
 
@@ -17,6 +24,20 @@ public class CommunityService {
 	
 	@Autowired
 	private MemberRepository memberRepository;
+	
+	private final String uploadDir = "uploads/";
+
+    public String saveImage(MultipartFile file) throws IOException {
+    	File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs(); // uploads 디렉터리 생성
+        }
+
+        String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
+        File targetFile = new File(uploadDir + fileName);
+        file.transferTo(targetFile);
+        return "/uploads/" + fileName;
+    }
 	
 	// 커뮤니티 게시글 작성
 	public void insertPost(Comm comm) {
