@@ -47,6 +47,8 @@ public class CommunityController {
 	public ResponseEntity<?> insertPost(@RequestBody Comm comm) {
 		
 		communityService.insertPost(comm);
+//		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+		System.out.println("comm : " + comm.getContent());
 		
 		// 작성완료시 문구 조율
 		return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
