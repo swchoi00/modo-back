@@ -86,11 +86,31 @@ public class MoimService {
 		if(menu == "create") { //생성시에만 적용됨 (리더 객체 넣어야해서)
 			Long leaderId = moim.getLeader().getId();
 			Optional<Member> member = memberRepository.findById(leaderId);
-			moim.setLeader(member.get());			
+			moim.setLeader(member.get());	
+			moimRepository.save(moim);
+			
+			return moim.getId();
+			
+		} else {
+			
+		
+//		Moim savedMoim = moimRepository.save(moim);
+		
+		Moim savedMoim = moimRepository.findById(moim.getId()).get();
+		
+		savedMoim.setIntroduction(moim.getIntroduction());
+		savedMoim.setTown(moim.getTown());
+		savedMoim.setCity(moim.getCity());
+		savedMoim.setHashtag(moim.getHashtag());
+		
+		moimRepository.save(savedMoim);
+		return savedMoim.getId();
+		
 		}
 		
-		Moim savedMoim = moimRepository.save(moim);
-		return savedMoim.getId();
+		
+		
+//		return savedMoim.getId();
 	}
 	
 	// 모임 삭제

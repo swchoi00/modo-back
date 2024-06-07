@@ -92,4 +92,20 @@ public class Moim {
 	
 	@Column(length = 100)
 	private int moimMemberNum; // 모임이름
+	
+	@Override
+	public String toString() {
+	    StringBuilder membersString = new StringBuilder();
+	    if (members != null) {
+	        for (MoimMember member : members) {
+	            membersString.append(member.getId()).append(", "); // 또는 member의 다른 속성 사용
+	        }
+	    }
+
+	    return "Moim{" +
+	            "id=" + id +
+	            ", moimname='" + moimname + '\'' +
+	            ", members=[" + (membersString.length() > 0 ? membersString.substring(0, membersString.length() - 2) : "") + "]" + // 마지막 쉼표 제거
+	            '}';
+	}
 }
