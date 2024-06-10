@@ -9,10 +9,13 @@ import lombok.Data;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
@@ -31,7 +34,11 @@ public class MoimPhoto {
     private Long moimPhotoNo;
     
     // 모임번호
-    private Long moimid;
+    @JsonBackReference // 추가
+    @OneToOne
+    @JoinColumn(name = "moim_id")
+    private Moim moim; 
+
 
     // 사진 저장 경로
     private String moimPhotoUrl;

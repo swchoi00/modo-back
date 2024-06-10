@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -92,6 +94,14 @@ public class Moim {
 	
 	@Column(length = 100)
 	private int moimMemberNum; // 모임이름
+	
+	// 모임 사진 엔티티 
+	@JsonManagedReference // 추가
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "moimPhoto_id")
+    private MoimPhoto moimPhoto;
+
+	
 	
 	@Override
 	public String toString() {
