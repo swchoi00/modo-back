@@ -107,4 +107,11 @@ public class MoimScheduleService {
 	    return 1; // 성공 시 1 반환
 	}
 	
+	@Transactional
+	public void deleteMoimSchedule(Long id) {
+		
+		moimScheduleRepository.deleteById(id);
+		
+	}
+	
 }
