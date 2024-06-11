@@ -158,13 +158,8 @@ public class CreateMoimController {
 	
 	@PostMapping("/moimCommInsert")
 	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
-		System.out.println(moimComm);
-		
 		moimService.moimCommInsert(moimComm);
-		
 		return new ResponseEntity<> ("글쓰기 완료!", HttpStatus.OK);
-		
 	}
 	
 	
@@ -183,6 +178,14 @@ public class CreateMoimController {
 
 	    return new ResponseEntity<>(moimComm, HttpStatus.OK);
 	}
+	
+	// 모임 게시글 삭제
+	@DeleteMapping("/deleteMoimComm/{id}")
+	public ResponseEntity<?> deleteMoimComm(@PathVariable Long id){
+	    moimService.deleteMoimComm(id);
+
+	    return new ResponseEntity<>("삭제완료!", HttpStatus.OK);
+	}	
 	
 	
 	

@@ -102,6 +102,7 @@ public class MoimService {
 		savedMoim.setTown(moim.getTown());
 		savedMoim.setCity(moim.getCity());
 		savedMoim.setHashtag(moim.getHashtag());
+		savedMoim.setDescription(moim.getDescription());
 		
 		moimRepository.save(savedMoim);
 		return savedMoim.getId();
@@ -238,17 +239,23 @@ public class MoimService {
     	return moimCommRepository.findByMoim(moim);
     }
     
-    // 모임 게시글 
+    // 모임 게시글 가져오기
 	public MoimComm getMoimComm (Long moimCommId){
 		MoimComm moimComm = moimCommRepository.findById(moimCommId).orElse(null);
 //        if (moimComm != null) {
 //            // Hibernate의 Lazy Loading 문제 해결을 위해 replies 필드 초기화
 //            moimComm.
 //        }
+		moimComm.setViews(moimComm.getViews() + 1);
+		moimCommRepository.save(moimComm);
         return moimComm;
 //    	return moimCommRepository.findById(moimCommId).get();
     }
     
+	//모임 게시글 삭제
+	public void deleteMoimComm (Long moimCommId) {
+		moimCommRepository.deleteById(moimCommId);
+	}
     
     
     

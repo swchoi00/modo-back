@@ -33,7 +33,7 @@ public class MoimReplyService {
 	}
 	
 	public void insertMoimReply(Long moimid, MoimReply moimReply) {
-		
+		System.out.println(moimReply);
 		// 모임 찾기
 		Moim moim = moimRepository.findById(moimid).get();
 		
@@ -44,7 +44,7 @@ public class MoimReplyService {
 		
 		MoimMember moimMember = moimMemberRepository.findById(userid).get();
 		
-		// 댓글 작성자 모임멤버 저장
+//		 댓글 작성자 모임멤버 저장
 		moimReply.setMoimMember(moimMember);
 		moimReply.setMoim(moim);
 		moimReplyRepository.save(moimReply);
