@@ -4,6 +4,7 @@ package com.example.modo.domain;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;
@@ -50,6 +51,18 @@ public class MoimMember {
     @JoinColumn(name = "moim_id") // Moim 엔티티의 PK를 참조하는 외래 키
     private Moim moim; // Moim 엔티티 참조
     
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoimMember that = (MoimMember) o;
+        return Objects.equals(id, that.id); // id가 멤버를 식별하는데 사용되는 경우
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // id가 멤버를 식별하는데 사용되는 경우
+    }
     
     private String memberRole; // 모임멤버 권한 [leader, manager, member]
 

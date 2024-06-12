@@ -2,6 +2,9 @@ package com.example.modo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,19 +73,45 @@ public class MoimScheduleService {
 		return moimScheduleRepository.findById(no).get();
 	}
 	
+	@Transactional
 	public int moimScheduleJoin(Long id, MoimSchedule moimSchedule) {
-		// 모임 멤버 번호, 모임스케쥴 객체 받음
-		// A모임 멤버는 객체로 뽑아내고, 모임스케쥴 안에 있는 모임 멤버리스크 안에 이번에 받은 모임 멤버 있느지 확인
-		// 있으면 모임 멤버 리스트에서 제거, 없으면 리스트에 추가 해서 update해야함
-		MoimMember moimMember = moimMemberRepository.findById(id).get();
-		List<MoimMember> moimMemberList = moimSchedule.getJoinedMember();
+	    // 해당 id의 모임 멤버를 찾음
+	    MoimMember moimMember = moimMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("멤버를 찾을 수 없습니다."));
+
+	    // 모임 스케줄에 참여한 멤버 리스트를 가져옴
+	    List<MoimMember> moimMemberList = moimSchedule.getJoinedMember();
+	    System.out.println(moimMemberList);
+
+	    // null 체크
+	    if (moimMemberList == null) {
+	        moimMemberList = new ArrayList<>();
+	    }
+
+	    // 모임 멤버 리스트에 해당 moimMember가 있는지 확인
+	    if (moimMemberList.contains(moimMember)) {
+	        // 리스트에 있으면 제거
+	        moimMemberList.remove(moimMember);
+	        System.out.println(moimMemberList);
+	    } else {
+	        // 리스트에 없으면 추가
+	        moimMemberList.add(moimMember);
+	        System.out.println(moimMemberList);
+	    }
+
+	    // 업데이트된 멤버 리스트를 스케줄에 설정
+	    moimSchedule.setJoinedMember(moimMemberList);
+
+	    // 스케줄 저장
+	    moimScheduleRepository.save(moimSchedule);
+
+	    return 1; // 성공 시 1 반환
+	}
+	
+	@Transactional
+	public void deleteMoimSchedule(Long id) {
 		
-		moimMemberList.add(0, moimMember);
+		moimScheduleRepository.deleteById(id);
 		
-		moimSchedule.setJoinedMember(moimMemberList);
-		moimScheduleRepository.save(moimSchedule);
-		
-		return 1;
 	}
 	
 }

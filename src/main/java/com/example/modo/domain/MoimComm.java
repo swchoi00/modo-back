@@ -55,8 +55,8 @@ public class MoimComm {
 	// 모임 엔티티 참조 추가
 //	@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "member_id") // 외래 키 컬럼 이름
-    private Member member; // 모임 엔티티 참조
+    @JoinColumn(name = "moim_member_id") // 외래 키 컬럼 이름
+    private MoimMember moimMember; // 모임 엔티티 참조
 	
 	private Long views; // 조회수
 	

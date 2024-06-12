@@ -127,11 +127,16 @@ public class CreateMoimController {
 	    Moim moim;
 	    
 	    try {
+	    	
+	    	System.out.println("Received moimInfo: " + moimInfo);
+	        System.out.println("Received file: " + file.getOriginalFilename());
+	        System.out.println("Received photoType: " + photoType);
+	    	
 	        moim = objectMapper.readValue(moimInfo, Moim.class); // JSON을 Moim 객체로 변환
 	        Long leaderId = moim.getLeader().getId(); // 모임 리더 아이디
 	        Long moimId = moimService.insertMoim(moim, "create"); // 모임을 DB에 저장하고 생성된 모임의 ID를 반환
 	        moimService.uploadImage(file, photoType, moimId); // 생성된 모임의 ID를 사용하여 이미지 업로드
-	         moimService.updateMoimMember(leaderId, moimId, "leader");
+	        moimService.updateMoimMember(leaderId, moimId, "leader");
 	        return ResponseEntity.ok("모임 생성이 완료되었습니다!");
 	    } catch (IOException e) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
