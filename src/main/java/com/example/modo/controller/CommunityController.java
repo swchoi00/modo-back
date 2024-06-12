@@ -1,6 +1,7 @@
 package com.example.modo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.modo.domain.Comm;
 import com.example.modo.service.CommunityService;
 import com.example.modo.service.MemberService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
+
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 @RestController
 public class CommunityController {
@@ -30,28 +38,51 @@ public class CommunityController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestPart("img") MultipartFile file) {
-        try {
-            String imageUrl = communityService.saveImage(file);
-            return ResponseEntity.ok(imageUrl);
-        } catch (IOException e) {
-        	e.printStackTrace();
-            return ResponseEntity.status(500).body("Image upload failed");
-        }
-    }
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadImage(@RequestPart("img") MultipartFile file) {
+		
+	    try {
+	    	
+	        String imageUrl = communityService.saveImage(file);
+	        
+	        return ResponseEntity.ok(imageUrl);
+	        
+	    } catch (IOException e) {
+	    	
+	        e.printStackTrace();
+	        
+	        return ResponseEntity.status(500).body("Image upload failed");
+	    }
+	}
+	
 	
 	// 글 작성
 	@PostMapping("/comm_insert")
-	public ResponseEntity<?> insertPost(@RequestBody Comm comm) {
-		
-		communityService.insertPost(comm);
-//		System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-		System.out.println("comm : " + comm.getContent());
-		
-		// 작성완료시 문구 조율
-		return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
+	public ResponseEntity<String> insertPost(@RequestBody Map<String, Object> requestBody) {
+	    try {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        String commInfoJson = (String) requestBody.get("commInfo");
+	        Comm comm = objectMapper.readValue(commInfoJson, Comm.class);
+
+	        // 이미지 URL 목록 받아오기
+//	        List<String> images = (List<String>) requestBody.get("images");
+
+	        communityService.insertComm(comm);
+
+	        // 이미지 파일 삭제
+//	        for (String imageUrl : images) {
+//	            communityService.deleteImage(imageUrl);
+//	        }
+
+//	        return ResponseEntity.ok("게시글 작성 완료!");
+	        return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(500).body("Failed to insert post");
+	    }
 	}
 	
 
@@ -81,21 +112,22 @@ public class CommunityController {
 	@GetMapping("/comm/{id}")
 	public ResponseEntity<?> getComm(@PathVariable Long id) {
 	      
-	      Comm comm = communityService.getPost(id);
+	      Comm comm = communityService.getComm(id);
 	      System.out.println(comm);
 	      
 	      return new ResponseEntity<>(comm, HttpStatus.OK);
 	   }
 	
 	// 게시글 삭제
-	@DeleteMapping("/comm_delete/{id}")
-	public ResponseEntity<?> deleteComm(@PathVariable Long id) {
-		
-		communityService.deleteComm(id);
-		
-		return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
-		
-	}
+	  @DeleteMapping("/comm_delete/{id}")
+	  public ResponseEntity<?> deleteComm(@PathVariable Long id, @RequestBody Map<String, List<String>> request) {
+		  
+	    List<String> images = request.get("images");
+	    
+	    communityService.deleteComm(id, images);
+	    
+	    return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
+	  }
 	
 	// 게시글 수정
 	@PutMapping("/comm_update/{id}")
