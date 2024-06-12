@@ -92,9 +92,6 @@ public class MoimService {
 			return moim.getId();
 			
 		} else {
-			
-		
-//		Moim savedMoim = moimRepository.save(moim);
 		
 		Moim savedMoim = moimRepository.findById(moim.getId()).get();
 		
@@ -104,8 +101,7 @@ public class MoimService {
 		savedMoim.setHashtag(moim.getHashtag());
 		
 		moimRepository.save(savedMoim);
-		return savedMoim.getId();
-		
+		return savedMoim.getId();		
 		}
 		
 		
@@ -171,23 +167,41 @@ public class MoimService {
     	
     	 PhotoType convertedPhotoType = PhotoType.valueOf(photoType.toUpperCase());
     	
+//    	 String fileName = photoType + "1" + "_" + System.currentTimeMillis() + getFileExtension(file.getOriginalFilename());
+//    	 String moimDir = uploadDir + File.separator + moimId;
+//         String filePath = moimDir + File.separator + fileName;
+    	 
+//         Path path = Paths.get(filePath);
+//         Files.createDirectories(path.getParent());
+//         Files.write(path, file.getBytes());
+
     	 String fileName = photoType + "1" + "_" + System.currentTimeMillis() + getFileExtension(file.getOriginalFilename());
-    	 String moimDir = uploadDir + File.separator + moimId;
-         String filePath = moimDir + File.separator + fileName;
-         Path path = Paths.get(filePath);
-         Files.createDirectories(path.getParent());
-         Files.write(path, file.getBytes());
+    	    String moimDir = "moimPhoto/" + moimId;
+
+    	    // 백엔드 서버의 uploads 폴더에 저장하도록 경로 수정
+    	    String filePath = "uploads/" + moimDir + "/" + fileName; // 경로 수정
+
+    	    Path path = Paths.get(filePath);
+    	    Files.createDirectories(path.getParent());
+    	    Files.write(path, file.getBytes());
+    	    
+
+    	 
+
+         Moim moim = moimRepository.findById(moimId).get();
 
          // 저장된 파일의 경로와 함께 현재 시간을 저장
          MoimPhoto moimPhoto = new MoimPhoto();
          moimPhoto.setMoimPhotoUrl(filePath);
-         moimPhoto.setMoimid(moimId);
+         moimPhoto.setMoim(moim);
          moimPhoto.setPhotoType(convertedPhotoType);
-        
-         // moimPhoto.setMoimPhotoDate(new Date()); // 현재 시간 설정
 
          // MoimPhotoRepository를 사용하여 MoimPhoto를 저장
          moimPhotoRepository.save(moimPhoto);
+         
+         // 모임 엔티티에 모임 대표사진 번호 추가
+//         moim.setMoimPhoto(moimPhoto);
+         moimRepository.save(moim);
 
          return filePath; // 저장된 파일의 경로 반환
     }
