@@ -222,8 +222,8 @@ public class MoimService {
 //    	System.out.println("****************************************");
 //    	System.out.println(moimComm);
     	Long memberId = moimComm.getAuthorid();
-    	Member member =  memberRepository.findById(memberId).get();
-    	moimComm.setMember(member);
+    	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
+    	moimComm.setMoimMember(moimMember);
     	System.out.println(moimComm);
     	moimCommRepository.save(moimComm);
     	
