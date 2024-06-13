@@ -158,9 +158,7 @@ public class CreateMoimController {
 	
 	@PostMapping("/moimCommInsert")
 	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
-		System.out.println(moimComm);
-		
+	
 		moimService.moimCommInsert(moimComm);
 		
 		return new ResponseEntity<> ("글쓰기 완료!", HttpStatus.OK);

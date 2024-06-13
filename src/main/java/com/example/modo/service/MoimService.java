@@ -232,9 +232,8 @@ public class MoimService {
         }
     }
     
+    // 모임 게시글 쓰기
     public void moimCommInsert(MoimComm moimComm) {
-//    	System.out.println("****************************************");
-//    	System.out.println(moimComm);
     	Long memberId = moimComm.getAuthorid();
     	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
     	moimComm.setMoimMember(moimMember);
@@ -255,10 +254,9 @@ public class MoimService {
     // 모임 게시글 
 	public MoimComm getMoimComm (Long moimCommId){
 		MoimComm moimComm = moimCommRepository.findById(moimCommId).orElse(null);
-//        if (moimComm != null) {
-//            // Hibernate의 Lazy Loading 문제 해결을 위해 replies 필드 초기화
-//            moimComm.
-//        }
+		
+		moimComm.setViews(moimComm.getViews() + 1);
+		moimCommRepository.save(moimComm); 
         return moimComm;
 //    	return moimCommRepository.findById(moimCommId).get();
     }
