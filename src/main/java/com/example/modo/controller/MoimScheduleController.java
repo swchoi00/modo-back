@@ -54,7 +54,8 @@ public class MoimScheduleController {
 	@PostMapping("/moimScheduleJoin/{id}")
 	public ResponseEntity<?> moimScheduleJoin(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
 		
-		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule);
+		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule.getScheduleNo());
+		System.out.println("결과 :" + result);
 		
 		if(result == 1) {
 			return new ResponseEntity<>("모임일정 참여 완료", HttpStatus.OK);

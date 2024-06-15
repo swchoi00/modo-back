@@ -28,37 +28,26 @@ public class MoimScheduleService {
 	@Autowired
 	private MoimMemberRepository moimMemberRepository;
 	
-	public void insertMoimSchedule(Long id, MoimSchedule moimSchedule) {
-		
-		// 만약에 유저 ID가 아닌 모임 Id로 처리한다면?
-		List<MoimMember> moimMemberList = new ArrayList<>();	// 모임멤버 리스트 객체 생성
+	public void insertMoimSchedule(Long moimId, MoimSchedule moimSchedule) {
+	    // 모임 멤버 리스트 객체 생성
+	    List<Long> joinedMemberList = new ArrayList<>();
 
-		Moim moim = moimRepository.findById(id).get();
+	    // 모임 객체 조회
+	    Moim moim = moimRepository.findById(moimId)
+	                               .orElseThrow(() -> new NoSuchElementException("모임을 찾을 수 없습니다."));
 
-		MoimMember moimMember = moimMemberRepository.findByLeader(moim.getId());
-		moimMemberList.add(moimMember); // 리더의 모임멤버 정보 추가
-		
-		moimSchedule.setMoim(moim);
-		moimSchedule.setJoinedMember(moimMemberList); // 참여 멤버 리스트에 추가
-//		moimSchedule.setMembers(moimMember); // ✅이건 정확히 뭔지 모르겠어유 설명 필요✅
+	    // 모임의 리더를 찾아서 joinedMemberList에 추가
+	    MoimMember moimLeader = moimMemberRepository.findByLeader(moimId);
+	    if (moimLeader != null) {
+	        joinedMemberList.add(moimLeader.getId());
+	    }
 
-		moimScheduleRepository.save(moimSchedule);
-		
-		
-		
-//System.out.println(moimSchedule);
-//		
-//		Long memberId = 1L;
-//		
-//		Moim moim = moimRepository.findById(id).get();
-//		
-//		MoimMember moimMember = moimMemberRepository.findById(memberId).get();
-//		
-//		moimSchedule.setMoim(moim);
-//		moimSchedule.setMembers(moimMember);
-//		
-//		moimScheduleRepository.save(moimSchedule);
-		
+	    // 모임 일정에 모임 객체와 joinedMemberList를 설정
+	    moimSchedule.setMoim(moim);
+	    moimSchedule.setJoinedMember(joinedMemberList);
+
+	    // 모임 일정 저장
+	    moimScheduleRepository.save(moimSchedule);
 	}
 	
 	// 모임 아이디로 불러오기
@@ -74,32 +63,32 @@ public class MoimScheduleService {
 	}
 	
 	@Transactional
-	public int moimScheduleJoin(Long id, MoimSchedule moimSchedule) {
+	public int moimScheduleJoin(Long moimMemberId, Long moimScheduleId) {
 	    // 해당 id의 모임 멤버를 찾음
-	    MoimMember moimMember = moimMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("멤버를 찾을 수 없습니다."));
+	    MoimMember moimMember = moimMemberRepository.findById(moimMemberId)
+	                                                 .orElseThrow(() -> new NoSuchElementException("멤버를 찾을 수 없습니다."));
+
+	    // 모임 스케줄을 찾음
+	    MoimSchedule moimSchedule = moimScheduleRepository.findById(moimScheduleId)
+	                                                       .orElseThrow(() -> new NoSuchElementException("모임 일정을 찾을 수 없습니다."));
 
 	    // 모임 스케줄에 참여한 멤버 리스트를 가져옴
-	    List<MoimMember> moimMemberList = moimSchedule.getJoinedMember();
-	    System.out.println(moimMemberList);
-
-	    // null 체크
-	    if (moimMemberList == null) {
-	        moimMemberList = new ArrayList<>();
+	    List<Long> joinedMemberList = moimSchedule.getJoinedMember();
+	    if (joinedMemberList == null) {
+	        joinedMemberList = new ArrayList<>();
 	    }
 
-	    // 모임 멤버 리스트에 해당 moimMember가 있는지 확인
-	    if (moimMemberList.contains(moimMember)) {
+	    // 모임 멤버 리스트에 해당 moimMemberId가 있는지 확인
+	    if (joinedMemberList.contains(moimMemberId)) {
 	        // 리스트에 있으면 제거
-	        moimMemberList.remove(moimMember);
-	        System.out.println(moimMemberList);
+	        joinedMemberList.remove(moimMemberId);
 	    } else {
 	        // 리스트에 없으면 추가
-	        moimMemberList.add(moimMember);
-	        System.out.println(moimMemberList);
+	        joinedMemberList.add(moimMemberId);
 	    }
 
 	    // 업데이트된 멤버 리스트를 스케줄에 설정
-	    moimSchedule.setJoinedMember(moimMemberList);
+	    moimSchedule.setJoinedMember(joinedMemberList);
 
 	    // 스케줄 저장
 	    moimScheduleRepository.save(moimSchedule);
