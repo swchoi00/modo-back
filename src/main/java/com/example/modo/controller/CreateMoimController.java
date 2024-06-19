@@ -203,4 +203,12 @@ public class CreateMoimController {
 		return new ResponseEntity<> (updateMoimMember, HttpStatus.OK);
 	}
 	
+	@PostMapping("/moimNoticeInsert/{id}")
+	public ResponseEntity<?> noticeInsert (@PathVariable Long id, @RequestBody List<Long> list) {
+		
+		moimService.insertNoticeUpdate(id, list);
+		
+		return new ResponseEntity<>("공지 업데이트 완료", HttpStatus.OK);
+	}
+	
 }
