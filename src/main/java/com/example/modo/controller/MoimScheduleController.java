@@ -24,16 +24,19 @@ public class MoimScheduleController {
 	
 	// 일단 모임 id는 URL로 따로 받아오게 설정
 	@PostMapping("/createMoimSchedule/{id}")
-	public ResponseEntity<?> createMoimSchedule(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
-		
-		moimScheduleService.insertMoimSchedule(id, moimSchedule);
-		
-		if(moimSchedule.getScheduleNo().equals(null)) {
-			return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);			
-		}else {
-			return new ResponseEntity<>("모임일정 수정 완료", HttpStatus.OK);
-		}
-	}
+	   public ResponseEntity<?> createMoimSchedule(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
+	      Long scheduleNo =  moimSchedule.getScheduleNo(); // 생성, 수정 여부
+	      
+	      moimScheduleService.insertMoimSchedule(id, moimSchedule);
+	      
+	      
+	      
+	      if(scheduleNo == null) {
+	         return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);         
+	      }else {
+	         return new ResponseEntity<>("모임일정 수정 완료", HttpStatus.OK);
+	      }
+	   }
 	
 	@GetMapping("/getMoimSchedule/{id}/list")
 	public ResponseEntity<List<MoimSchedule>> getMoimSchedules(@PathVariable Long id) {

@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,5 +74,9 @@ public class MoimComm {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moim_id") // 외래 키 컬럼 이름
     private Moim moim; // 모임 엔티티 참조
+    
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean noticeCheck = false;
 	
 }
