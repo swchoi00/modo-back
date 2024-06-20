@@ -2,6 +2,8 @@ package com.example.modo.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,17 @@ import com.example.modo.repository.MoimMemberRepository;
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimReplyRepository;
 import com.example.modo.repository.MoimRepository;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class MoimService {
@@ -240,7 +255,9 @@ public class MoimService {
         }
     }
     
-    // 모임 게시글 쓰기
+
+    
+    // 모임 게시글 작성, 수정
     public void moimCommInsert(MoimComm moimComm) {
     	Long memberId = moimComm.getAuthorid();
     	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
@@ -249,6 +266,30 @@ public class MoimService {
     	moimCommRepository.save(moimComm);
     	
     }
+    
+    // 모임 게시글 삭제
+    public void deleteMoimComm(Long no, List<String> images) {
+    	Logger logger = LoggerFactory.getLogger(this.getClass());
+        moimCommRepository.deleteById(no);
+        
+     // 이미지 파일 삭제
+	    for (String imageUrl : images) {
+	        try {
+	            // URL 디코딩
+	            String decodedImageUrl = URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.name());
+	            String fileName = decodedImageUrl.substring(decodedImageUrl.lastIndexOf('/') + 1);
+	            Path filePath = Paths.get("./uploads/", fileName);
+	            boolean deleted = Files.deleteIfExists(filePath);
+	            if (deleted) {
+	                logger.info("Deleted file: {}", filePath.toString());
+	            } else {
+	                logger.warn("File not found: {}", filePath.toString());
+	            }
+	        } catch (IOException e) {
+	            logger.error("Failed to delete file", e);
+	        }
+	    }
+     }
     
 
     // 모임 게시글 리스트

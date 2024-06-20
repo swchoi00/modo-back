@@ -67,17 +67,8 @@ public class CommunityController {
 	        String commInfoJson = (String) requestBody.get("commInfo");
 	        Comm comm = objectMapper.readValue(commInfoJson, Comm.class);
 
-	        // 이미지 URL 목록 받아오기
-//	        List<String> images = (List<String>) requestBody.get("images");
-
 	        communityService.insertComm(comm);
 
-	        // 이미지 파일 삭제
-//	        for (String imageUrl : images) {
-//	            communityService.deleteImage(imageUrl);
-//	        }
-
-//	        return ResponseEntity.ok("게시글 작성 완료!");
 	        return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
 	    } catch (Exception e) {
 	        e.printStackTrace();

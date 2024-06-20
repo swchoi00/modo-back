@@ -22,8 +22,6 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @Service
 public class CommunityService {
@@ -68,22 +66,6 @@ public class CommunityService {
 		return absoluteUrl;
 	}
 
-//    // 이미지 파일 삭제
-//    public void deleteImage(String imageUrl) {
-//        try {
-//            // 이미지 URL을 URI로 파싱하여 파일 이름 추출
-//            URI uri = new URI(imageUrl);
-//            String fileName = Paths.get(uri.getPath()).getFileName().toString();
-//            
-//            // 파일 경로 생성
-//            Path imagePath = Paths.get(UPLOAD_DIR).resolve(fileName);
-//            
-//            // 이미지 파일 삭제
-//            Files.deleteIfExists(imagePath);
-//        } catch (URISyntaxException | IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 	// 커뮤니티 게시글 작성
 	public void insertComm(Comm comm) {

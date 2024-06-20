@@ -2,6 +2,7 @@ package com.example.modo.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -156,6 +158,8 @@ public class CreateMoimController {
 		
 	}
 	
+	
+	// 모임 게시글 작성 & 수정
 	@PostMapping("/moimCommInsert")
 	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
 	
@@ -165,8 +169,20 @@ public class CreateMoimController {
 		
 	}
 	
+	// 모임 게시글 삭제
+	@DeleteMapping("/deleteMoimComm/{no}")
+	   public ResponseEntity<?> deleteMoimComm(@PathVariable Long no, @RequestBody Map<String, List<String>> request) {
+	      
+		List<String> images = request.get("images");
+	      moimService.deleteMoimComm(no, images);
+		    
+	      
+	      return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
+	      
+	   }
 	
-	//모임 게시글 리스트 가져오기
+	
+	// 모임 게시글 리스트 가져오기
 	@GetMapping("/getMoimCommList/{id}")
 	public ResponseEntity<?> getMoimCommList(@PathVariable Long id){
 	    List<MoimComm> moimCommList = moimService.getMoimCommList(id);
