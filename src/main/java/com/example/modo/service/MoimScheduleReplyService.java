@@ -52,4 +52,10 @@ public class MoimScheduleReplyService {
         return replyList;
     }
 	
+	public void deleteScheduleReply(Long rno) {
+	      
+	      moimScheduleReplyRepository.deleteById(rno);
+	      
+   }
+	
 }

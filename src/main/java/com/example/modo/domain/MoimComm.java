@@ -78,5 +78,9 @@ public class MoimComm {
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean noticeCheck = false;
+    
+    // [임시] 모임 댓글 수
+    @Column(length = 1000)
+    private Integer ReplyCount = 0;
 	
 }

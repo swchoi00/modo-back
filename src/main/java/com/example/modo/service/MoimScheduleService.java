@@ -59,7 +59,21 @@ public class MoimScheduleService {
 	
 	// 모임 스케쥴 상세 정보 (스케쥴 1개 정보)
 	public MoimSchedule getMoimScheduleDetail(Long no) {
-		return moimScheduleRepository.findById(no).get();
+		MoimSchedule moimScheduleInfo = moimScheduleRepository.findById(no).get();
+		return moimScheduleInfo;
+	}
+	
+	//모임 스케쥴 멤버 가져오기
+	public List<MoimMember> getMoimSheduleMemberList(Long no){
+		MoimSchedule moimScheduleInfo = moimScheduleRepository.findById(no).get();
+		List<Long> joinMemberNo = moimScheduleInfo.getJoinedMember();
+		List<MoimMember> joinMemberList = new ArrayList<>();
+		for (Long memberId : joinMemberNo) {
+		    // memberId를 사용하여 MoimMember 객체를 생성 (또는 가져오기)
+		    MoimMember member = moimMemberRepository.findById(memberId).get(); // getMoimMemberById는 예시 메서드입니다.
+		    joinMemberList.add(member);
+		}
+		return joinMemberList;
 	}
 	
 	@Transactional

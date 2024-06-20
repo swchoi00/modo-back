@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimSchedule;
 import com.example.modo.service.MoimScheduleService;
 
@@ -54,11 +55,20 @@ public class MoimScheduleController {
 		return new ResponseEntity<>(moimScheduleInfo, HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("/getMoimSheduleMemberList/{no}")
+	public ResponseEntity<?> getMoimSheduleMemberList(@PathVariable Long no) {
+		
+		List<MoimMember> moimScheduleMember = moimScheduleService.getMoimSheduleMemberList(no);
+		
+		return new ResponseEntity<>(moimScheduleMember, HttpStatus.OK);
+	}
+	
+	
 	@PostMapping("/moimScheduleJoin/{id}")
 	public ResponseEntity<?> moimScheduleJoin(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
 		
 		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule.getScheduleNo());
-		System.out.println("결과 :" + result);
 		
 		if(result == 1) {
 			return new ResponseEntity<>("모임일정 참여 완료", HttpStatus.OK);
