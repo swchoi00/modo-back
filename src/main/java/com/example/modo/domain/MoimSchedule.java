@@ -67,7 +67,7 @@ public class MoimSchedule {
 	
 	@ElementCollection
 	@Column(name = "joinedMember")
-	private List<MoimMember> joinedMember;
+	private List<Long> joinedMember;
 	
 	//이전 코드가 모임일정이 최초 1개 이후로 생성할 때 마다 오류 떠서 수정함
 //	@ElementCollection

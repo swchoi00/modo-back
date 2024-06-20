@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimSchedule;
 import com.example.modo.service.MoimScheduleService;
 
@@ -24,16 +25,19 @@ public class MoimScheduleController {
 	
 	// 일단 모임 id는 URL로 따로 받아오게 설정
 	@PostMapping("/createMoimSchedule/{id}")
-	public ResponseEntity<?> createMoimSchedule(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
-		
-		moimScheduleService.insertMoimSchedule(id, moimSchedule);
-		
-		if(moimSchedule.getScheduleNo().equals(null)) {
-			return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);			
-		}else {
-			return new ResponseEntity<>("모임일정 수정 완료", HttpStatus.OK);
-		}
-	}
+	   public ResponseEntity<?> createMoimSchedule(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
+	      Long scheduleNo =  moimSchedule.getScheduleNo(); // 생성, 수정 여부
+	      
+	      moimScheduleService.insertMoimSchedule(id, moimSchedule);
+	      
+	      
+	      
+	      if(scheduleNo == null) {
+	         return new ResponseEntity<>("모임일정 생성 완료", HttpStatus.OK);         
+	      }else {
+	         return new ResponseEntity<>("모임일정 수정 완료", HttpStatus.OK);
+	      }
+	   }
 	
 	@GetMapping("/getMoimSchedule/{id}/list")
 	public ResponseEntity<List<MoimSchedule>> getMoimSchedules(@PathVariable Long id) {
@@ -51,10 +55,20 @@ public class MoimScheduleController {
 		return new ResponseEntity<>(moimScheduleInfo, HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("/getMoimSheduleMemberList/{no}")
+	public ResponseEntity<?> getMoimSheduleMemberList(@PathVariable Long no) {
+		
+		List<MoimMember> moimScheduleMember = moimScheduleService.getMoimSheduleMemberList(no);
+		
+		return new ResponseEntity<>(moimScheduleMember, HttpStatus.OK);
+	}
+	
+	
 	@PostMapping("/moimScheduleJoin/{id}")
 	public ResponseEntity<?> moimScheduleJoin(@PathVariable Long id, @RequestBody MoimSchedule moimSchedule) {
 		
-		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule);
+		int result = moimScheduleService.moimScheduleJoin(id, moimSchedule.getScheduleNo());
 		
 		if(result == 1) {
 			return new ResponseEntity<>("모임일정 참여 완료", HttpStatus.OK);

@@ -54,8 +54,8 @@ public class CreateMoimController {
 	// ■■모임정보 업데이트■■ 
 	@PostMapping("/updateMoimInfo")
 	public ResponseEntity<?> updateMoimInfo(@RequestBody Moim moim){
-		
-		System.out.println(moim);
+		System.out.println("■■■■■■■■■■■■■■■■■■■■■");
+		System.out.println(moim.getDescription());
 		moimService.insertMoim(moim, "update");
 		
 		return new ResponseEntity<> ("수정완료!", HttpStatus.OK);
@@ -158,9 +158,7 @@ public class CreateMoimController {
 	
 	@PostMapping("/moimCommInsert")
 	public ResponseEntity<?> moimCommInsert(@RequestBody MoimComm moimComm) {
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
-		System.out.println(moimComm);
-		
+	
 		moimService.moimCommInsert(moimComm);
 		
 		return new ResponseEntity<> ("글쓰기 완료!", HttpStatus.OK);
@@ -204,5 +202,12 @@ public class CreateMoimController {
 		List<MoimMember> updateMoimMember =  moimService.updateMoimMemberRole(moimMemberId);
 		return new ResponseEntity<> (updateMoimMember, HttpStatus.OK);
 	}
+	
+	@PostMapping("/moimNoticeInsert/{id}")
+	   public ResponseEntity<?> noticeInsert (@PathVariable Long id, @RequestBody List<Long> list) {
+	      List<MoimComm> moimcommList = moimService.insertNoticeUpdate(id, list);
+	      
+	      return new ResponseEntity<>(moimcommList, HttpStatus.OK);
+   }
 	
 }

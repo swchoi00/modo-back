@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,11 +25,13 @@ import com.example.modo.domain.Moim;
 import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
+import com.example.modo.domain.MoimReply;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
 import com.example.modo.repository.MoimCommRepository;
 import com.example.modo.repository.MoimMemberRepository;
 import com.example.modo.repository.MoimPhotoRepository;
+import com.example.modo.repository.MoimReplyRepository;
 import com.example.modo.repository.MoimRepository;
 
 @Service
@@ -47,6 +51,9 @@ public class MoimService {
 	
 	@Autowired
 	MoimCommRepository moimCommRepository;
+	
+	@Autowired
+	MoimReplyRepository moimReplyRepository;
 	
 
 	// get 모임 목록 (모임멤버 몇명인지 리턴해야해서...이렇게 복잡하게 함)
@@ -94,11 +101,12 @@ public class MoimService {
 		} else {
 		
 		Moim savedMoim = moimRepository.findById(moim.getId()).get();
-		
+		savedMoim.setDescription(moim.getDescription());
 		savedMoim.setIntroduction(moim.getIntroduction());
 		savedMoim.setTown(moim.getTown());
 		savedMoim.setCity(moim.getCity());
 		savedMoim.setHashtag(moim.getHashtag());
+		savedMoim.setId(moim.getId());
 		
 		moimRepository.save(savedMoim);
 		return savedMoim.getId();		
@@ -232,9 +240,8 @@ public class MoimService {
         }
     }
     
+    // 모임 게시글 쓰기
     public void moimCommInsert(MoimComm moimComm) {
-//    	System.out.println("****************************************");
-//    	System.out.println(moimComm);
     	Long memberId = moimComm.getAuthorid();
     	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
     	moimComm.setMoimMember(moimMember);
@@ -248,17 +255,21 @@ public class MoimService {
     public List<MoimComm> getMoimCommList(Long moimId){
     	
     	Moim moim = moimRepository.findById(moimId).get();
-    	
-    	return moimCommRepository.findByMoim(moim);
+    	List<MoimComm> moimCommList = moimCommRepository.findByMoim(moim);
+    	for(MoimComm moimComm : moimCommList) {
+    		List<MoimReply> replies = moimReplyRepository.findMoimRepliesByMoimCommNoDesc(moimComm.getPostno());
+	        Integer replyCount = (replies != null) ? replies.size() : 0;
+    		moimComm.setReplyCount(replyCount);
+    	}
+    	return moimCommList;
     }
     
     // 모임 게시글 
 	public MoimComm getMoimComm (Long moimCommId){
 		MoimComm moimComm = moimCommRepository.findById(moimCommId).orElse(null);
-//        if (moimComm != null) {
-//            // Hibernate의 Lazy Loading 문제 해결을 위해 replies 필드 초기화
-//            moimComm.
-//        }
+		
+		moimComm.setViews(moimComm.getViews() + 1);
+		moimCommRepository.save(moimComm); 
         return moimComm;
 //    	return moimCommRepository.findById(moimCommId).get();
     }
@@ -285,4 +296,22 @@ public class MoimService {
     	
     	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
     }
+    
+    // 모임 게시글 공지 작업
+    @Transactional
+    public List<MoimComm> insertNoticeUpdate(Long id, List<Long> list) {
+       Moim moim = moimRepository.findById(id).get();
+       
+        List<MoimComm> moimCommList = moimCommRepository.findByMoim(moim);
+        moimCommList.forEach(comm -> comm.setNoticeCheck(false));
+        for (Long commId : list) {
+            MoimComm comm = moimCommRepository.findById(commId).orElse(null);
+            if (comm != null) {
+                comm.setNoticeCheck(true);
+            }
+        }
+        moimCommRepository.saveAll(moimCommList);
+        return moimCommList;
+    }
+
 }

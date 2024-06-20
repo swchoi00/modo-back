@@ -27,9 +27,9 @@ public class MoimReplyService {
 	private MoimMemberRepository moimMemberRepository;
 	
 	// 모임에 해당하는 댓글들 불러오는 서비스 코드
-	public List<MoimReply> getMoimReplyById(Long moimid) {
+	public List<MoimReply> getMoimReplyById(Long moimCommId) {
 		
-		return moimReplyRepository.findMoimRepliesByMoimIdDesc(moimid);
+		return moimReplyRepository.findMoimRepliesByMoimCommNoDesc(moimCommId);
 	}
 	
 	public void insertMoimReply(Long moimid, MoimReply moimReply) {
@@ -37,12 +37,7 @@ public class MoimReplyService {
 		// 모임 찾기
 		Moim moim = moimRepository.findById(moimid).get();
 		
-		String username = moimReply.getMoimMember().getMember().getUsername();
-		Long userid = moimReply.getMoimMember().getMember().getId();
-		
-		System.out.println("모임댓글 작성자 : " + username);
-		
-		MoimMember moimMember = moimMemberRepository.findById(userid).get();
+		MoimMember moimMember = moimMemberRepository.findById(moimReply.getMoimMember().getId()).get();
 		
 		// 댓글 작성자 모임멤버 저장
 		moimReply.setMoimMember(moimMember);
