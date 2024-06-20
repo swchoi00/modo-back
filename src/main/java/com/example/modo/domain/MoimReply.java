@@ -37,6 +37,11 @@ public class MoimReply {
     @JoinColumn(name = "moim_member_id")
     private MoimMember moimMember;
 
+    // [임시] 게시글 번호 
+    @Column(length = 1000)
+    private Long moimCommNo;
+    
+    
     @Override
     public String toString() {
         return "MoimReply{" +
@@ -45,4 +50,6 @@ public class MoimReply {
                ", createDate=" + createDate +
                '}';
     }
+    
+
 }

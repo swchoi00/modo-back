@@ -54,16 +54,24 @@ public class InquiryForm {
 	@Column(length = 100)
 	private String writerName;
 	
+	@Column
+	private String category;
+	
+	@Lob
+	@Column
+	private String answer;
+	
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "username")
 //	private Member member;
 	
-	@Column(columnDefinition = "number(1) default 0 not null")
-	private boolean answerChk; // 답변 여부
+	//@Column(columnDefinition = "number(1) default 0 not null")
+	//private boolean answerChk; // 답변 여부
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "inquiryForm", fetch = FetchType.EAGER)
-	@OrderBy("id desc")
-	private List<Reply> replyList;
+	
+	//@JsonManagedReference
+	//@OneToMany(mappedBy = "inquiryForm", fetch = FetchType.EAGER)
+	//@OrderBy("id desc")
+	//private List<Reply> replyList;
 	
 }
