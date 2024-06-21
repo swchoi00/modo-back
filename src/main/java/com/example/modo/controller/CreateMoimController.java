@@ -182,6 +182,14 @@ public class CreateMoimController {
 	    return new ResponseEntity<>(moimComm, HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/deleteMoimComm/{no}")
+	public ResponseEntity<?> deleteMoimComm(@PathVariable Long no) {
+		
+		moimService.deleteMoimComm(no);
+		
+		return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
+		
+	}
 	
 	
 	@GetMapping("/getMoimMemberList/{id}")

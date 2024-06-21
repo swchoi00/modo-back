@@ -263,7 +263,12 @@ public class MoimService {
 //    	return moimCommRepository.findById(moimCommId).get();
     }
     
-    
+    public void deleteMoimComm(Long no) {
+    	
+    	moimCommRepository.deleteById(no);
+    	
+    	
+    }
     
     
     // 모임 탈퇴
@@ -272,6 +277,7 @@ public class MoimService {
     }
     
     
+
     //모임 멤버 role 설정 (매니저 지정/해제)
     public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
     	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
