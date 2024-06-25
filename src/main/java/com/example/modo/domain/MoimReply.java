@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -29,18 +31,18 @@ public class MoimReply {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Timestamp createDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "moim_id")
+    @JsonBackReference
     private Moim moim;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "moim_member_id")
     private MoimMember moimMember;
 
     // [임시] 게시글 번호 
     @Column(length = 1000)
     private Long moimCommNo;
-    
     
     @Override
     public String toString() {
@@ -50,6 +52,4 @@ public class MoimReply {
                ", createDate=" + createDate +
                '}';
     }
-    
-
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,7 @@ import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.MoimReply;
+import com.example.modo.domain.MoimSchedule;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
 import com.example.modo.repository.MoimCommRepository;
@@ -118,6 +120,7 @@ public class MoimService {
 	}
 	
 	// 모임 삭제
+	@Transactional
 	public void deleteMoim(Long id) {
 		
 		moimRepository.deleteById(id);
@@ -244,11 +247,17 @@ public class MoimService {
     public void moimCommInsert(MoimComm moimComm) {
     	Long memberId = moimComm.getAuthorid();
 
-    	Member member =  memberRepository.findById(memberId).get();
-    	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
-    	moimComm.setMoimMember(moimMember);
-    	System.out.println(moimComm);
-    	moimCommRepository.save(moimComm);
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new NoSuchElementException("No Member found with id: " + memberId));
+        
+        MoimMember moimMember = moimMemberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("No MoimMember found with id: " + memberId));
+        
+        moimComm.setAuthorid(memberId);
+        moimComm.setMoimMember(moimMember);
+        
+        System.out.println(moimComm);
+        moimCommRepository.save(moimComm);
     	
     }
     
@@ -276,8 +285,15 @@ public class MoimService {
 //    	return moimCommRepository.findById(moimCommId).get();
     }
     
+    public List<MoimComm> getMyMoimCommList(Long id) {
+    	
+    	List<MoimComm> myMoimCommList = moimCommRepository.findByMemberId(id);
+    	
+    	return myMoimCommList;
+    	
+    }
     
-    
+   
     
     // 모임 탈퇴
     public void quitMoim(Long deleteMoimMemberId) {

@@ -21,5 +21,12 @@ public interface MoimScheduleRepository extends JpaRepository<MoimSchedule, Long
 	    nativeQuery = true)
 	List<MoimSchedule> findMoimSchedulesByMoimId(@Param("id") Long id);
 
-	
+    List<MoimSchedule> findAllBy();
+
+    @Query("SELECT ms FROM MoimSchedule ms JOIN ms.joinedMember jm WHERE jm.id IN :moimMemberIds")
+    List<MoimSchedule> findByJoinedMemberInQuery(@Param("moimMemberIds") List<Long> moimMemberIds);
+
+    List<Long> findDistinctJoinedMemberBy();
+
+    
 }

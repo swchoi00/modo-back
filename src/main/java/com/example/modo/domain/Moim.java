@@ -77,15 +77,24 @@ public class Moim {
     @Column(name = "blockedMember", length = 100)
     private List<Long> blockedMember;
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", cascade = CascadeType.REMOVE, orphanRemoval = true)
+//    @JsonManagedReference
     private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", cascade = CascadeType.REMOVE, orphanRemoval = true)
+//    @JsonManagedReference
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("rno desc")
+//    @JsonManagedReference
     private List<MoimReply> replies;
+    
+    @OneToMany(mappedBy = "moim", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<MoimComm> moimComms; // MoimComm 엔티티와의 일대다 관계
+    
+    @OneToOne(mappedBy = "moim", cascade = CascadeType.REMOVE)
+    private MoimPhoto moimPhoto; // MoimPhoto 엔티티와의 일대일 관계
     
     @Column(length = 100)
     private int moimMemberNum; // 모임 멤버 수
@@ -99,10 +108,16 @@ public class Moim {
             }
         }
 
+        // 마지막 ", " 제거
+        if (membersString.length() > 0) {
+            membersString.setLength(membersString.length() - 2);
+        }
+
         return "Moim{" +
                 "id=" + id +
                 ", moimname='" + moimname + '\'' +
-                ", members=[" + (membersString.length() > 0 ? membersString.substring(0, membersString.length() - 2) : "") + "]" +
+                ", members=[" + membersString.toString() + "]" +
                 '}';
     }
+
 }
