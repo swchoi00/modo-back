@@ -82,6 +82,15 @@ public class MoimMember {
     @CreationTimestamp
     private Timestamp memberJoinDate; // 모임 가입날짜
 	
+    @Override
+    public String toString() {
+        return "MoimMember{" +
+                "id=" + id +
+                ", memberRole='" + memberRole + '\'' +
+                ", memberJoinDate=" + memberJoinDate +
+                '}';
+    }
+    
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "members", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<MoimSchedule> moimSchedule; // MoimSchedule 참조

@@ -293,6 +293,11 @@ public class MoimService {
     	
     }
     
+    public List<Long> getUserIdMoimMemberList(Long userId) {
+        return moimMemberRepository.findByMemberIdList(userId);
+     }
+
+    
    
     
     // 모임 탈퇴

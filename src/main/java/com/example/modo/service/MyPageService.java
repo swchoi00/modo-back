@@ -18,22 +18,21 @@ public class MyPageService {
 	private PasswordEncoder passwordEncoder;
 	
 	public void updateInfo(Member member) {
-		
-		Member originalMember = memberRepository.findById(member.getId()).orElse(null);
-		System.out.println("원래 정보 : " + originalMember);
-		
-		if(member.getPassword() == null || member.getPassword().isEmpty()) {
-			originalMember.setUsername(member.getUsername());
-			originalMember.setNickname(member.getNickname());
-		} else {
-			originalMember.setUsername(member.getUsername());
-			originalMember.setNickname(member.getNickname());
-			originalMember.setPassword(passwordEncoder.encode(member.getPassword()));			
-		}
-		
-		memberRepository.save(originalMember);
-		
-		
-	}
-	
+	      
+	      Member originalMember = memberRepository.findById(member.getId()).orElse(null);
+	      System.out.println("원래 정보 : " + originalMember);
+	      
+	      if(member.getPassword() == null || member.getPassword().isEmpty()) {
+	         originalMember.setUsername(member.getUsername());
+	         originalMember.setNickname(member.getNickname());
+	      } else {
+	         originalMember.setUsername(member.getUsername());
+	         originalMember.setPassword(passwordEncoder.encode(member.getPassword()));         
+	      }
+	      
+	      memberRepository.save(originalMember);
+	      
+	      
+	   }
+
 }

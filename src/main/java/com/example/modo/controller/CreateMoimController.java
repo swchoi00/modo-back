@@ -166,6 +166,16 @@ public class CreateMoimController {
 		
 	}
 	
+	 @GetMapping("/getUserIdMoimMemberList/{id}")
+	   public ResponseEntity<?> getUserIdMoimMemberList(@PathVariable Long id) {
+	      
+	      List<Long> userMoimMemberNumList = moimService.getUserIdMoimMemberList(id);
+	      
+	      return new ResponseEntity<>( userMoimMemberNumList, HttpStatus.OK);
+	      
+	   }
+
+	
 	
 	//모임 게시글 리스트 가져오기
 	@GetMapping("/getMoimCommList/{id}")

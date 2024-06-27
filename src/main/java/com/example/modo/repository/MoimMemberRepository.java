@@ -30,4 +30,8 @@ public interface MoimMemberRepository  extends JpaRepository<MoimMember, Long>{
 	
 	List<MoimMember> findByMemberId(Long memberId);
 	
+	@Query("SELECT m.id FROM MoimMember m WHERE m.member.id = :userId")
+    List<Long> findByMemberIdList(@Param("userId") Long userId);
+
+	
 }

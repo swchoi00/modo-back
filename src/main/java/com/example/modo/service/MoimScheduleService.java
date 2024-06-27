@@ -70,7 +70,7 @@ public class MoimScheduleService {
 		List<MoimMember> joinMemberList = new ArrayList<>();
 		for (Long memberId : joinMemberNo) {
 			// memberId를 사용하여 MoimMember 객체를 생성 (또는 가져오기)
-			MoimMember member = moimMemberRepository.findById(memberId).get(); // getMoimMemberById는 예시 메서드입니다.
+			MoimMember member = moimMemberRepository.findById(memberId).get();
 			joinMemberList.add(member);
 		}
 		return joinMemberList;
