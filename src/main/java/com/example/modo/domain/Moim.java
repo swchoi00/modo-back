@@ -57,10 +57,10 @@ public class Moim {
     @Column(name = "blockedMember", length = 100)
     private List<Long> blockedMember;
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", orphanRemoval = true)
     private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", orphanRemoval = true)
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, orphanRemoval = true)

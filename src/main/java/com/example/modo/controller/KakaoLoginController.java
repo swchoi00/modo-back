@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,10 @@ public class KakaoLoginController {
 		Member checkMember = memberService.checkMember(userInfo.getUsername());
 		
 		if(checkMember.getUsername() == null) {
-			memberService.insertMember(userInfo);
+//			memberService.insertMember(userInfo);
+			memberService.socialJoin(userInfo, "kakao");
+			
+			return new ResponseEntity<>(userInfo, HttpStatus.OK);
 		}
 		
 		return memberService.getResponseEntity(userInfo.getUsername(), kakaoPassword);

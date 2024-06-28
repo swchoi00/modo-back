@@ -82,7 +82,6 @@ public class MoimScheduleController {
 	public ResponseEntity<?> joinedScheduleList(@PathVariable Long id) {
 		
 		List<MoimSchedule> moimSchedules = moimScheduleService.findAllJoinedMembers();
-		System.out.println(moimSchedules);
 		
         return new ResponseEntity<>(moimSchedules, HttpStatus.OK);
 		

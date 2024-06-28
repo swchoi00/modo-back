@@ -42,7 +42,7 @@ public class MoimSchedule {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCHEDULE_SEQ_GENERATOR")
 	private Long scheduleNo;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "moim_id")
 	@JsonBackReference
 	private Moim moim; // Moim 엔티티와의 다대일 관계
