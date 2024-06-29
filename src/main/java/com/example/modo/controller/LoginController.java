@@ -52,15 +52,15 @@ public class LoginController {
 	        System.out.println("Received password: " + password);
 
 	        if (username == null || password == null) {
-	            return ResponseEntity.badRequest().body("Username or password must not be null");
+	            return ResponseEntity.badRequest().body("사용자 이름 또는 비밀번호는 null이 될 수 없습니다");
 	        }
 
 	        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-	            System.out.println("Login successful");
+	            System.out.println("로그인 성공");
 	            // 관리자 로그인 성공 시 처리할 로직을 여기에 추가할 수 있습니다.
 	            return memberService.getAdminResponseEntity(username, password);
 	        }
 
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only administrators can log in");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자만 로그인 할 수 있습니다");
 	    }
 }
