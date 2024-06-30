@@ -336,5 +336,10 @@ public class MoimService {
         moimCommRepository.saveAll(moimCommList);
         return moimCommList;
     }
+    
+    @Transactional
+    public void deleteMoimsByIds(List<Long> moimIds) {
+        moimRepository.deleteAllByIdIn(moimIds);
+    }
 
 }

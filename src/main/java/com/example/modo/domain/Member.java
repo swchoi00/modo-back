@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -70,6 +71,18 @@ public class Member {
 	@JsonIgnore // 또는 @JsonBackReference
 	private List<Moim> leadMoims;
 
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<MoimMember> moimMembers;
 	
-	
+	@Transient // DB에 매핑되지 않음
+	public int getParticipatedMoimCount() {
+        if (moimMembers == null) {
+            return 0;
+        }
+
+        return (int) moimMembers.stream()
+                .filter(moimMember -> moimMember.getMember().getId().equals(id))
+                .count();
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -330,5 +331,21 @@ public class MemberService {
             return member;
 	 }
 	 
+	 // admin 관리 페이지 ▼▼▼▼
+	
+	 public List<Member> getMemberList() {
+	        List<Member> members = memberRepository.findAll();
+
+	        for (Member member : members) {
+	            int participatedMoimCount = member.getMoimMembers().size(); // 참여 모임 수 계산
+
+	        }
+
+	        return members;
+	    }
 	 
+	 @Transactional
+	 public void deleteMembersByIds(List<Long> memberIds) {
+	        memberRepository.deleteAllByIdIn(memberIds);
+	    }
 }
