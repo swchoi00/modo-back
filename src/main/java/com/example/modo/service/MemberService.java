@@ -1,7 +1,11 @@
 package com.example.modo.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -79,6 +84,55 @@ public class MemberService {
 				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").body(body);
 	}
 
+	public ResponseEntity<?> getAdminResponseEntity(String username, String password) {
+
+		UsernamePasswordAuthenticationToken upaToken = new UsernamePasswordAuthenticationToken(username, password);
+
+		Authentication auth = authenticationManager.authenticate(upaToken);
+
+
+		String jwt = jwtService.getToken(auth.getName());
+
+		
+		Member member = memberRepository.findByUsername(username).get();
+
+		
+		MultiValueMap<String, Member> body = new LinkedMultiValueMap<>();
+
+		body.add("admin", member);
+
+		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").body(body);
+	}
+	
+	@PostConstruct
+    public void initializeAdminAccount() {
+        String adminUsername = "admin";
+        String adminPassword = "admin";
+
+        // Check if admin account already exists
+        if (memberRepository.findByUsername(adminUsername).isEmpty()) {
+            Member adminMember = Member.builder()
+                    .username(adminUsername)
+                    .password(passwordEncoder.encode(adminPassword))
+                    .nickname("Admin")
+                    .role(RoleType.ADMIN)
+                    .oauth(OAuthType.MODO)
+                    .createDate(new Timestamp(System.currentTimeMillis()))
+                    .build();
+
+            memberRepository.save(adminMember);
+        }
+    }
+
+	public boolean passwordCheck(Member member) {
+	        // 회원 정보를 조회
+	        Member existingMember = memberRepository.findById(member.getId()).get();
+	                
+	        // 입력된 비밀번호와 저장된 비밀번호를 비교
+	        return passwordEncoder.matches(member.getPassword(), existingMember.getPassword());
+	    }
+	
 	public Member checkMember(String username) {
 
 		return memberRepository.findByUsername(username).orElseGet(() -> {
@@ -241,6 +295,27 @@ public class MemberService {
 
 	}
 	
+	public void socialJoin(Member member) {
+		
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.setRole(RoleType.MEMBER);
+		
+		
+//		if(member.getOauth() == null && loginType.equals("google")) {
+//			member.setOauth(OAuthType.GOOGLE);
+//		} else if(member.getOauth() == null && loginType.equals("naver")) {
+//			member.setOauth(OAuthType.NAVER);
+//		} else if(member.getOauth() == null && loginType.equals("kakao")) {
+//			member.setOauth(OAuthType.KAKAO);
+//		}
+//		
+		memberRepository.save(member);
+		
+	}
+	
+	
+	
+	
 	public String getNickname(String username) {
 		
 		return memberRepository.findNickNameByUsername(username);
@@ -257,5 +332,21 @@ public class MemberService {
             return member;
 	 }
 	 
+	 // admin 관리 페이지 ▼▼▼▼
+	
+	 public List<Member> getMemberList() {
+	        List<Member> members = memberRepository.findAll();
+
+	        for (Member member : members) {
+	            int participatedMoimCount = member.getMoimMembers().size(); // 참여 모임 수 계산
+
+	        }
+
+	        return members;
+	    }
 	 
+	 @Transactional
+	 public void deleteMembersByIds(List<Long> memberIds) {
+	        memberRepository.deleteAllByIdIn(memberIds);
+	    }
 }

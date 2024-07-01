@@ -4,27 +4,6 @@ import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +15,8 @@ import lombok.NoArgsConstructor;
 @SequenceGenerator(
     name = "MOIM_SEQ_GENERATOR",
     sequenceName = "MOIM_SEQ",
-    initialValue = 1, allocationSize = 1)
+    initialValue = 1, 
+    allocationSize = 1)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -77,15 +57,21 @@ public class Moim {
     @Column(name = "blockedMember", length = 100)
     private List<Long> blockedMember;
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", orphanRemoval = true)
     private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
     
-    @OneToMany(mappedBy = "moim", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", orphanRemoval = true)
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
     
-    @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("rno desc")
-    private List<MoimReply> replies;
+    private List<MoimReply> replies; // MoimReply 엔티티와의 일대다 관계
+    
+    @OneToMany(mappedBy = "moim", orphanRemoval = true)
+    private List<MoimComm> moimComms; // MoimComm 엔티티와의 일대다 관계
+    
+    @OneToOne(mappedBy = "moim", cascade = CascadeType.REMOVE)
+    private MoimPhoto moimPhoto; // MoimPhoto 엔티티와의 일대일 관계
     
     @Column(length = 100)
     private int moimMemberNum; // 모임 멤버 수
@@ -99,10 +85,15 @@ public class Moim {
             }
         }
 
+        // 마지막 ", " 제거
+        if (membersString.length() > 0) {
+            membersString.setLength(membersString.length() - 2);
+        }
+
         return "Moim{" +
                 "id=" + id +
                 ", moimname='" + moimname + '\'' +
-                ", members=[" + (membersString.length() > 0 ? membersString.substring(0, membersString.length() - 2) : "") + "]" +
+                ", members=[" + membersString.toString() + "]" +
                 '}';
     }
 }

@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -47,8 +48,9 @@ public class MoimMember {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOIMMEMBER_SEQ_GENERATOR")
     private Long id;
 
-    @ManyToOne // MoimMember 엔티티는 여러 개의 Moim 엔티티에 속할 수 있음
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // MoimMember 엔티티는 여러 개의 Moim 엔티티에 속할 수 있음
     @JoinColumn(name = "moim_id") // Moim 엔티티의 PK를 참조하는 외래 키
+    @JsonBackReference
     private Moim moim; // Moim 엔티티 참조
     
     @Override
@@ -71,11 +73,24 @@ public class MoimMember {
     @ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "member_id")
     private Member member;
+    
+    @OneToMany(mappedBy = "moimMember", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<MoimScheduleReply> moimScheduleReplies;
 
     @Column(updatable = false)
     @CreationTimestamp
     private Timestamp memberJoinDate; // 모임 가입날짜
 	
+    @Override
+    public String toString() {
+        return "MoimMember{" +
+                "id=" + id +
+                ", memberRole='" + memberRole + '\'' +
+                ", memberJoinDate=" + memberJoinDate +
+                '}';
+    }
+    
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "members", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<MoimSchedule> moimSchedule; // MoimSchedule 참조

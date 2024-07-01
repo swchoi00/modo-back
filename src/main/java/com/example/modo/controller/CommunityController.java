@@ -40,6 +40,18 @@ public class CommunityController {
 	MemberService memberService;
 	
 	
+	// --- ADMIN ---
+	// 커뮤니티 삭제
+    @DeleteMapping("/deleteCommunityList")
+    public ResponseEntity<?> deleteCommList(@RequestBody List<Long> list) {
+        try {
+        	communityService.deleteCommunity(list);
+            return ResponseEntity.ok("해당 커뮤니티 게시글 삭제 완료했습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
+        }
+    }
+	
 
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadImage(@RequestPart("img") MultipartFile file) {
@@ -67,17 +79,8 @@ public class CommunityController {
 	        String commInfoJson = (String) requestBody.get("commInfo");
 	        Comm comm = objectMapper.readValue(commInfoJson, Comm.class);
 
-	        // 이미지 URL 목록 받아오기
-//	        List<String> images = (List<String>) requestBody.get("images");
-
 	        communityService.insertComm(comm);
 
-	        // 이미지 파일 삭제
-//	        for (String imageUrl : images) {
-//	            communityService.deleteImage(imageUrl);
-//	        }
-
-//	        return ResponseEntity.ok("게시글 작성 완료!");
 	        return new ResponseEntity<>("게시글 작성 완료!", HttpStatus.OK);
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -88,7 +91,7 @@ public class CommunityController {
 
 	
 	// 글 출력
-	@GetMapping("/comm_getList")
+	@GetMapping("/getCommList")
 	public ResponseEntity<?> getCommList() {
 		
 		List<Comm> commList = communityService.getCommList();

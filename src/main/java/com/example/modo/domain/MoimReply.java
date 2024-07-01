@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
@@ -14,7 +15,8 @@ import lombok.Data;
 @SequenceGenerator(
     name = "MOIMREPLY_SEQ_GENERATOR",
     sequenceName = "MOIMREPLY_SEQ",
-    initialValue = 1, allocationSize = 1)
+    initialValue = 1, 
+    allocationSize = 1)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "rno")
 public class MoimReply {
 
@@ -29,8 +31,9 @@ public class MoimReply {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Timestamp createDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "moim_id")
+    @JsonBackReference
     private Moim moim;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,7 +44,6 @@ public class MoimReply {
     @Column(length = 1000)
     private Long moimCommNo;
     
-    
     @Override
     public String toString() {
         return "MoimReply{" +
@@ -50,6 +52,4 @@ public class MoimReply {
                ", createDate=" + createDate +
                '}';
     }
-    
-
 }

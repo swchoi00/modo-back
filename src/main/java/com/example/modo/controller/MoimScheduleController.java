@@ -78,6 +78,15 @@ public class MoimScheduleController {
 		
 	}
 	
+	@GetMapping("/joinScheduleList/{id}") // userid 
+	public ResponseEntity<?> joinedScheduleList(@PathVariable Long id) {
+		
+		List<MoimSchedule> moimSchedules = moimScheduleService.findAllJoinedMembers();
+		
+        return new ResponseEntity<>(moimSchedules, HttpStatus.OK);
+		
+	}
+	
 	@DeleteMapping("/deleteSchedule/{id}")
 	public ResponseEntity<?> deleteMoimSchedule(@PathVariable Long id) {
 		

@@ -2,6 +2,8 @@ package com.example.modo.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,10 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,7 @@ import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.MoimReply;
+import com.example.modo.domain.MoimSchedule;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
 import com.example.modo.repository.MoimCommRepository;
@@ -33,6 +39,17 @@ import com.example.modo.repository.MoimMemberRepository;
 import com.example.modo.repository.MoimPhotoRepository;
 import com.example.modo.repository.MoimReplyRepository;
 import com.example.modo.repository.MoimRepository;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class MoimService {
@@ -54,6 +71,18 @@ public class MoimService {
 	
 	@Autowired
 	MoimReplyRepository moimReplyRepository;
+	
+//	@Autowired
+//	AdminService adminService;
+	
+	// --- ADMIN ---
+	// 모임 삭제
+    public void deleteMoim(List<Long> list) {
+        for (Long id : list) {
+        	moimRepository.deleteById(id);
+        }
+    }
+	
 	
 
 	// get 모임 목록 (모임멤버 몇명인지 리턴해야해서...이렇게 복잡하게 함)
@@ -118,6 +147,7 @@ public class MoimService {
 	}
 	
 	// 모임 삭제
+	@Transactional
 	public void deleteMoim(Long id) {
 		
 		moimRepository.deleteById(id);
@@ -160,6 +190,8 @@ public class MoimService {
 		return moimMemberRepository.findByMoimId(id); // 오임 id 에 해당하는 모임멤버 리스트 리턴
 	}
 	
+    
+   
 	
 	// 서버 파일이 있는 곳에 moimPhoto 파일명에 저장됨
 	private final String uploadDir = "moimPhoto";
@@ -240,15 +272,49 @@ public class MoimService {
         }
     }
     
-    // 모임 게시글 쓰기
+
+    
+    // 모임 게시글 작성, 수정
     public void moimCommInsert(MoimComm moimComm) {
     	Long memberId = moimComm.getAuthorid();
-    	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
-    	moimComm.setMoimMember(moimMember);
-    	System.out.println(moimComm);
-    	moimCommRepository.save(moimComm);
+
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new NoSuchElementException("No Member found with id: " + memberId));
+        
+        MoimMember moimMember = moimMemberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("No MoimMember found with id: " + memberId));
+        
+        moimComm.setAuthorid(memberId);
+        moimComm.setMoimMember(moimMember);
+        
+        System.out.println(moimComm);
+        moimCommRepository.save(moimComm);
     	
     }
+    
+    // 모임 게시글 삭제
+    public void deleteMoimComm(Long no, List<String> images) {
+    	Logger logger = LoggerFactory.getLogger(this.getClass());
+        moimCommRepository.deleteById(no);
+        
+     // 이미지 파일 삭제
+	    for (String imageUrl : images) {
+	        try {
+	            // URL 디코딩
+	            String decodedImageUrl = URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.name());
+	            String fileName = decodedImageUrl.substring(decodedImageUrl.lastIndexOf('/') + 1);
+	            Path filePath = Paths.get("./uploads/", fileName);
+	            boolean deleted = Files.deleteIfExists(filePath);
+	            if (deleted) {
+	                logger.info("Deleted file: {}", filePath.toString());
+	            } else {
+	                logger.warn("File not found: {}", filePath.toString());
+	            }
+	        } catch (IOException e) {
+	            logger.error("Failed to delete file", e);
+	        }
+	    }
+     }
     
 
     // 모임 게시글 리스트
@@ -274,8 +340,20 @@ public class MoimService {
 //    	return moimCommRepository.findById(moimCommId).get();
     }
     
+    public List<MoimComm> getMyMoimCommList(Long id) {
+    	
+    	List<MoimComm> myMoimCommList = moimCommRepository.findByMemberId(id);
+    	
+    	return myMoimCommList;
+    	
+    }
     
+    public List<Long> getUserIdMoimMemberList(Long userId) {
+        return moimMemberRepository.findByMemberIdList(userId);
+     }
+
     
+   
     
     // 모임 탈퇴
     public void quitMoim(Long deleteMoimMemberId) {
@@ -312,6 +390,11 @@ public class MoimService {
         }
         moimCommRepository.saveAll(moimCommList);
         return moimCommList;
+    }
+    
+    @Transactional
+    public void deleteMoimsByIds(List<Long> moimIds) {
+        moimRepository.deleteAllByIdIn(moimIds);
     }
 
 }
