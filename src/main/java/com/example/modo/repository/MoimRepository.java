@@ -19,4 +19,6 @@ public interface MoimRepository extends JpaRepository<Moim, Long> {
 
 	Optional<Moim> findByMoimname(String moimname);
 //	Optional<Moim> findById(Long id);
+	
+	void deleteAllByIdIn(List<Long> ids);
 }

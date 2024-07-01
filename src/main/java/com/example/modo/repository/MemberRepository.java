@@ -37,4 +37,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     }
 
     //	Optional<String> findNickNameByUsername(String username)
+    
+    void deleteAllByIdIn(List<Long> ids);
 }

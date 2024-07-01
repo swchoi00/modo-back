@@ -43,15 +43,15 @@ public class SignUpController {
 	}
 	
 	@PostMapping("/nicknameCheck")
-	public ResponseEntity<?> nicknameCheck(@RequestBody Member member) {
-		
-		Member nicknameCheck = signUpService.getMemberByNickName(member.getNickname());
-		
-		if (nicknameCheck != null) {
-	        return new ResponseEntity<>("중복된 닉네임입니다!", HttpStatus.OK);
-	    } else {
-	        return new ResponseEntity<>("사용 가능한 닉네임입니다!", HttpStatus.OK);
-	    }
-	}
+	   public ResponseEntity<?> nicknameCheck(@RequestBody Member member) {
+	      
+	      Member nicknameCheck = signUpService.getMemberByNickName(member.getNickname());
+
+	      if (nicknameCheck.getNickname() != null) {
+	           return new ResponseEntity<>("중복", HttpStatus.OK);
+	       } else {
+	           return new ResponseEntity<>("가능", HttpStatus.OK);
+	       }
+	   }
 	
 }

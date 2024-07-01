@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,7 @@ import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
 import com.example.modo.domain.MoimPhoto;
 import com.example.modo.domain.MoimReply;
+import com.example.modo.domain.MoimSchedule;
 import com.example.modo.domain.PhotoType;
 import com.example.modo.repository.MemberRepository;
 import com.example.modo.repository.MoimCommRepository;
@@ -145,6 +147,7 @@ public class MoimService {
 	}
 	
 	// 모임 삭제
+	@Transactional
 	public void deleteMoim(Long id) {
 		
 		moimRepository.deleteById(id);
@@ -187,28 +190,8 @@ public class MoimService {
 		return moimMemberRepository.findByMoimId(id); // 오임 id 에 해당하는 모임멤버 리스트 리턴
 	}
 	
-    // 모임 탈퇴
-    public void quitMoim(Long deleteMoimMemberId) {
-    	
-    	moimMemberRepository.deleteById(deleteMoimMemberId);
-    	
-    }
     
-    
-    //모임 멤버 role 설정 (매니저 지정/해제)
-    public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
-    	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
-    	String memberRole = updateMoimMember.getMemberRole();
-    	if("member".equals(memberRole)) {
-    		updateMoimMember.setMemberRole("manager");
-    	}else if("manager".equals(memberRole)) {
-    		updateMoimMember.setMemberRole("member");
-    	}
-    	moimMemberRepository.save(updateMoimMember);
-    	
-    	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
-    }
-    
+   
 	
 	// 서버 파일이 있는 곳에 moimPhoto 파일명에 저장됨
 	private final String uploadDir = "moimPhoto";
@@ -294,10 +277,18 @@ public class MoimService {
     // 모임 게시글 작성, 수정
     public void moimCommInsert(MoimComm moimComm) {
     	Long memberId = moimComm.getAuthorid();
-    	MoimMember moimMember = moimMemberRepository.findById(memberId).get();
-    	moimComm.setMoimMember(moimMember);
-    	System.out.println(moimComm);
-    	moimCommRepository.save(moimComm);
+
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new NoSuchElementException("No Member found with id: " + memberId));
+        
+        MoimMember moimMember = moimMemberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("No MoimMember found with id: " + memberId));
+        
+        moimComm.setAuthorid(memberId);
+        moimComm.setMoimMember(moimMember);
+        
+        System.out.println(moimComm);
+        moimCommRepository.save(moimComm);
     	
     }
     
@@ -349,6 +340,41 @@ public class MoimService {
 //    	return moimCommRepository.findById(moimCommId).get();
     }
     
+    public List<MoimComm> getMyMoimCommList(Long id) {
+    	
+    	List<MoimComm> myMoimCommList = moimCommRepository.findByMemberId(id);
+    	
+    	return myMoimCommList;
+    	
+    }
+    
+    public List<Long> getUserIdMoimMemberList(Long userId) {
+        return moimMemberRepository.findByMemberIdList(userId);
+     }
+
+    
+   
+    
+    // 모임 탈퇴
+    public void quitMoim(Long deleteMoimMemberId) {
+    	moimMemberRepository.deleteById(deleteMoimMemberId);
+    }
+    
+    
+    //모임 멤버 role 설정 (매니저 지정/해제)
+    public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
+    	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
+    	String memberRole = updateMoimMember.getMemberRole();
+    	if("member".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("manager");
+    	}else if("manager".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("member");
+    	}
+    	moimMemberRepository.save(updateMoimMember);
+    	
+    	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
+    }
+    
     // 모임 게시글 공지 작업
     @Transactional
     public List<MoimComm> insertNoticeUpdate(Long id, List<Long> list) {
@@ -364,6 +390,11 @@ public class MoimService {
         }
         moimCommRepository.saveAll(moimCommList);
         return moimCommList;
+    }
+    
+    @Transactional
+    public void deleteMoimsByIds(List<Long> moimIds) {
+        moimRepository.deleteAllByIdIn(moimIds);
     }
 
 }

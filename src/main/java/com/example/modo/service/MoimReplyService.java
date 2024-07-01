@@ -35,14 +35,29 @@ public class MoimReplyService {
 	public void insertMoimReply(Long moimid, MoimReply moimReply) {
 		
 		// 모임 찾기
-		Moim moim = moimRepository.findById(moimid).get();
-		
-		MoimMember moimMember = moimMemberRepository.findById(moimReply.getMoimMember().getId()).get();
-		
-		// 댓글 작성자 모임멤버 저장
-		moimReply.setMoimMember(moimMember);
-		moimReply.setMoim(moim);
-		moimReplyRepository.save(moimReply);
+	    Moim moim = moimRepository.findById(moimid).orElseThrow(() -> new IllegalArgumentException("Invalid moim ID"));
+
+	    // 댓글 작성자 모임멤버 찾기
+	    MoimMember moimMember = moimMemberRepository.findById(moimReply.getMoimMember().getId())
+	            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 멤버 ID입니다"));
+
+	    // 중복된 rno 값 확인
+	    boolean isDuplicate = moim.getReplies().stream()
+	            .anyMatch(reply -> reply.getRno().equals(moimReply.getRno()));
+	    
+	    if (isDuplicate) {
+	        throw new IllegalArgumentException("중복된 rno 값입니다");
+	    }
+
+	    // 댓글 작성자 모임멤버 저장
+	    moimReply.setMoimMember(moimMember);
+	    moimReply.setMoim(moim);
+	    
+	    // 모임에 댓글 추가
+	    moim.getReplies().add(moimReply);
+	    
+	    // 저장
+	    moimReplyRepository.save(moimReply);
 		
 	}
 	

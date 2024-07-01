@@ -47,4 +47,6 @@ public class MoimScheduleReply {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp CreateDate;
 	
+	
+	
 }

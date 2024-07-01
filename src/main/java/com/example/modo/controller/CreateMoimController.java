@@ -22,6 +22,7 @@ import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
 import com.example.modo.domain.MoimComm;
 import com.example.modo.domain.MoimMember;
+import com.example.modo.domain.MoimSchedule;
 import com.example.modo.service.MemberService;
 import com.example.modo.service.MoimService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -192,6 +193,17 @@ public class CreateMoimController {
 	      return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
 	      
 	   }
+	   
+	 @GetMapping("/getUserIdMoimMemberList/{id}")
+	   public ResponseEntity<?> getUserIdMoimMemberList(@PathVariable Long id) {
+	      
+	      List<Long> userMoimMemberNumList = moimService.getUserIdMoimMemberList(id);
+	      
+	      return new ResponseEntity<>( userMoimMemberNumList, HttpStatus.OK);
+	      
+	   }
+
+	
 	
 	
 	// 모임 게시글 리스트 가져오기
@@ -210,6 +222,15 @@ public class CreateMoimController {
 	    return new ResponseEntity<>(moimComm, HttpStatus.OK);
 	}
 	
+	@GetMapping("/myMoimCommList/{id}") // userid
+	public ResponseEntity<?> myMoimCommList(@PathVariable Long id) {
+		
+		List<MoimComm> myMoimCommList = moimService.getMyMoimCommList(id);
+		System.out.println(myMoimCommList);
+		
+		return new ResponseEntity<>(myMoimCommList, HttpStatus.OK);
+		
+	}
 	
 	
 	@GetMapping("/getMoimMemberList/{id}")
