@@ -33,6 +33,17 @@ public class CommunityService {
 	private MemberRepository memberRepository;
 
 
+	// --- ADMIN ---
+	// 커뮤니티 삭제
+    public void deleteCommunity(List<Long> list) {
+        for (Long id : list) {
+        	communityRepository.deleteById(id);
+        }
+    }
+	
+	
+	
+	
 	// 서버 내 저장할 폴더 경로 설정
 	private final String UPLOAD_DIR = "./uploads/";
 

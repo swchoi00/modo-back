@@ -40,6 +40,18 @@ public class CommunityController {
 	MemberService memberService;
 	
 	
+	// --- ADMIN ---
+	// 커뮤니티 삭제
+    @DeleteMapping("/deleteCommunityList")
+    public ResponseEntity<?> deleteCommList(@RequestBody List<Long> list) {
+        try {
+        	communityService.deleteCommunity(list);
+            return ResponseEntity.ok("해당 커뮤니티 게시글 삭제 완료했습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
+        }
+    }
+	
 
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadImage(@RequestPart("img") MultipartFile file) {
@@ -79,7 +91,7 @@ public class CommunityController {
 
 	
 	// 글 출력
-	@GetMapping("/comm_getList")
+	@GetMapping("/getCommList")
 	public ResponseEntity<?> getCommList() {
 		
 		List<Comm> commList = communityService.getCommList();

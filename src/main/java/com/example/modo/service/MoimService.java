@@ -70,6 +70,18 @@ public class MoimService {
 	@Autowired
 	MoimReplyRepository moimReplyRepository;
 	
+	@Autowired
+	AdminService adminService;
+	
+	// --- ADMIN ---
+	// 모임 삭제
+    public void deleteMoim(List<Long> list) {
+        for (Long id : list) {
+        	moimRepository.deleteById(id);
+        }
+    }
+	
+	
 
 	// get 모임 목록 (모임멤버 몇명인지 리턴해야해서...이렇게 복잡하게 함)
 	public List<Moim> getMoimList() {
@@ -175,6 +187,28 @@ public class MoimService {
 		return moimMemberRepository.findByMoimId(id); // 오임 id 에 해당하는 모임멤버 리스트 리턴
 	}
 	
+    // 모임 탈퇴
+    public void quitMoim(Long deleteMoimMemberId) {
+    	
+    	moimMemberRepository.deleteById(deleteMoimMemberId);
+    	
+    }
+    
+    
+    //모임 멤버 role 설정 (매니저 지정/해제)
+    public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
+    	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
+    	String memberRole = updateMoimMember.getMemberRole();
+    	if("member".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("manager");
+    	}else if("manager".equals(memberRole)) {
+    		updateMoimMember.setMemberRole("member");
+    	}
+    	moimMemberRepository.save(updateMoimMember);
+    	
+    	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
+    }
+    
 	
 	// 서버 파일이 있는 곳에 moimPhoto 파일명에 저장됨
 	private final String uploadDir = "moimPhoto";
@@ -313,29 +347,6 @@ public class MoimService {
 		moimCommRepository.save(moimComm); 
         return moimComm;
 //    	return moimCommRepository.findById(moimCommId).get();
-    }
-    
-    
-    
-    
-    // 모임 탈퇴
-    public void quitMoim(Long deleteMoimMemberId) {
-    	moimMemberRepository.deleteById(deleteMoimMemberId);
-    }
-    
-    
-    //모임 멤버 role 설정 (매니저 지정/해제)
-    public List<MoimMember> updateMoimMemberRole(Long moimMemberId) {
-    	MoimMember updateMoimMember = moimMemberRepository.findById(moimMemberId).get();
-    	String memberRole = updateMoimMember.getMemberRole();
-    	if("member".equals(memberRole)) {
-    		updateMoimMember.setMemberRole("manager");
-    	}else if("manager".equals(memberRole)) {
-    		updateMoimMember.setMemberRole("member");
-    	}
-    	moimMemberRepository.save(updateMoimMember);
-    	
-    	return moimMemberRepository.findByMoimId(updateMoimMember.getMoim().getId());
     }
     
     // 모임 게시글 공지 작업

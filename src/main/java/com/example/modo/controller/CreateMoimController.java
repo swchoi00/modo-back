@@ -35,6 +35,18 @@ public class CreateMoimController {
 	@Autowired
 	MemberService memberService;
 	
+	// --- ADMIN ---
+	// 모임 삭제
+    @DeleteMapping("/deleteMoimList")
+    public ResponseEntity<?> deleteMoimList(@RequestBody List<Long> list) {
+        try {
+        	moimService.deleteMoim(list);
+            return ResponseEntity.ok("해당 모임을 삭제 완료했습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
+        }
+    }
+	
 	
 	
 	// 모임 가입

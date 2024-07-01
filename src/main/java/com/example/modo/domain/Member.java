@@ -3,6 +3,7 @@ package com.example.modo.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -65,6 +67,7 @@ public class Member {
 	@Column(name = "likedMoim", length = 1000)
 	private List<Long> likedMoim;
 
-	
+//    @OneToMany(mappedBy = "leader", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Moim> moims; // Moim 엔티티와의 일대다 관계
 	
 }

@@ -46,6 +46,7 @@ public class Notice {
 	
 	@CreationTimestamp
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	@Column(updatable = false)
 	private Timestamp createDate;
 	
 //	@ManyToOne(fetch = FetchType.EAGER) // 다대일) 1개의 공지사항이 한명의 회원과 연결
