@@ -72,8 +72,8 @@ public class MoimService {
 	@Autowired
 	MoimReplyRepository moimReplyRepository;
 	
-	@Autowired
-	AdminService adminService;
+//	@Autowired
+//	AdminService adminService;
 	
 	// --- ADMIN ---
 	// 모임 삭제

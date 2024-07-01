@@ -40,7 +40,7 @@ public class KakaoLoginController {
 		
 		if(checkMember.getUsername() == null) {
 //			memberService.insertMember(userInfo);
-			memberService.socialJoin(userInfo, "kakao");
+			memberService.socialJoin(userInfo);
 			
 			return new ResponseEntity<>(userInfo, HttpStatus.OK);
 		}

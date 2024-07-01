@@ -25,23 +25,23 @@ public class AdminCotroller {
 	
 	// ---------- 회원관리
 	// 회원 목록
-	@GetMapping("/getMemberList")
-	public  ResponseEntity<?> getMemberList() {
-		List<Member> memberList = adminService.getMemberList();
-		
-		return new ResponseEntity<>(memberList, HttpStatus.OK);		
-	}
+//	@GetMapping("/getMemberList")
+//	public  ResponseEntity<?> getMemberList() {
+//		List<Member> memberList = adminService.getMemberList();
+//		
+//		return new ResponseEntity<>(memberList, HttpStatus.OK);		
+//	}
+//	
 	
-	
-	// 회원 삭제
-    @DeleteMapping("/deleteMemberList")
-    public ResponseEntity<?> deleteMembereList(@RequestBody List<Long> list) {
-        try {
-        	adminService.deleteMember(list);
-            return ResponseEntity.ok("해당 회원을 삭제 완료했습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
-        }
-    }
+//	// 회원 삭제
+//    @DeleteMapping("/deleteMemberList")
+//    public ResponseEntity<?> deleteMembereList(@RequestBody List<Long> list) {
+//        try {
+//        	adminService.deleteMember(list);
+//            return ResponseEntity.ok("해당 회원을 삭제 완료했습니다.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
+//        }
+//    }
 	
 }

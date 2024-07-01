@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.modo.domain.Member;
@@ -45,7 +46,6 @@ public class GoogleLoginController {
 	
 	@PostMapping("/oauth/join")
 	public ResponseEntity<?> SocialJoin (@RequestBody Member member){
-		
 		Member checkMember = memberService.checkMember(member.getUsername());
 		
 		System.out.println("멤버 체크 :" + member);
@@ -53,19 +53,24 @@ public class GoogleLoginController {
 		String password = member.getPassword();
 		OAuthType oauthType = member.getOauth();
 		
-		if(checkMember == null && oauthType == OAuthType.GOOGLE) {
-			
-			memberService.socialJoin(checkMember, "google");
-			
-		} else if(checkMember == null && oauthType == OAuthType.KAKAO) {
-			
-			memberService.socialJoin(checkMember, "kakao");
-			
-		} else if(checkMember == null && oauthType == OAuthType.NAVER) {
-			
-			memberService.socialJoin(checkMember, "naver");
-			
+//		if(checkMember == null && oauthType == OAuthType.GOOGLE) {
+//			
+//			memberService.socialJoin(checkMember, "google");
+//			
+//		} else if(checkMember == null && oauthType == OAuthType.KAKAO) {
+//			
+//			memberService.socialJoin(checkMember, "kakao");
+//			
+//		} else if(checkMember == null && oauthType == OAuthType.NAVER) {
+//			
+//			memberService.socialJoin(checkMember, "naver");
+//			
+//		}
+		
+		if(checkMember == null) {
+			memberService.socialJoin(checkMember);
 		}
+		
 		return memberService.getResponseEntity(member.getUsername(), password);
 		
 	}

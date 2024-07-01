@@ -295,19 +295,20 @@ public class MemberService {
 
 	}
 	
-	public void socialJoin(Member member, String loginType) {
+	public void socialJoin(Member member) {
 		
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		member.setRole(RoleType.MEMBER);
 		
-		if(member.getOauth() == null && loginType.equals("google")) {
-			member.setOauth(OAuthType.GOOGLE);
-		} else if(member.getOauth() == null && loginType.equals("naver")) {
-			member.setOauth(OAuthType.NAVER);
-		} else if(member.getOauth() == null && loginType.equals("kakao")) {
-			member.setOauth(OAuthType.KAKAO);
-		}
 		
+//		if(member.getOauth() == null && loginType.equals("google")) {
+//			member.setOauth(OAuthType.GOOGLE);
+//		} else if(member.getOauth() == null && loginType.equals("naver")) {
+//			member.setOauth(OAuthType.NAVER);
+//		} else if(member.getOauth() == null && loginType.equals("kakao")) {
+//			member.setOauth(OAuthType.KAKAO);
+//		}
+//		
 		memberRepository.save(member);
 		
 	}

@@ -39,7 +39,7 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**", "/login", "/oauth/kakao/", "/oauth/google/", "/oauth/naver/").permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**", "/login", "/oauth/kakao/", "/oauth/google/", "/oauth/naver/", "/oauth/join").permitAll()
 				.antMatchers(HttpMethod.PUT, "/updateTrans","/updateMember", "kagoosignup").permitAll()
 				.antMatchers(HttpMethod.DELETE, "/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/**", "/oauth/google/", "/oauth/naver/").permitAll().anyRequest().authenticated().and()
