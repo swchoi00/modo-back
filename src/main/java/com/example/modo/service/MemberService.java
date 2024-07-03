@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.modo.domain.Member;
@@ -65,6 +66,8 @@ public class MemberService {
 
 	public ResponseEntity<?> getResponseEntity(String username, String password) {
 
+	    System.out.println("응답 생성 중: username=" + username + ", password=" + password);
+
 		UsernamePasswordAuthenticationToken upaToken = new UsernamePasswordAuthenticationToken(username, password);
 
 		Authentication auth = authenticationManager.authenticate(upaToken);
@@ -83,6 +86,22 @@ public class MemberService {
 		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
 				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").body(body);
 	}
+	
+//public ResponseEntity<?> getResponseEntity (String username, String password) {
+//		
+//		UsernamePasswordAuthenticationToken upaToken =
+//				new UsernamePasswordAuthenticationToken(username, password); // 사용자가 입력한 아이디, 비번값 
+//		
+//		// 일치하면 auth에 인증객체가 담기고, 아니면 오류처리됨
+//		Authentication auth = authenticationManager.authenticate(upaToken);	// DB에 저장된 아이디 비번값과 위에 만들 upaToken(입력 아이디, 비번 값) 비교		
+//		String jwt = jwtService.getToken(auth.getName());
+//		
+//		
+//		return ResponseEntity.ok()
+//					.header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+//					.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization")
+//					.build();
+//		}
 
 	public ResponseEntity<?> getAdminResponseEntity(String username, String password) {
 
@@ -90,13 +109,10 @@ public class MemberService {
 
 		Authentication auth = authenticationManager.authenticate(upaToken);
 
-
 		String jwt = jwtService.getToken(auth.getName());
 
-		
 		Member member = memberRepository.findByUsername(username).get();
 
-		
 		MultiValueMap<String, Member> body = new LinkedMultiValueMap<>();
 
 		body.add("admin", member);
@@ -104,35 +120,30 @@ public class MemberService {
 		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
 				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").body(body);
 	}
-	
+
 	@PostConstruct
-    public void initializeAdminAccount() {
-        String adminUsername = "admin";
-        String adminPassword = "admin";
+	public void initializeAdminAccount() {
+		String adminUsername = "admin";
+		String adminPassword = "admin";
 
-        // Check if admin account already exists
-        if (memberRepository.findByUsername(adminUsername).isEmpty()) {
-            Member adminMember = Member.builder()
-                    .username(adminUsername)
-                    .password(passwordEncoder.encode(adminPassword))
-                    .nickname("Admin")
-                    .role(RoleType.ADMIN)
-                    .oauth(OAuthType.MODO)
-                    .createDate(new Timestamp(System.currentTimeMillis()))
-                    .build();
+		// Check if admin account already exists
+		if (memberRepository.findByUsername(adminUsername).isEmpty()) {
+			Member adminMember = Member.builder().username(adminUsername)
+					.password(passwordEncoder.encode(adminPassword)).nickname("Admin").role(RoleType.ADMIN)
+					.oauth(OAuthType.MODO).createDate(new Timestamp(System.currentTimeMillis())).build();
 
-            memberRepository.save(adminMember);
-        }
-    }
+			memberRepository.save(adminMember);
+		}
+	}
 
 	public boolean passwordCheck(Member member) {
-	        // 회원 정보를 조회
-	        Member existingMember = memberRepository.findById(member.getId()).get();
-	                
-	        // 입력된 비밀번호와 저장된 비밀번호를 비교
-	        return passwordEncoder.matches(member.getPassword(), existingMember.getPassword());
-	    }
-	
+		// 회원 정보를 조회
+		Member existingMember = memberRepository.findById(member.getId()).get();
+
+		// 입력된 비밀번호와 저장된 비밀번호를 비교
+		return passwordEncoder.matches(member.getPassword(), existingMember.getPassword());
+	}
+
 	public Member checkMember(String username) {
 
 		return memberRepository.findByUsername(username).orElseGet(() -> {
@@ -143,32 +154,35 @@ public class MemberService {
 
 	public String getKakaoAccessToken(String code) {
 
-		HttpHeaders header = new HttpHeaders();
+	    HttpHeaders header = new HttpHeaders();
+	    header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-		header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+	    body.add("grant_type", "authorization_code");
+	    body.add("client_id", "116eb98e44e59c5f34ad8e04b02d0cd7"); // 각자 rest api key
+	    body.add("redirect_uri", "http://localhost:3000/oauth/kakao");
+	    body.add("code", code);
 
-		// body에다가 심을 것들 ( Kakao에서 시킴 )
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+	    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-		body.add("grant_type", "authorization_code");
-		body.add("client_id", "116eb98e44e59c5f34ad8e04b02d0cd7"); // 각자 rest api key
-		body.add("redirect_uri", "http://localhost:3000/oauth/kakao");
-		body.add("code", code);
+	    RestTemplate restTemplate = new RestTemplate();
 
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
-
-		RestTemplate restTemplate = new RestTemplate();
-
-		ResponseEntity<String> response = restTemplate.exchange("https://kauth.kakao.com/oauth/token", HttpMethod.POST,
-				request, String.class);
-
-		String json = response.getBody();
-
-		Gson gson = new Gson();
-		Map<?, ?> data = gson.fromJson(json, Map.class);
-
-		return (String) data.get("access_token");
+	    ResponseEntity<String> response = 
+	    		restTemplate.exchange("https://kauth.kakao.com/oauth/token",	// 카카오 문서에서 안내된 대로 적기
+	    								HttpMethod.POST,
+	    								request,
+	    								String.class
+	    							);
+		
+	    String json = response.getBody();	// 여기서 부터는 토큰만 따로 추출하기 위한 코드
+	    
+	    Gson gson = new Gson();
+	    Map<?, ?> data = gson.fromJson(json, Map.class);
+	    
+	    return (String) data.get("access_token");	// 순수 access_Token 문자열만 뽑기
 	}
+	
+	
 
 	public Member kakaoLogin(String accessToken) {
 
@@ -264,7 +278,7 @@ public class MemberService {
 	}
 
 	public Member naverLogin(String accessToken) {
-		
+
 		HttpHeaders header = new HttpHeaders();
 		header.add("Authorization", "Bearer " + accessToken);
 		header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -294,59 +308,50 @@ public class MemberService {
 		return member;
 
 	}
-	
+
 	public void socialJoin(Member member) {
-		
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		member.setRole(RoleType.MEMBER);
-		
-		
-//		if(member.getOauth() == null && loginType.equals("google")) {
-//			member.setOauth(OAuthType.GOOGLE);
-//		} else if(member.getOauth() == null && loginType.equals("naver")) {
-//			member.setOauth(OAuthType.NAVER);
-//		} else if(member.getOauth() == null && loginType.equals("kakao")) {
-//			member.setOauth(OAuthType.KAKAO);
-//		}
-//		
-		memberRepository.save(member);
-		
+
+		// 비밀번호와 역할 설정
+	    member.setPassword(passwordEncoder.encode(member.getPassword()));
+	    member.setRole(RoleType.MEMBER);
+
+	    System.out.println("회원가입 처리 중 : " + member);
+
+	    memberRepository.save(member);
+
 	}
-	
-	
-	
-	
+
 	public String getNickname(String username) {
-		
+
 		return memberRepository.findNickNameByUsername(username);
-	
+
 	}
-	
-	 public Member updateLikedMoims(Member member) {
-		 // 해당 유저의 likedMoim 값을 업데이트
-		 
-            // 데이터베이스에 업데이트된 멤버 정보를 저장합니다.
-            memberRepository.save(member);
 
-            // 업데이트된 모임 리스트를 반환합니다.
-            return member;
-	 }
-	 
-	 // admin 관리 페이지 ▼▼▼▼
-	
-	 public List<Member> getMemberList() {
-	        List<Member> members = memberRepository.findAll();
+	public Member updateLikedMoims(Member member) {
+		// 해당 유저의 likedMoim 값을 업데이트
 
-	        for (Member member : members) {
-	            int participatedMoimCount = member.getMoimMembers().size(); // 참여 모임 수 계산
+		// 데이터베이스에 업데이트된 멤버 정보를 저장합니다.
+		memberRepository.save(member);
 
-	        }
+		// 업데이트된 모임 리스트를 반환합니다.
+		return member;
+	}
 
-	        return members;
-	    }
-	 
-	 @Transactional
-	 public void deleteMembersByIds(List<Long> memberIds) {
-	        memberRepository.deleteAllByIdIn(memberIds);
-	    }
+	// admin 관리 페이지 ▼▼▼▼
+
+	public List<Member> getMemberList() {
+		List<Member> members = memberRepository.findAll();
+
+		for (Member member : members) {
+			int participatedMoimCount = member.getMoimMembers().size(); // 참여 모임 수 계산
+
+		}
+
+		return members;
+	}
+
+	@Transactional
+	public void deleteMembersByIds(List<Long> memberIds) {
+		memberRepository.deleteAllByIdIn(memberIds);
+	}
 }

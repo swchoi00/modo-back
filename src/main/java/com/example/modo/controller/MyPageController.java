@@ -33,6 +33,7 @@ public class MyPageController {
 	@DeleteMapping("/deleteAccount/{id}")
 	public ResponseEntity<?> deleteAccount (@PathVariable Long id) {
 		
+		System.out.println(id);
 		myPageService.deleteInfo(id);
 		
 		return new ResponseEntity<>("탈퇴가 완료되었습니다", HttpStatus.OK);

@@ -33,19 +33,22 @@ public class KakaoLoginController {
 		System.out.println("코드 : " + code);
 		
 		String accessToken = memberService.getKakaoAccessToken(code);
+		System.out.println("액세스토큰 : " + accessToken);
 		
-		Member userInfo = memberService.kakaoLogin(accessToken);
+		Member member = memberService.kakaoLogin(accessToken);
+	
+		String memberPw = member.getPassword();
 		
-		Member checkMember = memberService.checkMember(userInfo.getUsername());
+		
+		Member checkMember = memberService.checkMember(member.getUsername());
+		System.out.println("체크멤버 : " + checkMember );
 		
 		if(checkMember.getUsername() == null) {
-//			memberService.insertMember(userInfo);
-			memberService.socialJoin(userInfo);
-			
-			return new ResponseEntity<>(userInfo, HttpStatus.OK);
+			System.out.println("멤버 : " + member);
+			return new ResponseEntity<>(member, HttpStatus.OK);
 		}
 		
-		return memberService.getResponseEntity(userInfo.getUsername(), kakaoPassword);
+		return memberService.getResponseEntity(member.getUsername(), memberPw);
 		
 	}
 	

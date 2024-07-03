@@ -35,16 +35,18 @@ public class NaverLoginController {
 		
 		Member userInfo = memberService.naverLogin(accessToken);
 		
+		String memberPw = userInfo.getPassword();
+		
 		Member checkMember = memberService.checkMember(userInfo.getUsername());
 		
 		if(checkMember.getUsername() == null) {
-			memberService.insertMember(userInfo);
+//			memberService.insertMember(userInfo);
 //			memberService.socialJoin(userInfo, "naver");
 //			
-//			return new ResponseEntity<>(userInfo, HttpStatus.OK);
+			return new ResponseEntity<>(userInfo, HttpStatus.OK);
 		}
 		
-		return memberService.getResponseEntity(userInfo.getUsername(), naverPassword);
+		return memberService.getResponseEntity(userInfo.getUsername(), memberPw);
 		
 	}
 	
