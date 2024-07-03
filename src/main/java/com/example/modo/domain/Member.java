@@ -1,6 +1,7 @@
 package com.example.modo.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -75,7 +76,7 @@ public class Member {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
-    private List<MoimMember> moimMembers;
+    private List<MoimMember> moimMembers = new ArrayList<>();
 	
 	@Transient // DB에 매핑되지 않음
 	public int getParticipatedMoimCount() {
