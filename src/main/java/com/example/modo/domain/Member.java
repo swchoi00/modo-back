@@ -74,9 +74,14 @@ public class Member {
 	@JsonIgnore // 또는 @JsonBackReference
 	private List<Moim> leadMoims;
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+//	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<MoimMember> moimMembers = new ArrayList<>();
+	
+	// ■■■■ 유저 프로필 사진 확인용 ■■■■
+	@Column(length = 100) 
+	private String memberImage;
 	
 	@Transient // DB에 매핑되지 않음
 	public int getParticipatedMoimCount() {
