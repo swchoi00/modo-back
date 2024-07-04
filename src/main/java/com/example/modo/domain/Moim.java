@@ -1,8 +1,10 @@
 package com.example.modo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,14 +59,15 @@ public class Moim {
     @Column(name = "blockedMember", length = 100)
     private List<Long> blockedMember;
     
-    @OneToMany(mappedBy = "moim", orphanRemoval = true)
-    private List<MoimMember> members; // MoimMember 엔티티와의 일대다 관계
+    @OneToMany(mappedBy = "moim", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<MoimMember> members = new ArrayList<>(); // MoimMember 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", orphanRemoval = true)
     private List<MoimSchedule> schedules; // MoimSchedule 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("rno desc")
+    @JsonIgnore
     private List<MoimReply> replies; // MoimReply 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", orphanRemoval = true)

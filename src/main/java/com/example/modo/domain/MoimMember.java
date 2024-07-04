@@ -48,7 +48,7 @@ public class MoimMember {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOIMMEMBER_SEQ_GENERATOR")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // MoimMember 엔티티는 여러 개의 Moim 엔티티에 속할 수 있음
+    @ManyToOne(fetch = FetchType.EAGER) // MoimMember 엔티티는 여러 개의 Moim 엔티티에 속할 수 있음
     @JoinColumn(name = "moim_id") // Moim 엔티티의 PK를 참조하는 외래 키
     @JsonBackReference
     private Moim moim; // Moim 엔티티 참조
@@ -74,9 +74,17 @@ public class MoimMember {
     @JoinColumn(name = "member_id")
     private Member member;
     
+    @OneToMany(mappedBy = "moimMember", cascade = CascadeType.ALL, orphanRemoval = true) // CascadeType.REMOVE 추가
+    @JsonIgnore
+    private List<MoimComm> moimComms; // MoimComm와의 관계 추가
+    
     @OneToMany(mappedBy = "moimMember", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<MoimScheduleReply> moimScheduleReplies;
+    
+    @OneToMany(mappedBy = "moimMember", cascade = CascadeType.ALL, orphanRemoval = true) // MoimReply 관계 추가
+    @JsonIgnore
+    private List<MoimReply> moimReplies;
 
     @Column(updatable = false)
     @CreationTimestamp

@@ -31,16 +31,18 @@ public class GoogleLoginController {
 		Member member = memberService.googleLogin(accessToken.get("accessToken"));
 		System.out.println("멤버 확인 : " + member);
 		
+		String memberPw = member.getPassword();
+		
 		Member findMember = memberService.checkMember(member.getUsername());
+		System.out.println("checkMember : " + findMember);
+		
 		
 		if(findMember.getUsername() == null) {
-//			memberService.insertMember(member); 기존 바로 회원가입 시키던 코드
-//			memberService.socialJoin(member, "google");
 			
 			return new ResponseEntity<>(member, HttpStatus.OK);
 		}
 		
-		return memberService.getResponseEntity(member.getUsername(), googlePassword);
+		return memberService.getResponseEntity(member.getUsername(), memberPw);
 		
 	}
 	
@@ -50,28 +52,14 @@ public class GoogleLoginController {
 		
 		System.out.println("멤버 체크 :" + member);
 		
-		String password = member.getPassword();
-		OAuthType oauthType = member.getOauth();
+		String memberPw = member.getPassword();
 		
-//		if(checkMember == null && oauthType == OAuthType.GOOGLE) {
-//			
-//			memberService.socialJoin(checkMember, "google");
-//			
-//		} else if(checkMember == null && oauthType == OAuthType.KAKAO) {
-//			
-//			memberService.socialJoin(checkMember, "kakao");
-//			
-//		} else if(checkMember == null && oauthType == OAuthType.NAVER) {
-//			
-//			memberService.socialJoin(checkMember, "naver");
-//			
-//		}
 		
-		if(checkMember == null) {
-			memberService.socialJoin(checkMember);
+		if(checkMember.getUsername() == null) {
+			memberService.socialJoin(member);
 		}
 		
-		return memberService.getResponseEntity(member.getUsername(), password);
+		return memberService.getResponseEntity(member.getUsername(), memberPw);
 		
 	}
 	
