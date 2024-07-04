@@ -259,4 +259,5 @@ public class CreateMoimController {
 	      return new ResponseEntity<>(moimcommList, HttpStatus.OK);
    }
 	
+	
 }

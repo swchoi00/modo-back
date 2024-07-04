@@ -260,15 +260,22 @@ public class MoimService {
     
 
  // 이미지 파일을 바이트 배열로 읽어오는 메서드 추가
-    public byte[] readMoimThumbnailBytes(Long photoNo) throws IOException {
-        // MoimPhotoRepository를 사용하여 해당 photoNo에 해당하는 이미지 정보를 가져옵니다.
-        MoimPhoto moimPhoto = moimPhotoRepository.findById(photoNo).orElse(null);
+    public byte[] readMoimThumbnailBytes(Long moimId) throws IOException {
+//    	MoimPhoto moimPhoto = moimPhotoRepository.findById(moimId).orElse(null);
+        MoimPhoto moimPhoto = moimPhotoRepository.findAllByMoimId(moimId);
         if (moimPhoto != null) {
-            // 이미지 파일을 읽어와 바이트 배열로 변환하여 반환합니다.
-            Path imagePath = Paths.get(moimPhoto.getMoimPhotoUrl());
-            return Files.readAllBytes(imagePath);
+            // 애플리케이션의 루트 디렉토리 경로를 가져옵니다.
+            String rootPath = System.getProperty("user.dir");
+            // 저장된 상대 경로와 결합하여 전체 경로를 만듭니다.
+            Path imagePath = Paths.get(rootPath, moimPhoto.getMoimPhotoUrl());
+            
+            if (Files.exists(imagePath)) {
+                return Files.readAllBytes(imagePath);
+            } else {
+                throw new IOException("Image file not found at path: " + imagePath);
+            }
         } else {
-            throw new IOException("Moim photo not found");
+            throw new IOException("Moim photo not found for photoNo: " + moimId);
         }
     }
     
