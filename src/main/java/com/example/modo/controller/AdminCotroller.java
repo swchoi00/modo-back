@@ -16,6 +16,8 @@ import com.example.modo.domain.Member;
 import com.example.modo.domain.Moim;
 import com.example.modo.domain.Notice;
 import com.example.modo.service.AdminService;
+import com.example.modo.service.MemberService;
+import com.example.modo.service.MoimService;
 
 @RestController
 public class AdminCotroller {
@@ -23,25 +25,41 @@ public class AdminCotroller {
 	@Autowired
 	AdminService adminService;
 	
-	// ---------- 회원관리
-	// 회원 목록
-//	@GetMapping("/getMemberList")
-//	public  ResponseEntity<?> getMemberList() {
-//		List<Member> memberList = adminService.getMemberList();
-//		
-//		return new ResponseEntity<>(memberList, HttpStatus.OK);		
-//	}
-//	
+	@Autowired
+	private MemberService memberService;
 	
-//	// 회원 삭제
-//    @DeleteMapping("/deleteMemberList")
-//    public ResponseEntity<?> deleteMembereList(@RequestBody List<Long> list) {
-//        try {
-//        	adminService.deleteMember(list);
-//            return ResponseEntity.ok("해당 회원을 삭제 완료했습니다.");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("1:1문의 삭제 실패");
-//        }
-//    }
+	@Autowired
+	private MoimService moimService;
 	
+	// ---------- 회원관리	
+	// 관리자 멤버 리스트 출력
+		@GetMapping("/getMemberList")
+		public ResponseEntity<?> getMemberList() {
+			
+			List<Member> memberLists = memberService.getMemberList();
+			
+			return new ResponseEntity<>(memberLists, HttpStatus.OK);
+			
+			
+		}
+		
+		// 관리자 멤버 삭제
+		@DeleteMapping("/deleteMemberList")
+		public ResponseEntity<?> deleteMemberList(@RequestBody List<Long> memberIds) {
+			
+			memberService.deleteMembersByIds(memberIds);
+			
+			return new ResponseEntity<>("선택한 멤버 삭제완료", HttpStatus.OK);
+			
+		}
+		
+		// 관리자 모임 삭제
+		@DeleteMapping("/deleteMoimList")
+		public ResponseEntity<?> deleteMoimList(@RequestBody List<Long> moimIds) {
+			
+			moimService.deleteMoimsByIds(moimIds);
+			
+			return new ResponseEntity<>("선택한 모임 삭제완료", HttpStatus.OK);
+			
+		}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,6 +67,7 @@ public class Moim {
     
     @OneToMany(mappedBy = "moim", fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("rno desc")
+    @JsonIgnore
     private List<MoimReply> replies; // MoimReply 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", orphanRemoval = true)

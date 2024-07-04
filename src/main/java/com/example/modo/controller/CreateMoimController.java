@@ -70,7 +70,7 @@ public class CreateMoimController {
 	@PostMapping("/updateMoimInfo")
 	public ResponseEntity<?> updateMoimInfo(@RequestBody Moim moim){
 		System.out.println("■■■■■■■■■■■■■■■■■■■■■");
-		System.out.println(moim.getDescription());
+		System.out.println(moim);
 		moimService.insertMoim(moim, "update");
 		
 		return new ResponseEntity<> ("수정완료!", HttpStatus.OK);

@@ -12,17 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.modo.domain.Member;
@@ -87,21 +84,6 @@ public class MemberService {
 				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").body(body);
 	}
 	
-//public ResponseEntity<?> getResponseEntity (String username, String password) {
-//		
-//		UsernamePasswordAuthenticationToken upaToken =
-//				new UsernamePasswordAuthenticationToken(username, password); // 사용자가 입력한 아이디, 비번값 
-//		
-//		// 일치하면 auth에 인증객체가 담기고, 아니면 오류처리됨
-//		Authentication auth = authenticationManager.authenticate(upaToken);	// DB에 저장된 아이디 비번값과 위에 만들 upaToken(입력 아이디, 비번 값) 비교		
-//		String jwt = jwtService.getToken(auth.getName());
-//		
-//		
-//		return ResponseEntity.ok()
-//					.header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-//					.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization")
-//					.build();
-//		}
 
 	public ResponseEntity<?> getAdminResponseEntity(String username, String password) {
 
@@ -123,10 +105,10 @@ public class MemberService {
 
 	@PostConstruct
 	public void initializeAdminAccount() {
-		String adminUsername = "admin";
-		String adminPassword = "admin";
+		String adminUsername = "modojjang";
+		String adminPassword = "Ahehchlrh!0601";
 
-		// Check if admin account already exists
+
 		if (memberRepository.findByUsername(adminUsername).isEmpty()) {
 			Member adminMember = Member.builder().username(adminUsername)
 					.password(passwordEncoder.encode(adminPassword)).nickname("Admin").role(RoleType.ADMIN)
