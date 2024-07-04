@@ -41,7 +41,7 @@ dependencies {
    	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
    	
    	// https://mvnrepository.com/artifact/org.postgresql/postgresql
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
    	
 }
 

@@ -30,7 +30,7 @@ import java.util.Date;
 public class MoimPhoto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MoimPhoto_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MoimPhoto_SEQ_GENERATOR")
     private Long moimPhotoNo;
     
     // 모임번호

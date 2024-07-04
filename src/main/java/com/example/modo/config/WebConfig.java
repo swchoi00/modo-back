@@ -13,6 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 		
 		registry.addMapping("/**")
 				.allowedOrigins("http://localhost:3000")
+				.allowedOrigins("https://modo-2024.web.app")
 				.allowedMethods("GET", "POST", "DELETE", "PUT")
 				.allowCredentials(true);
 	}
