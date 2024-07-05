@@ -32,7 +32,7 @@ public class CommReplyService {
 		
 	}
 	
-	
+	@Transactional
 	public void insertCommReply(Long postno, CommReply commReply) {
 	    // 댓글에 대한 게시글을 가져옵니다.
 	    Comm comm = communityRepository.findById(postno)
@@ -64,6 +64,7 @@ public class CommReplyService {
 	    commReplyRepository.deleteById(rno);
 	}
 	
+	@Transactional
 	public void updateCommReply(Long rno, CommReply commReply) {
 		
 		CommReply originalCommReply = commReplyRepository.findById(rno).get();
@@ -73,7 +74,8 @@ public class CommReplyService {
 		commReplyRepository.save(originalCommReply);
 		
 	}
-	    
+	
+	@Transactional
 	public void addLikeToCommReply(Long id, Long userId) {
         CommReply commReply = commReplyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
