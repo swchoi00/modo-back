@@ -3,10 +3,10 @@ package com.example.modo.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.modo.domain.Member;
 import com.example.modo.repository.MemberRepository;
@@ -14,6 +14,7 @@ import com.example.modo.repository.MoimRepository;
 
 
 @Service
+@Transactional
 public class AdminService {
 	
 	@Autowired
