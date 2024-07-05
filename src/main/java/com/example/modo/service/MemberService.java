@@ -143,7 +143,7 @@ public class MemberService {
 	    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 	    body.add("grant_type", "authorization_code");
 	    body.add("client_id", "116eb98e44e59c5f34ad8e04b02d0cd7"); // 각자 rest api key
-	    body.add("redirect_uri", "http://localhost:3000/oauth/kakao");
+	    body.add("redirect_uri", "https://modo-2024.web.app//oauth/kakao");
 	    body.add("code", code);
 
 	    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
@@ -241,7 +241,7 @@ public class MemberService {
 		body.add("grant_type", "authorization_code");
 		body.add("client_id", "xeAGTboYTyPVmgMgKHFC"); // 각자 rest api key
 		body.add("client_secret", "uVdoX5S8vp");
-		body.add("redirect_uri", "http://localhost:3000/oauth/naver");
+		body.add("redirect_uri", "https://modo-2024.web.app//oauth/naver");
 		body.add("code", code);
 		body.add("state", state);
 
