@@ -241,7 +241,7 @@ public class MemberService {
 		body.add("grant_type", "authorization_code");
 		body.add("client_id", "xeAGTboYTyPVmgMgKHFC"); // 각자 rest api key
 		body.add("client_secret", "uVdoX5S8vp");
-		body.add("redirect_uri", "https://modo-2024.web.app//oauth/naver");
+		body.add("redirect_uri", "https://modo-2024.web.app/oauth/naver");
 		body.add("code", code);
 		body.add("state", state);
 

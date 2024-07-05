@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.modo.domain.Comm;
 import com.example.modo.repository.CommunityRepository;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 
 @Service
+@Transactional
 public class CommunityService {
 
 	@Autowired
