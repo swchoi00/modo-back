@@ -93,7 +93,7 @@ public class CommunityService {
 		communityRepository.save(comm);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<Comm> getCommList() {
 
 		return communityRepository.findAllByOrderByPostnoDesc();

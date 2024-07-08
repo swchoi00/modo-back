@@ -87,6 +87,7 @@ public class MoimService {
 	
 
 	// get 모임 목록 (모임멤버 몇명인지 리턴해야해서...이렇게 복잡하게 함)
+    @Transactional
 	public List<Moim> getMoimList() {
 	    List<Moim> moimList = moimRepository.findAll();
 	    List<Moim> newMoimList = new ArrayList<Moim>(); 

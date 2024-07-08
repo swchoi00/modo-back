@@ -50,6 +50,7 @@ public class MoimComm {
 //	@Column(nullable = false, length = 100)
 //	private String author; // 작성자
 	
+	@Lob
 	@Column(length = 10000)
 	private Long authorid;
 	
@@ -80,6 +81,7 @@ public class MoimComm {
     private boolean noticeCheck = false;
     
     // [임시] 모임 댓글 수
+    @Lob
     @Column(length = 1000)
     private Integer ReplyCount = 0;
 	
