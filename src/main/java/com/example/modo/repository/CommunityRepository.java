@@ -10,9 +10,9 @@ import com.example.modo.domain.Comm;
 import com.example.modo.domain.FAQ;
 
 @Repository
-@Transactional(readOnly = true)
 public interface CommunityRepository extends JpaRepository<Comm, Long> {
 
+	@Transactional
 	List<Comm> findAllByOrderByPostnoDesc();
 	
 	

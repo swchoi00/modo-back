@@ -12,8 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:3000")
-				.allowedOrigins("https://modo-2024.web.app")
+				.allowedOrigins("http://localhost:3000", "https://modo-2024.web.app")
 				.allowedMethods("GET", "POST", "DELETE", "PUT")
 				.allowCredentials(true);
 	}
