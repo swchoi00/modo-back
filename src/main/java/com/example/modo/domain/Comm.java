@@ -59,7 +59,7 @@ public class Comm {
 	
 	private LocalDateTime createdAt;
 	
-	@Lob
+//	@Lob
 	@Column(nullable = false, length = 1500)
 	private String content; // 글 내용
 	
