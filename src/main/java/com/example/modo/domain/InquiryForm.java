@@ -43,7 +43,7 @@ public class InquiryForm {
 	@Column(length = 100)
 	private String title;
 	
-	@Lob // 큰 크기의 데이터를 저장하기 위한 Large Object 필드
+	// @Lob // 큰 크기의 데이터를 저장하기 위한 Large Object 필드
 	@Column(nullable = false)
 	private String content;
 	
@@ -57,7 +57,7 @@ public class InquiryForm {
 	@Column
 	private String category;
 	
-	@Lob
+//	@Lob
 	@Column
 	private String answer;
 	

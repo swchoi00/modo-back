@@ -50,7 +50,7 @@ public class MoimComm {
 //	@Column(nullable = false, length = 100)
 //	private String author; // 작성자
 	
-	@Lob
+//	@Lob
 	@Column(length = 10000)
 	private Long authorid;
 	
@@ -67,7 +67,7 @@ public class MoimComm {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Timestamp uploadDate; // 글 작성일
 	
-	@Lob
+//	@Lob
 	@Column(nullable = false, length = 1500)
 	private String content; // 글 내용
 	
@@ -81,7 +81,7 @@ public class MoimComm {
     private boolean noticeCheck = false;
     
     // [임시] 모임 댓글 수
-    @Lob
+//    @Lob
     @Column(length = 1000)
     private Integer ReplyCount = 0;
 	

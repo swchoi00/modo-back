@@ -48,7 +48,7 @@ public class Moim {
     @Column(length = 100)
     private String introduction; // 간단설명
     
-    @Lob
+//    @Lob
     @Column(length = 1500)
     private String description; // 설명 : 나중에 추가하는 방식 nullable
     
