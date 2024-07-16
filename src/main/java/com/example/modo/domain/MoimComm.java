@@ -37,6 +37,7 @@ import lombok.Data;
 		initialValue = 1, allocationSize = 1)
 @JsonIgnoreProperties({"replies"})
 public class MoimComm {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOIMCOMM_SEQ_GENERATOR")
 	private Long postno; // 게시글 번호
