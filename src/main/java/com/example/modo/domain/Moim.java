@@ -49,6 +49,7 @@ public class Moim {
     private String introduction; // 간단설명
     
 //    @Lob
+    @JsonIgnore
     @Column(length = 1500)
     private String description; // 설명 : 나중에 추가하는 방식 nullable
     
@@ -72,6 +73,7 @@ public class Moim {
     private List<MoimReply> replies; // MoimReply 엔티티와의 일대다 관계
     
     @OneToMany(mappedBy = "moim", orphanRemoval = true)
+    @JsonIgnore // 0716 추가된 부분
     private List<MoimComm> moimComms; // MoimComm 엔티티와의 일대다 관계
     
     @OneToOne(mappedBy = "moim", cascade = CascadeType.REMOVE)

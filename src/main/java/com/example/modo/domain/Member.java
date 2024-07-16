@@ -83,6 +83,9 @@ public class Member {
 	@Column(length = 100) 
 	private String memberImage;
 	
+	@Column(length = 100)
+	private String profileText;
+	
 	@Transient // DB에 매핑되지 않음
 	public int getParticipatedMoimCount() {
         if (moimMembers == null) {
