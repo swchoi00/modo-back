@@ -82,6 +82,10 @@ public class Moim {
     @Column(length = 100)
     private int moimMemberNum; // 모임 멤버 수
     
+    // 추가
+    @Column(length = 100)
+    private String moimImg; // 모임 이미지
+    
     @Override
     public String toString() {
         StringBuilder membersString = new StringBuilder();

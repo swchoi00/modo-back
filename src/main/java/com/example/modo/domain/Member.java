@@ -79,6 +79,10 @@ public class Member {
     @JsonIgnore
     private List<MoimMember> moimMembers = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<Comm> comms;
+	
 	// ■■■■ 유저 프로필 사진 확인용 ■■■■
 	@Column(length = 100) 
 	private String memberImage;

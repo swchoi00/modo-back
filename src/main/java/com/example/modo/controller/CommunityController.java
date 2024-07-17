@@ -111,6 +111,7 @@ public class CommunityController {
 		
 	}
 	
+	
 	// 게시글 상세보기
 	@GetMapping("/comm/{id}")
 	public ResponseEntity<?> getComm(@PathVariable Long id) {

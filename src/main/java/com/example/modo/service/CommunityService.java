@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.modo.domain.Comm;
+import com.example.modo.domain.Member;
 import com.example.modo.repository.CommunityRepository;
 import com.example.modo.repository.MemberRepository;
 
@@ -87,8 +88,11 @@ public class CommunityService {
 		comm.setViews((long) 0);
 
 		String nickname = memberRepository.findNickNameByUsername(comm.getAuthor());
-
+		
+		Member member = memberRepository.findByUsername(comm.getAuthor()).get();
+		
 		comm.setAuthor(nickname);
+		comm.setMember(member);
 
 		communityRepository.save(comm);
 	}
